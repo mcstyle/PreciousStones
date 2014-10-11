@@ -291,9 +291,9 @@ public class CuboidManager
 
             if (customHeight > 0) {
                 ce.setMaxy(customHeight);
+                plugin.getVisualizationManager().displayFieldOutline(player, ce);
             }
 
-            plugin.getVisualizationManager().displayFieldOutline(player, ce);
 
             if (plugin.getForceFieldManager().fieldConflicts(ce, player) != null)
             {
