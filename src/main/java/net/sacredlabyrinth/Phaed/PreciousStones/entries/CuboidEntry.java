@@ -564,6 +564,11 @@ public class CuboidEntry
         return maxx;
     }
 
+    public void setMaxy(int y)
+    {
+        maxy = y;
+    }
+
     public int getMaxy()
     {
         if (selected.isEmpty())
