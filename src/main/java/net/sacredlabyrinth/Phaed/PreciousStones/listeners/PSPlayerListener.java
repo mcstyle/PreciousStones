@@ -746,6 +746,19 @@ public class PSPlayerListener implements Listener
         {
             if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.use"))
             {
+                Field useAllField = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PREVENT_USE_ALL);
+
+                if (useAllField != null)
+                {
+                    if (FieldFlag.PREVENT_USE_ALL.applies(useAllField, player))
+                    {
+                        plugin.getCommunicationManager().warnUse(player, block, useAllField);
+                        event.setCancelled(true);
+                        return;
+
+                    }
+                }
+
                 Field useField = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PREVENT_USE);
 
                 if (useField != null)
@@ -759,6 +772,25 @@ public class PSPlayerListener implements Listener
                             return;
                         }
                     }
+                }
+
+
+                // Support for Forestry and IndustrialCraft wrenches
+                String inHandItemName = is.getType().name();
+                if (inHandItemName.equals("IC2_ITEMTOOLWRENCH")
+                        || inHandItemName.equals("IC2_ITEMTOOLWRENCHELECTRIC")
+                        || inHandItemName.equals("FORESTRY_WRENCH")) {
+                    Field field = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PREVENT_DESTROY);
+                    if (field != null)
+                    {
+                        if (FieldFlag.PREVENT_DESTROY.applies(field, player))
+                        {
+                            plugin.getCommunicationManager().warnUse(player, block, field);
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+
                 }
             }
         }

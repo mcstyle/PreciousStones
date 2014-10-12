@@ -228,6 +228,7 @@ public class FieldSettings
         //**************************
 
         loadBoolean("prevent-fire");
+        loadBoolean("prevent-use-all");
         loadBoolean("enable-with-redstone");
         loadBoolean("allow-place");
         loadBoolean("allow-destroy");
