@@ -26,6 +26,7 @@ import org.bukkit.Location;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * PreciousStones block listener
@@ -160,6 +161,55 @@ public class PSBlockListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    /**
+     * @param event
+     */
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBlockBurn(BlockBurnEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Block block = event.getBlock();
+        //Player player = event.getPlayer();
+
+        if (block == null) {
+            return;
+        }
+
+        Field field = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PREVENT_DESTROY);
+
+        if (field != null) {
+            if (FieldFlag.PREVENT_DESTROY.applies(field, "1")) {
+                event.setCancelled(true);
+            }
+        }
+
+//        if (player != null)
+//        {
+//            plugin.getSnitchManager().recordSnitchIgnite(player, block);
+//        }
+//
+//        Field field = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PREVENT_FIRE);
+//
+//        if (field != null)
+//        {
+//            if (player == null)
+//            {
+//                event.setCancelled(true);
+//            }
+//            else
+//            {
+//                if (FieldFlag.PREVENT_DESTROY.applies(field, player))
+//                {
+//                    event.setCancelled(true);
+//                    plugin.getCommunicationManager().warnFire(player, block, field);
+//                }
+//            }
+//        }
     }
 
     /**
@@ -380,6 +430,12 @@ public class PSBlockListener implements Listener
 
         if (block == null || player == null)
         {
+            if (player == null) {
+                Field field = plugin.getForceFieldManager().getField(block);
+                if (FieldFlag.PREVENT_DESTROY.applies(field, "1")) {
+                    event.setCancelled(true);
+                }
+            }
             return;
         }
 
