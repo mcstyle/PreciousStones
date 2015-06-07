@@ -7,12 +7,13 @@ import net.sacredlabyrinth.Phaed.PreciousStones.entries.SnitchEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.storage.DBCore;
 import net.sacredlabyrinth.Phaed.PreciousStones.storage.MySQLCore;
 import net.sacredlabyrinth.Phaed.PreciousStones.storage.SQLiteCore;
+import net.sacredlabyrinth.Phaed.PreciousStones.uuid.UUIDMigration;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -108,8 +109,7 @@ public class StorageManager
                 {
                     PreciousStones.log("Creating table: pstone_players");
 
-                    core.execute("CREATE TABLE IF NOT EXISTS `pstone_players` ( `id` bigint(20), `player_name` varchar(16) NOT NULL, `last_seen` bigint(20) default NULL, flags TEXT default NULL, PRIMARY KEY  (`player_name`));");
-                    touchAllPlayers();
+                    core.execute("CREATE TABLE IF NOT EXISTS `pstone_players` ( `id` bigint(20), `uuid` varchar(255) default NULL, `player_name` varchar(16) NOT NULL, `last_seen` bigint(20) default NULL, flags TEXT default NULL, PRIMARY KEY  (`player_name`));");
                 }
 
                 if (!core.existsTable("pstone_snitches"))
@@ -117,6 +117,8 @@ public class StorageManager
                     PreciousStones.log("Creating table: pstone_snitches");
 
                     core.execute("CREATE TABLE IF NOT EXISTS `pstone_snitches` ( `id` bigint(20), `x` int(11) default NULL,  `y` int(11) default NULL, `z` int(11) default NULL,  `world` varchar(25) default NULL, `name` varchar(16) NOT NULL, `reason` varchar(20) default NULL, `details` varchar(50) default NULL, `count` int(11) default NULL, `date` varchar(25) default NULL, PRIMARY KEY  (`x`, `y`, `z`, `world`, `name`, `reason`, `details`));");
+
+                    addIndexes();
                 }
             }
             else
@@ -178,8 +180,7 @@ public class StorageManager
                 {
                     PreciousStones.log("Creating table: pstone_players");
 
-                    core.execute("CREATE TABLE IF NOT EXISTS `pstone_players` ( `id` bigint(20), `player_name` varchar(16) NOT NULL, `last_seen` bigint(20) default NULL, flags TEXT default NULL, PRIMARY KEY (`player_name`));");
-                    touchAllPlayers();
+                    core.execute("CREATE TABLE IF NOT EXISTS `pstone_players` ( `id` bigint(20), `uuid` varchar(255) default NULL, `player_name` varchar(16) NOT NULL, `last_seen` bigint(20) default NULL, flags TEXT default NULL, PRIMARY KEY (`player_name`));");
                 }
 
                 if (!core.existsTable("pstone_snitches"))
@@ -187,6 +188,8 @@ public class StorageManager
                     PreciousStones.log("Creating table: pstone_snitches");
 
                     core.execute("CREATE TABLE IF NOT EXISTS `pstone_snitches` ( `id` bigint(20), `x` int(11) default NULL,  `y` int(11) default NULL, `z` int(11) default NULL,  `world` varchar(25) default NULL, `name` varchar(16) NOT NULL, `reason` varchar(20) default NULL, `details` varchar(50) default NULL, `count` int(11) default NULL, `date` varchar(25) default NULL, PRIMARY KEY  (`x`, `y`, `z`, `world`, `name`, `reason`, `details`));");
+
+                    addIndexes();
                 }
             }
             else
@@ -215,6 +218,84 @@ public class StorageManager
                 plugin.getSettingsManager().setVersion(12);
             }
         }
+
+        if (!core.existsColumn("pstone_players", "uuid"))
+        {
+            updateUUID();
+            addIndexes();
+        }
+    }
+
+    /**
+     * Bukkit 1.7.5+ UUID updates
+     *
+     * @param
+     */
+    private void updateUUID()
+    {
+        String query;
+
+        query = "ALTER TABLE `pstone_players` ADD `uuid` VARCHAR( 255 ) DEFAULT NULL;";
+        core.execute(query);
+
+        PreciousStones.log("Added UUID modification to database");
+    }
+
+    public void addIndexes()
+    {
+        String query;
+
+        if (plugin.getSettingsManager().isUseMysql())
+        {
+            query = "ALTER TABLE `pstone_grief_undo` ADD UNIQUE KEY `key_grief_locs` (`x`, `y`, `z`, `world`);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_fields` ADD INDEX `indx_field_owner` (`owner`);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_players` ADD UNIQUE `unq_uuid` (uuid);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_players` ADD INDEX `inx_player_name` (player_name);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_cuboids` ADD INDEX `indx_cuboids_owner` (`owner`);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_cuboids` ADD INDEX `indx_cuboids_parent` (`parent`);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_unbreakables` ADD INDEX `indx_unbreakables_owner` (`owner`);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_storedblocks` ADD INDEX `indx_storedblocks_1` (`name`, `player_name`, `applied`);";
+            core.execute(query);
+
+            query = "ALTER TABLE `pstone_storedblocks` ADD INDEX `indx_storedblocks_2` (`name`, `player_name`, `applied`, `type_id`, `data`);";
+            core.execute(query);
+        }
+        else
+        {
+            query = "CREATE INDEX IF NOT EXISTS `indx_field_owner` ON `pstone_fields` (`owner`);";
+            core.execute(query);
+
+            query = "CREATE UNIQUE INDEX IF NOT EXISTS `indx_players_uuid` ON `pstone_players` (`uuid`);";
+            core.execute(query);
+
+            query = "CREATE UNIQUE INDEX IF NOT EXISTS `indx_player_name` ON `pstone_players` (`player_name`);";
+            core.execute(query);
+
+            query = "CREATE INDEX IF NOT EXISTS `indx_cuboids_owner` ON `pstone_cuboids` (`owner`);";
+            core.execute(query);
+
+            query = "CREATE INDEX IF NOT EXISTS `indx_cuboids_parent` ON `pstone_cuboids` (`parent`);";
+            core.execute(query);
+
+            query = "CREATE INDEX IF NOT EXISTS `indx_unbreakables_owner` ON `pstone_unbreakables` (`owner`);";
+            core.execute(query);
+        }
+
+        PreciousStones.log("Added new indexes to database");
     }
 
     private void resetLastSeem()
@@ -286,7 +367,7 @@ public class StorageManager
     public void loadWorldData()
     {
         PreciousStones.debug("finalizing queue");
-        plugin.getForceFieldManager().doFinalize();
+        plugin.getForceFieldManager().offerAllDirtyFields();
         processQueue();
 
         PreciousStones.debug("clearing fields from memory");
@@ -317,18 +398,6 @@ public class StorageManager
                 }
             }
         }, 0);
-
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-
-                PreciousStones.debug("pulling the full player list");
-
-                extractPlayers();
-            }
-        }, 20);
     }
 
     /**
@@ -347,12 +416,8 @@ public class StorageManager
         {
             fields = getFields(world);
             fieldCount = fields.size();
-            PreciousStones.debug("pulled", fieldCount, "fields in", world);
-
             Collection<Field> cuboids = getCuboidFields(world);
             cuboidCount = cuboids.size();
-            PreciousStones.debug("pulled", fieldCount, "cuboids in", world);
-
             fields.addAll(cuboids);
         }
 
@@ -425,8 +490,8 @@ public class StorageManager
             if (field.hasFlag(flagStr))
             {
                 changed++;
-                field.disableFlag(flagStr);
-                plugin.getStorageManager().offerField(field);
+                field.disableFlag(flagStr, false);
+                field.dirtyFlags("enableAllFlags");
             }
 
             plugin.getForceFieldManager().addToCollection(field);
@@ -459,7 +524,7 @@ public class StorageManager
             {
                 changed++;
                 field.enableFlag(flagStr);
-                field.dirtyFlags();
+                field.dirtyFlags("disableAllFlags");
             }
 
             plugin.getForceFieldManager().addToCollection(field);
@@ -480,7 +545,6 @@ public class StorageManager
         synchronized (this)
         {
             unbreakables = getUnbreakables(world);
-            PreciousStones.debug("pulled", unbreakables.size(), "unbreakables in", world);
         }
 
         for (Unbreakable ub : unbreakables)
@@ -560,7 +624,6 @@ public class StorageManager
             pendingPlayers.put(playerName, false);
         }
     }
-
 
     /**
      * Puts the snitch list up for future storage
@@ -675,7 +738,6 @@ public class StorageManager
     public Collection<Field> getCuboidFields(String worldName)
     {
         HashMap<Long, Field> out = new HashMap<Long, Field>();
-        int purged = 0;
         boolean foundInWrongTable = false;
 
         String query = "SELECT pstone_cuboids.id as id, x, y, z, minx, miny, minz, maxx, maxy, maxz, type_id, data, velocity, world, owner, name, packed_allowed, last_used, flags  FROM  pstone_cuboids WHERE pstone_cuboids.parent = 0 AND world = '" + Helper.escapeQuotes(worldName) + "';";
@@ -835,32 +897,18 @@ public class StorageManager
             PreciousStones.log("fieldsInWrongTable");
         }
 
-        if (purged > 0)
-        {
-            PreciousStones.log("countsPurgedSnitches", worldName, purged);
-        }
-
         return out.values();
     }
 
-    /**
-     * Retrieves all players from the database
-     */
-    public void extractPlayers()
+    public void findUUIDMismatch(Player player)
     {
-        String query = "SELECT * FROM pstone_players;";
-        ResultSet res = core.select(query);
-
-        Set<OfflinePlayer> bannedPlayers = Bukkit.getBannedPlayers();
-        List<String> banned = new ArrayList<String>();
-
-        if (plugin.getSettingsManager().isPurgeBannedPlayers())
+        if (!plugin.getServer().getOnlineMode())
         {
-            for (OfflinePlayer player : bannedPlayers)
-            {
-                banned.add(player.getName());
-            }
+            return;
         }
+
+        String query = "SELECT player_name FROM `pstone_players` WHERE uuid = '" + player.getUniqueId().toString() + "';";
+        ResultSet res = core.select(query);
 
         if (res != null)
         {
@@ -870,6 +918,70 @@ public class StorageManager
                 {
                     try
                     {
+                        String oldUsername = res.getString("player_name");
+
+                        if (!oldUsername.equals(player.getName()))
+                        {
+                            migrate(oldUsername, player.getName());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        PreciousStones.getLog().info(ex.getMessage());
+                    }
+                }
+            }
+            catch (SQLException ex)
+            {
+                System.out.print(ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void migrate(String oldUsername, String newUsername)
+    {
+        plugin.getPlayerManager().migrateUsername(oldUsername, newUsername);
+        plugin.getForceFieldManager().migrateUsername(oldUsername, newUsername);
+        plugin.getUnbreakableManager().migrateUsername(oldUsername, newUsername);
+
+        String updateQuery;
+        updateQuery = "UPDATE `pstone_storedblocks` SET player_name = '" + newUsername + "' WHERE player_name = '" + oldUsername + "';";
+        core.execute(updateQuery);
+
+        updateQuery = "UPDATE `pstone_translocations` SET player_name = '" + newUsername + "' WHERE player_name = '" + oldUsername + "';";
+        core.execute(updateQuery);
+
+        PreciousStones.log("[Username Changed] From: " + oldUsername + " To: " + oldUsername);
+
+        Player player = plugin.getServer().getPlayerExact(newUsername);
+
+        if (player != null)
+        {
+            ChatBlock.send(player, "usernameChanged");
+        }
+    }
+
+    /**
+     * Retrieves a player from the database
+     */
+    public PlayerEntry extractPlayer(String playerName)
+    {
+        String query = "SELECT * FROM pstone_players WHERE player_name = '" + Helper.escapeQuotes(playerName) + "';";
+        ResultSet res = core.select(query);
+
+        PlayerEntry data = new PlayerEntry();
+        data.setName(playerName);
+
+        if (res != null)
+        {
+            try
+            {
+                while (res.next())
+                {
+                    try
+                    {
+                        String uuid = res.getString("uuid");
                         String name = res.getString("player_name");
                         long last_seen = res.getLong("last_seen");
                         String flags = res.getString("flags");
@@ -877,34 +989,27 @@ public class StorageManager
                         if (last_seen > 0)
                         {
                             int lastSeenDays = Days.daysBetween(new DateTime(last_seen), new DateTime()).getDays();
-
                             PreciousStones.debug("Player last seen: %s [%s]", lastSeenDays, name);
+                        }
 
-                            if (banned.contains(name) || lastSeenDays >= plugin.getSettingsManager().getPurgeAfterDays())
+                        data.setFlags(flags);
+
+                        if (uuid != null)
+                        {
+                            data.setOnlineUUID(UUID.fromString(uuid));
+                        }
+                        else
+                        {
+                            UUID pulledUUID = UUIDMigration.findPlayerUUID(name);
+                            if (pulledUUID != null)
                             {
-                                PreciousStones.debug("PURGED %s", name);
-
-                                int purged = plugin.getForceFieldManager().deleteBelonging(name);
-
-                                if (purged > 0)
-                                {
-                                    PreciousStones.log("countsPurgedFields", name, purged);
-                                }
-
-                                purged = plugin.getUnbreakableManager().deleteBelonging(name);
-
-                                if (purged > 0)
-                                {
-                                    PreciousStones.log("countsPurgedUnbreakables", name, purged);
-                                }
-
-                                offerDeletePlayer(name);
-                                continue;
+                                data.setOnlineUUID(pulledUUID);
+                                PreciousStones.log("[Online UUID Found] Player: " + name + " UUID: " + pulledUUID.toString());
+                                plugin.getStorageManager().updatePlayerUUID(name, pulledUUID);
                             }
                         }
 
-                        PlayerEntry data = plugin.getPlayerManager().getPlayerEntry(name);
-                        data.setFlags(flags);
+                        return data;
                     }
                     catch (Exception ex)
                     {
@@ -918,6 +1023,8 @@ public class StorageManager
                 ex.printStackTrace();
             }
         }
+
+        return data;
     }
 
     /**
@@ -929,7 +1036,6 @@ public class StorageManager
     public List<Unbreakable> getUnbreakables(String worldName)
     {
         List<Unbreakable> out = new ArrayList<Unbreakable>();
-        int purged = 0;
 
         String query = "SELECT * FROM  `pstone_unbreakables` WHERE world = '" + Helper.escapeQuotes(worldName) + "';";
 
@@ -968,11 +1074,6 @@ public class StorageManager
                 System.out.print(ex.getMessage());
                 ex.printStackTrace();
             }
-        }
-
-        if (purged > 0)
-        {
-            PreciousStones.log("countsPurgedUnbreakabes2", worldName, purged);
         }
 
         return out;
@@ -1320,8 +1421,8 @@ public class StorageManager
 
         if (plugin.getSettingsManager().isUseMysql())
         {
-            String query = "INSERT INTO `pstone_players` ( `player_name`,  `last_seen`, `flags`) ";
-            String values = "VALUES ( '" + playerName + "', " + time + ",'" + Helper.escapeQuotes(data.getFlags()) + "') ";
+            String query = "INSERT INTO `pstone_players` (`player_name`,  `uuid`,  `last_seen`, `flags`) ";
+            String values = "VALUES ( '" + playerName + "', '" + data.getOnlineUUID() + "', " + time + ",'" + Helper.escapeQuotes(data.getFlags()) + "') ";
             String update = "ON DUPLICATE KEY UPDATE last_seen = " + time + ", flags = '" + Helper.escapeQuotes(data.getFlags()) + "'";
 
             synchronized (this)
@@ -1331,8 +1432,8 @@ public class StorageManager
         }
         else
         {
-            String query = "INSERT OR IGNORE INTO `pstone_players` ( `player_name`,  `last_seen`, `flags`) ";
-            String values = "VALUES ( '" + playerName + "'," + time + ",'" + Helper.escapeQuotes(data.getFlags()) + "');";
+            String query = "INSERT OR IGNORE INTO `pstone_players` ( `player_name`,  `uuid`,  `last_seen`, `flags`) ";
+            String values = "VALUES ( '" + playerName + "', '" + data.getOnlineUUID() + "', " + time + ",'" + Helper.escapeQuotes(data.getFlags()) + "');";
             String update = "UPDATE `pstone_players` SET last_seen = " + time + ", flags = '" + Helper.escapeQuotes(data.getFlags()) + "' WHERE player_name = '" + playerName + "';";
 
             synchronized (this)
@@ -1342,45 +1443,18 @@ public class StorageManager
         }
     }
 
-    private void touchAllPlayers()
+    /**
+     * Update the player's uuid
+     *
+     * @param playerName
+     */
+    public void updatePlayerUUID(String playerName, UUID uuid)
     {
-        long time = (new DateTime()).getMillis();
+        String update = "UPDATE `pstone_players` SET `uuid` = '" + uuid.toString() + "' WHERE `player_name` = '" + playerName + "';";
 
-        if (plugin.getSettingsManager().isUseMysql())
+        synchronized (this)
         {
-            String query = "INSERT INTO `pstone_players` ( `player_name`,  `last_seen`, `flags`) ";
-            String values = "SELECT DISTINCT `owner`, " + time + " as last_seen, '' as flags FROM pstone_fields ";
-
-            synchronized (this)
-            {
-                core.insert(query + values);
-            }
-
-            query = "INSERT IGNORE INTO `pstone_players` ( `player_name`,  `last_seen`, `flags`) ";
-            values = "SELECT DISTINCT `owner`, " + time + " as last_seen, '' as flags FROM pstone_unbreakables ";
-
-            synchronized (this)
-            {
-                core.insert(query + values);
-            }
-        }
-        else
-        {
-            String query = "INSERT INTO `pstone_players` ( `player_name`,  `last_seen`, `flags`) ";
-            String values = "SELECT DISTINCT `owner`, " + time + " as last_seen, '' as flags FROM pstone_fields ";
-
-            synchronized (this)
-            {
-                core.insert(query + values);
-            }
-
-            query = "INSERT OR IGNORE INTO `pstone_players` ( `player_name`,  `last_seen`, `flags`) ";
-            values = "SELECT DISTINCT `owner`, " + time + " as last_seen, '' as flags FROM pstone_unbreakables ";
-
-            synchronized (this)
-            {
-                core.insert(query + values);
-            }
+            core.update(update);
         }
     }
 
@@ -2245,7 +2319,7 @@ public class StorageManager
 
         synchronized (this)
         {
-            core.delete(query);
+            core.update(query);
         }
     }
 

@@ -11,12 +11,14 @@ import org.json.simple.JSONValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author phaed
  */
 public class PlayerEntry
 {
+    private UUID onlineUUID;
     private String name;
     private boolean disabled;
     private boolean online;
@@ -475,5 +477,15 @@ public class PlayerEntry
     public void setBypassDisabled(boolean bypassDisabled)
     {
         this.bypassDisabled = bypassDisabled;
+    }
+
+    public void setOnlineUUID(UUID uuid)
+    {
+
+        this.onlineUUID = uuid;
+    }
+    public UUID getOnlineUUID()
+    {
+        return onlineUUID;
     }
 }

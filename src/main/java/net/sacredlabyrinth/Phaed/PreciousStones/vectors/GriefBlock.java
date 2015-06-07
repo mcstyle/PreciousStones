@@ -20,8 +20,7 @@ public class GriefBlock extends AbstractVec
      * @param y
      * @param z
      * @param world
-     * @param typeId
-     * @param data
+     * @param type
      */
     public GriefBlock(int x, int y, int z, String world, BlockTypeEntry type)
     {
@@ -31,8 +30,7 @@ public class GriefBlock extends AbstractVec
 
     /**
      * @param loc
-     * @param typeId
-     * @param data
+     * @param type
      */
     public GriefBlock(Location loc, BlockTypeEntry type)
     {
@@ -50,7 +48,7 @@ public class GriefBlock extends AbstractVec
     }
 
     /**
-     * @param block
+     * @param state
      */
     public GriefBlock(BlockState state)
     {

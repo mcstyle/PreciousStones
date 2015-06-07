@@ -14,6 +14,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -55,7 +56,7 @@ public final class ForceFieldManager
     {
         fieldsByFlag.clear();
         fieldsByWorld.clear();
-        fieldsByOwner.clear();
+        getFieldsByOwner().clear();
         fieldsByOwnerAndType.clear();
         fieldsByOwnerAndFlag.clear();
         fieldsByVec.clear();
@@ -222,7 +223,7 @@ public final class ForceFieldManager
 
         for (FieldFlag flag : field.getSettings().getDisabledFlags())
         {
-            field.disableFlag(flag.toString());
+            field.disableFlag(flag.toString(), true);
         }
 
         // places the field in a disabled state
@@ -262,16 +263,16 @@ public final class ForceFieldManager
             }
         }
 
-        // add llowed team
+        // add allowed team
 
-        if (plugin.getSettingsManager().isAutoAddClan())
+        if (plugin.getSettingsManager().isAutoAddTeam())
         {
             OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(player.getName());
 
             if (offlinePlayer != null)
             {
                 ScoreboardManager manager = Bukkit.getScoreboardManager();
-                Scoreboard board = manager.getNewScoreboard();
+                Scoreboard board = manager.getMainScoreboard();
 
                 Team team = board.getPlayerTeam(offlinePlayer);
 
@@ -354,7 +355,7 @@ public final class ForceFieldManager
 
         // add to owners collection
 
-        fields = fieldsByOwner.get(field.getOwner().toLowerCase());
+        fields = getFieldsByOwner().get(field.getOwner().toLowerCase());
 
         if (fields == null)
         {
@@ -362,7 +363,7 @@ public final class ForceFieldManager
         }
 
         fields.add(field);
-        fieldsByOwner.put(field.getOwner().toLowerCase(), fields);
+        getFieldsByOwner().put(field.getOwner().toLowerCase(), fields);
 
         // add to owner and type collection
 
@@ -491,7 +492,7 @@ public final class ForceFieldManager
 
         // remove from owners collection
 
-        List<Field> owned = fieldsByOwner.get(field.getOwner().toLowerCase());
+        List<Field> owned = getFieldsByOwner().get(field.getOwner().toLowerCase());
 
         if (owned != null)
         {
@@ -693,13 +694,13 @@ public final class ForceFieldManager
                     if (offlinePlayer != null)
                     {
                         ScoreboardManager manager = Bukkit.getScoreboardManager();
-                        Scoreboard board = manager.getNewScoreboard();
+                        Scoreboard board = manager.getMainScoreboard();
 
                         Team team = board.getPlayerTeam(offlinePlayer);
 
                         if (team != null)
                         {
-                            if (tm.equals(team.getName()))
+                            if (tm.equalsIgnoreCase(team.getName()))
                             {
                                 out.add(field);
                             }
@@ -780,9 +781,9 @@ public final class ForceFieldManager
     /**
      * things to do before shutdown
      */
-    public void doFinalize()
+    public void offerAllDirtyFields()
     {
-        Collection<Field> fields = fieldsByVec.values();
+        Collection<Field> fields = new ArrayList<>(fieldsByVec.values());
 
         for (Field field : fields)
         {
@@ -908,7 +909,7 @@ public final class ForceFieldManager
                     {
                         Block block = field.getBlock();
                         block.setTypeId(field.getTypeId());
-                        block.setData(field.getData());
+                        block.setData((byte) field.getData());
                         revertedCount++;
                     }
                 }
@@ -2353,7 +2354,7 @@ public final class ForceFieldManager
     {
         int deletedFields = 0;
 
-        List<Field> fields = fieldsByOwner.get(playerName.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(playerName.toLowerCase());
 
         if (fields != null)
         {
@@ -2383,7 +2384,7 @@ public final class ForceFieldManager
     {
         int hiddenFields = 0;
 
-        List<Field> fields = fieldsByOwner.get(playerName.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(playerName.toLowerCase());
 
         if (fields != null)
         {
@@ -2423,7 +2424,7 @@ public final class ForceFieldManager
     {
         int unhiddenFields = 0;
 
-        List<Field> fields = fieldsByOwner.get(playerName.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(playerName.toLowerCase());
 
         if (fields != null)
         {
@@ -2449,14 +2450,18 @@ public final class ForceFieldManager
     }
 
     /**
-     * Deletes a liquid based field from the collection
+     * Deletes a field from the collection
      *
-     * @param field
+     * @param block
      */
-    public void releaseNoClean(Field field)
+    public void release(Block block)
     {
-        deleteField(field);
-        dropBlockNoClean(field);
+        Field field = getField(block);
+
+        if (field != null)
+        {
+            release(field);
+        }
     }
 
     /**
@@ -2466,21 +2471,8 @@ public final class ForceFieldManager
      */
     public void release(Field field)
     {
+        dropField(field);
         deleteField(field);
-        dropBlock(field.getBlock());
-    }
-
-    /**
-     * Deletes a field from the collection
-     *
-     * @param block
-     */
-    public void release(Block block)
-    {
-        Field field = getField(block);
-
-        deleteField(field);
-        dropBlock(block);
     }
 
     /**
@@ -2490,18 +2482,8 @@ public final class ForceFieldManager
      */
     public void releaseWipe(Block block)
     {
-        deleteField(getField(block));
+        dropFieldBlock(block);
         block.setType(Material.AIR);
-    }
-
-    /**
-     * Deletes a field silently (no drop)
-     *
-     * @param block
-     */
-    public void releaseNoDrop(Block block)
-    {
-        deleteField(getField(block));
     }
 
     /**
@@ -2536,50 +2518,19 @@ public final class ForceFieldManager
         {
             Field pending = deletionQueue.poll();
 
+            dropField(pending);
             deleteField(pending);
-            dropBlock(pending);
         }
     }
 
     /**
-     * Drops a block
+     * Drops a field
      *
      * @param field
      */
-    public void dropBlock(Field field)
+    public void dropField(Field field)
     {
-        dropBlock(field.getBlock());
-    }
-
-    /**
-     * Drops a block
-     *
-     * @param field
-     */
-    public void dropBlockNoClean(Field field)
-    {
-        // prevent tekkit blocks from dropping and crashing client
-
-        if (field.getTypeId() > 124)
-        {
-            return;
-        }
-
-        field.unHide();
-
-        if (field.getBlock().getTypeId() == 0)
-        {
-            return;
-        }
-
-        if (plugin.getSettingsManager().isDropOnDelete())
-        {
-            World world = field.getLocation().getWorld();
-
-            ItemStack is = new ItemStack(field.getTypeId(), 1, (short) 0, field.getData());
-
-            world.dropItemNaturally(field.getLocation(), is);
-        }
+        dropFieldBlock(field.getBlock());
     }
 
     /**
@@ -2587,31 +2538,48 @@ public final class ForceFieldManager
      *
      * @param block
      */
-    public void dropBlock(Block block)
+    public void dropFieldBlock(Block block)
     {
-        // prevent tekkit blocks from dropping and crashing client
+        Field field = getField(block);
 
-        if (block.getTypeId() > 255)
-        {
-            return;
-        }
+        // unhide it
 
-        Field field = plugin.getForceFieldManager().getField(block);
+        field.unHide();
 
-        if (field != null)
-        {
-            field.unHide();
-        }
+        // drop it
 
-        if (block.getTypeId() == 0)
-        {
-            return;
-        }
+        dropBlock(block, field.getTypeEntry(), field.getSettings());
+    }
+
+    /**
+     * Drop a block with a specific type and metadata (if applicable)
+     *
+     * @param block
+     * @param type
+     * @param settings
+     */
+    public void dropBlock(Block block, BlockTypeEntry type, FieldSettings settings)
+    {
+        // build item
 
         World world = block.getWorld();
-        ItemStack is = new ItemStack(block.getTypeId(), 1, (short) 0, block.getData());
+        ItemStack is = new ItemStack(type.getTypeId(), 1, (short) 0, type.getData());
+
+        // apply meta name and lore
+
+        if (settings.hasMetaName())
+        {
+            ItemMeta meta = is.getItemMeta();
+            meta.setDisplayName(settings.getMetaName());
+            meta.setLore(settings.getMetaLore());
+            is.setItemMeta(meta);
+        }
+
+        // wipe previous block
 
         block.setType(Material.AIR);
+
+        // drop item
 
         if (plugin.getSettingsManager().isDropOnDelete())
         {
@@ -2818,13 +2786,13 @@ public final class ForceFieldManager
      */
     public void changeOwner(Field field, String owner)
     {
-        List<Field> fields = fieldsByOwner.get(field.getOwner().toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(field.getOwner().toLowerCase());
 
         if (fields != null)
         {
             fields.remove(field);
             field.setNewOwner(owner);
-            fields = fieldsByOwner.get(owner.toLowerCase());
+            fields = getFieldsByOwner().get(owner.toLowerCase());
 
             if (fields == null)
             {
@@ -2833,7 +2801,7 @@ public final class ForceFieldManager
 
             fields.add(field);
 
-            fieldsByOwner.put(owner.toLowerCase(), fields);
+            getFieldsByOwner().put(owner.toLowerCase(), fields);
         }
     }
 
@@ -2848,7 +2816,7 @@ public final class ForceFieldManager
     {
         List<Field> out = new ArrayList<Field>();
 
-        List<Field> fields = fieldsByOwner.get(owner.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(owner.toLowerCase());
 
         if (fields != null)
         {
@@ -2891,7 +2859,7 @@ public final class ForceFieldManager
      */
     public void disableFieldsOnLogoff(String name)
     {
-        List<Field> fields = fieldsByOwner.get(name.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(name.toLowerCase());
 
         if (fields != null)
         {
@@ -2929,7 +2897,7 @@ public final class ForceFieldManager
      */
     public void enableFieldsOnLogon(String name)
     {
-        List<Field> fields = fieldsByOwner.get(name.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(name.toLowerCase());
 
         if (fields != null)
         {
@@ -2979,7 +2947,7 @@ public final class ForceFieldManager
 
     public int getTotalFieldCount(String playerName)
     {
-        List<Field> fields = fieldsByOwner.get(playerName.toLowerCase());
+        List<Field> fields = getFieldsByOwner().get(playerName.toLowerCase());
 
         if (fields != null)
         {
@@ -3053,5 +3021,27 @@ public final class ForceFieldManager
         }
 
         return fields.get(flag);
+    }
+
+    /**
+     * Changes username of all fields to a new one
+     *
+     * @param oldName
+     * @param newName
+     */
+    public void migrateUsername(String oldName, String newName)
+    {
+        List<Field> fields = getFieldsByOwner().get(oldName.toLowerCase());
+
+        for (Field field : fields)
+        {
+            field.setOwner(newName);
+            PreciousStones.getInstance().getStorageManager().offerField(field);
+        }
+    }
+
+    public Map<String, List<Field>> getFieldsByOwner()
+    {
+        return fieldsByOwner;
     }
 }

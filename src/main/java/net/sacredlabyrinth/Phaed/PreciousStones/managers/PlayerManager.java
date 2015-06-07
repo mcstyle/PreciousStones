@@ -1,13 +1,14 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.managers;
 
+import net.sacredlabyrinth.Phaed.PreciousStones.Helper;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.PlayerEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.TreeMap;
 
 /**
@@ -27,16 +28,6 @@ public class PlayerManager
     }
 
     /**
-     * @return the players
-     */
-    public TreeMap<String, PlayerEntry> getPlayers()
-    {
-        TreeMap<String, PlayerEntry> p = new TreeMap<String, PlayerEntry>();
-        p.putAll(players);
-        return p;
-    }
-
-    /**
      * Get a player's data file
      *
      * @param playerName
@@ -44,12 +35,15 @@ public class PlayerManager
      */
     public PlayerEntry getPlayerEntry(String playerName)
     {
+        // look for player in memory
+
         PlayerEntry data = players.get(playerName.toLowerCase());
+
+        // otherwise look in database
 
         if (data == null)
         {
-            data = new PlayerEntry();
-            data.setName(playerName);
+            data = plugin.getStorageManager().extractPlayer(playerName);
             players.put(playerName.toLowerCase(), data);
         }
 
@@ -57,12 +51,14 @@ public class PlayerManager
     }
 
     /**
-     * Set player as online
+     * Player entry operations to do when player logs in
      *
      * @param playerName
      */
     public void playerLogin(String playerName)
     {
+        //set online
+
         PlayerEntry data = getPlayerEntry(playerName);
         data.setOnline(true);
     }
@@ -162,13 +158,28 @@ public class PlayerManager
         return false;
     }
 
-    public void savePlayerEntries()
+    public void offerOnlinePlayerEntries()
     {
-        Player[] onlinePlayers = Bukkit.getServer().getOnlinePlayers();
+        Collection<Player> onlinePlayers = Helper.getOnlinePlayers();
 
         for (Player player : onlinePlayers)
         {
             plugin.getStorageManager().offerPlayer(player.getName());
         }
+    }
+
+    /**
+     * Changes username of player
+     *
+     * @param oldName
+     * @param newName
+     */
+    public void migrateUsername(String oldName, String newName)
+    {
+        PlayerEntry data = getPlayerEntry(oldName.toLowerCase());
+        data.setName(newName);
+
+        players.remove(oldName.toLowerCase());
+        players.put(newName.toLowerCase(), data);
     }
 }

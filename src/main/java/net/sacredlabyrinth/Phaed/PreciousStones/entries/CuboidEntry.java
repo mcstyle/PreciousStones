@@ -367,7 +367,7 @@ public class CuboidEntry
             return null;
         }
 
-        List<Block> lineOfSight = player.getLineOfSight(null, Math.max(Math.max(Math.max(Helper.getWidthFromCoords(maxx, miny), Helper.getWidthFromCoords(maxz, minz)), Helper.getWidthFromCoords(maxy, miny)), 256));
+        List<Block> lineOfSight = player.getLineOfSight(PreciousStones.getInstance().getSettingsManager().getThroughFieldsByteSet(), Math.max(Math.max(Math.max(Helper.getWidthFromCoords(maxx, miny), Helper.getWidthFromCoords(maxz, minz)), Helper.getWidthFromCoords(maxy, miny)), 256));
 
         for (Block block : lineOfSight)
         {

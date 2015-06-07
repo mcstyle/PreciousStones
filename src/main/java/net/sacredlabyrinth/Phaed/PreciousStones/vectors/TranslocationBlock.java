@@ -104,7 +104,7 @@ public class TranslocationBlock extends AbstractVec
      */
     public void setData(byte data)
     {
-        type.setData(data);
+        type = new BlockTypeEntry(type.getTypeId(), data);
     }
 
     /**

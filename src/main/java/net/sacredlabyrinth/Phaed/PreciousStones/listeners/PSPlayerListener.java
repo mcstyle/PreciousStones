@@ -83,21 +83,20 @@ public class PSPlayerListener implements Listener
     /**
      * @param event
      */
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerLogin(PlayerLoginEvent event)
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent event)
     {
+        final Player player = event.getPlayer();
         final String playerName = event.getPlayer().getName();
 
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-        {
-            public void run()
-            {
-                plugin.getPlayerManager().playerLogin(playerName);
-                plugin.getStorageManager().offerPlayer(playerName);
-                plugin.getForceFieldManager().enableFieldsOnLogon(playerName);
-                plugin.getForceFieldManager().removeFieldsIfNoPermission(playerName);
-            }
-        }, 10);
+        plugin.getPlayerManager().playerLogin(playerName);
+        plugin.getStorageManager().findUUIDMismatch(player);
+        plugin.getStorageManager().offerPlayer(playerName);
+
+        plugin.getEntryManager().reevaluateEnteredFields(player);
+
+        plugin.getForceFieldManager().enableFieldsOnLogon(playerName);
+        plugin.getForceFieldManager().removeFieldsIfNoPermission(playerName);
 
         if (event.getPlayer().isOp())
         {
@@ -137,158 +136,6 @@ public class PSPlayerListener implements Listener
             if (FieldFlag.TELEPORT_ON_SNEAK.applies(field, player))
             {
                 plugin.getTeleportationManager().teleport(player, field);
-            }
-        }
-    }
-
-    /**
-     * @param event
-     */
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPortalExit(final EntityPortalExitEvent event)
-    {
-        if (event.getEntity() instanceof Player)
-        {
-            final Player player = (Player) event.getEntity();
-
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    reevaluateEnteredFields(player);
-                }
-            }, 1);
-        }
-    }
-
-    /**
-     * @param event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerRespawn(PlayerRespawnEvent event)
-    {
-        final Player player = event.getPlayer();
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                reevaluateEnteredFields(player);
-            }
-        }, 5);
-    }
-
-    /**
-     * @param event
-     */
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event)
-    {
-        final Player player = event.getPlayer();
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                reevaluateEnteredFields(player);
-            }
-        }, 5);
-    }
-
-    private void reevaluateEnteredFields(Player player)
-    {
-        // refund confiscated items if not in confiscation fields
-
-        Field confField = plugin.getForceFieldManager().getEnabledSourceField(player.getLocation(), FieldFlag.CONFISCATE_ITEMS);
-
-        if (confField == null)
-        {
-            plugin.getConfiscationManager().returnItems(player);
-        }
-
-        // undo a player's visualization if it exists
-
-        if (plugin.getSettingsManager().isVisualizeEndOnMove())
-        {
-            if (!plugin.getPermissionsManager().has(player, "preciousstones.admin.visualize"))
-            {
-                if (!plugin.getCuboidManager().hasOpenCuboid(player))
-                {
-                    plugin.getVisualizationManager().revert(player);
-                }
-            }
-        }
-
-        // remove player from any entry field he is not currently in
-
-        List<Field> entryFields = plugin.getEntryManager().getPlayerEntryFields(player);
-
-        if (entryFields != null)
-        {
-            for (Field entryField : entryFields)
-            {
-                if (!entryField.envelops(player.getLocation()))
-                {
-                    plugin.getEntryManager().leaveField(player, entryField);
-
-                    if (!plugin.getEntryManager().containsSameNameOwnedField(player, entryField))
-                    {
-                        plugin.getEntryManager().leaveOverlappedArea(player, entryField);
-                    }
-                }
-            }
-        }
-
-        // get all the fields the player is currently standing in
-
-        List<Field> currentFields = plugin.getForceFieldManager().getEnabledSourceFields(player.getLocation(), FieldFlag.ALL);
-
-        // check for prevent-entry fields and teleport him away if hes not allowed in it
-
-        if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entry"))
-        {
-            for (Field field : currentFields)
-            {
-                if (FieldFlag.PREVENT_ENTRY.applies(field, player))
-                {
-                    Location loc = plugin.getPlayerManager().getOutsideFieldLocation(field, player);
-                    Location outside = plugin.getPlayerManager().getOutsideLocation(player);
-
-                    if (outside != null)
-                    {
-                        Field f = plugin.getForceFieldManager().getEnabledSourceField(outside, FieldFlag.PREVENT_ENTRY);
-
-                        if (f != null)
-                        {
-                            loc = outside;
-                        }
-                    }
-
-                    player.teleport(loc);
-                    plugin.getCommunicationManager().warnEntry(player, field);
-                    return;
-                }
-            }
-        }
-
-        // did not get teleported out so now we update his last known outside location
-
-        plugin.getPlayerManager().updateOutsideLocation(player);
-
-        // enter all fields hes is not currently entered into yet
-
-        for (Field currentField : currentFields)
-        {
-            if (!plugin.getEntryManager().enteredField(player, currentField))
-            {
-                if (!plugin.getEntryManager().containsSameNameOwnedField(player, currentField))
-                {
-                    plugin.getEntryManager().enterOverlappedArea(player, currentField);
-                }
-                plugin.getEntryManager().enterField(player, currentField);
             }
         }
     }
@@ -565,7 +412,7 @@ public class PSPlayerListener implements Listener
                         continue;
                     }
 
-                    if (futureField.getSettings().isTeleportHasItem(stack.getTypeId()))
+                    if (futureField.getSettings().isTeleportHasItem(new BlockTypeEntry(stack.getType())))
                     {
                         if (FieldFlag.TELEPORT_IF_HAS_ITEMS.applies(futureField, player))
                         {
@@ -589,7 +436,7 @@ public class PSPlayerListener implements Listener
 
                     if (FieldFlag.TELEPORT_IF_NOT_HAS_ITEMS.applies(futureField, player))
                     {
-                        if (futureField.getSettings().isTeleportHasNotItem(stack.getTypeId()))
+                        if (futureField.getSettings().isTeleportHasNotItem(new BlockTypeEntry(stack.getType())))
                         {
                             hasItem = true;
                         }
@@ -623,7 +470,7 @@ public class PSPlayerListener implements Listener
 
             if (itemInHand != null && itemInHand.getTypeId() != 0)
             {
-                if (futureField.getSettings().isTeleportHoldingItem(itemInHand.getTypeId()))
+                if (futureField.getSettings().isTeleportHoldingItem(new BlockTypeEntry(itemInHand.getType())))
                 {
                     if (FieldFlag.TELEPORT_IF_HOLDING_ITEMS.applies(futureField, player))
                     {
@@ -650,7 +497,7 @@ public class PSPlayerListener implements Listener
 
             if (itemInHand != null && itemInHand.getTypeId() != 0)
             {
-                if (!futureField.getSettings().isTeleportNotHoldingItem(itemInHand.getTypeId()))
+                if (!futureField.getSettings().isTeleportNotHoldingItem(new BlockTypeEntry(itemInHand.getType())))
                 {
                     if (FieldFlag.TELEPORT_IF_NOT_HOLDING_ITEMS.applies(futureField, player))
                     {
@@ -705,6 +552,22 @@ public class PSPlayerListener implements Listener
             }
         }
 
+        if (entity.getType().equals(EntityType.ARMOR_STAND))
+        {
+            if (player == null || !plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take"))
+            {
+                Field field = plugin.getForceFieldManager().getEnabledSourceField(entity.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
+
+                if (field != null)
+                {
+                    if (FieldFlag.PROTECT_ARMOR_STANDS.applies(field, player))
+                    {
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        }
+
         if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entity-interact"))
         {
             Field field = plugin.getForceFieldManager().getEnabledSourceField(entity.getLocation(), FieldFlag.PREVENT_ENTITY_INTERACT);
@@ -723,7 +586,7 @@ public class PSPlayerListener implements Listener
     /**
      * @param event
      */
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
         if (plugin.getSettingsManager().isBlacklistedWorld(event.getPlayer().getLocation().getWorld()))
@@ -735,9 +598,25 @@ public class PSPlayerListener implements Listener
         Block block = event.getClickedBlock();
         ItemStack is = player.getItemInHand();
 
-        if (player == null)
+        // -------------------------------------------------------------------------------- trying to place an armor stand entity
+
+
+        if (is.getType().equals(Material.ARMOR_STAND))
         {
-            return;
+            if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take"))
+            {
+                Field field = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
+
+                if (field != null)
+                {
+                    if (FieldFlag.PROTECT_ARMOR_STANDS.applies(field, player))
+                    {
+                        event.setCancelled(true);
+                        plugin.getCommunicationManager().warnPlaceItem(player, is, block.getLocation(), field);
+                        return;
+                    }
+                }
+            }
         }
 
         // -------------------------------------------------------------------------------- interacting with use protected block
@@ -765,7 +644,7 @@ public class PSPlayerListener implements Listener
                 {
                     if (FieldFlag.PREVENT_USE.applies(useField, player))
                     {
-                        if (!useField.getSettings().canUse(block.getTypeId()))
+                        if (!useField.getSettings().canUse(new BlockTypeEntry(block)))
                         {
                             plugin.getCommunicationManager().warnUse(player, block, useField);
                             event.setCancelled(true);
@@ -1036,7 +915,7 @@ public class PSPlayerListener implements Listener
 
         // -------------------------------------------------------------------------------- actions during an open cuboid
 
-        boolean hasCuboidHand = is == null || is.getTypeId() == 0 || plugin.getSettingsManager().isToolItemType(is.getTypeId()) || plugin.getSettingsManager().isFieldType(new BlockTypeEntry(is.getTypeId(), is.getData().getData()));
+        boolean hasCuboidHand = is == null || is.getTypeId() == 0 || plugin.getSettingsManager().isToolItemType(new BlockTypeEntry(is.getType())) || plugin.getSettingsManager().isFieldType(new BlockTypeEntry(is.getTypeId(), is.getData().getData()));
 
         if (hasCuboidHand)
         {
@@ -1248,7 +1127,7 @@ public class PSPlayerListener implements Listener
 
                 if (is != null)
                 {
-                    if (plugin.getSettingsManager().isToolItemType(is.getTypeId()))
+                    if (plugin.getSettingsManager().isToolItemType(new BlockTypeEntry(is.getType())))
                     {
                         if (plugin.getSettingsManager().isBypassBlock(block))
                         {
@@ -1370,13 +1249,13 @@ public class PSPlayerListener implements Listener
                                                 ChatBlock.send(player, "cannotEnable");
                                                 return;
                                             }
-                                            field.dirtyFlags();
+                                            field.dirtyFlags("visualize/enable on sneaking right click1");
                                         }
                                         else
                                         {
                                             ChatBlock.send(player, "fieldTypeDisabled", field.getSettings().getTitle());
                                             field.setDisabled(true, player);
-                                            field.dirtyFlags();
+                                            field.dirtyFlags("visualize/enable on sneaking right click2");
                                         }
                                     }
                                 }
@@ -1439,7 +1318,7 @@ public class PSPlayerListener implements Listener
                                                     {
                                                         PreciousStones.debug("disabled");
                                                         field.setDisabled(true, player);
-                                                        field.dirtyFlags();
+                                                        field.dirtyFlags("right click translocation1");
                                                         return;
                                                     }
                                                 }
@@ -1462,7 +1341,7 @@ public class PSPlayerListener implements Listener
                                                             ChatBlock.send(player, "cannotEnable");
                                                             return;
                                                         }
-                                                        field.dirtyFlags();
+                                                        field.dirtyFlags("right click translocation2");
                                                         return;
                                                     }
                                                 }
@@ -1621,7 +1500,7 @@ public class PSPlayerListener implements Listener
         {
             if (FieldFlag.GRIEF_REVERT.applies(field, player))
             {
-                if (field.getSettings().canGrief(block.getTypeId()))
+                if (field.getSettings().canGrief(new BlockTypeEntry(block)))
                 {
                     return;
                 }
@@ -1883,6 +1762,45 @@ public class PSPlayerListener implements Listener
                 event.setCancelled(true);
             }
         }
+    }
+
+    /**
+     * @param event
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPortalExit(EntityPortalExitEvent event)
+    {
+        if (event.getEntity() instanceof Player)
+        {
+            final Player player = (Player) event.getEntity();
+
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    plugin.getEntryManager().reevaluateEnteredFields(player);
+                }
+            }, 1);
+        }
+    }
+
+    /**
+     * @param event
+     */
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerRespawn(PlayerRespawnEvent event)
+    {
+        final Player player = event.getPlayer();
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                plugin.getEntryManager().reevaluateEnteredFields(player);
+            }
+        }, 5);
     }
 
     /**

@@ -38,22 +38,21 @@ public final class SettingsManager
     private boolean disableGroundInfo;
     private boolean preventRemovalIfPlayerInField;
     private boolean autoAddClan;
+    private boolean autoAddTeam;
     private int globalFieldLimit;
     private boolean noRefunds;
-    private int cuboidDefiningType;
-    private int cuboidVisualizationType;
+    private BlockTypeEntry cuboidDefiningType;
+    private BlockTypeEntry cuboidVisualizationType;
     private boolean disableMessages;
-    private boolean logToHawkEye;
     private List<String> blacklistedWorlds;
-    private int purgeAfterDays;
     private int maxSnitchRecords;
     private int saveFrequency;
     private List<String> griefUndoBlackList;
     private int griefRevertMinInterval;
     private boolean visualizationNewStyle;
-    private int visualizeMarkBlock;
-    private int visualizeFrameBlock;
-    private int visualizeBlock;
+    private BlockTypeEntry visualizeMarkBlock;
+    private BlockTypeEntry visualizeFrameBlock;
+    private BlockTypeEntry visualizeBlock;
     private int visualizeSeconds;
     private int visualizeDensity;
     private int visualizeTicksBetweenSends;
@@ -67,8 +66,8 @@ public final class SettingsManager
     private List<BlockTypeEntry> bypassBlocks = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> unprotectableBlocks = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> hidingMaskBlocs = new ArrayList<BlockTypeEntry>();
-    private List<Integer> toolItems = new ArrayList<Integer>();
-    private List<Integer> repairableItems = new ArrayList<Integer>();
+    private List<BlockTypeEntry> toolItems = new ArrayList<BlockTypeEntry>();
+    private List<BlockTypeEntry> repairableItems = new ArrayList<BlockTypeEntry>();
     private List<String> allEntryGroups = new ArrayList<String>();
     private boolean logRollback;
     private boolean logTranslocation;
@@ -120,15 +119,13 @@ public final class SettingsManager
     private boolean disableBypassAlertsForAdmins;
     private boolean disableSimpleClanHook;
     private boolean offByDefault;
-    private boolean purgeBannedPlayers;
     private boolean useIdInSnitches;
     private int fenceMaxDepth;
     private int[] throughFields = new int[]{0, 6, 8, 9, 10, 11, 31, 32, 37, 38, 39, 40, 50, 51, 55, 59, 63, 65, 66, 69, 68, 70, 72, 75, 76, 77, 78, 83, 92, 93, 94, 104, 105, 106, 131, 132, 140, 141, 142};
     private int[] naturalThroughFields = new int[]{0, 6, 8, 9, 10, 11, 31, 32, 37, 38, 39, 40, 51, 59, 78, 83, 104, 105, 106, 141, 142};
-    private int[] fragileBlocks = new int[]{7, 8, 9, 10, 11, 14, 15, 16, 18, 20, 21, 30, 31, 52, 56, 73, 74, 79, 80, 89, 97, 100, 123, 124, 129, 133, 152, 153, 155};
+    private HashSet<Byte> throughFieldsByteSet = new HashSet<Byte>();
     private HashSet<Integer> throughFieldsSet = new HashSet<Integer>();
     private HashSet<Integer> naturalThroughFieldSet = new HashSet<Integer>();
-    private HashSet<Integer> fragileBlockSet = new HashSet<Integer>();
     private int linesPerPage;
     private boolean useMysql;
     private String host;
@@ -165,14 +162,14 @@ public final class SettingsManager
             throughFieldsSet.add(item);
         }
 
+        for (int item : throughFields)
+        {
+            throughFieldsByteSet.add((byte) item);
+        }
+
         for (int item : naturalThroughFields)
         {
             naturalThroughFieldSet.add(item);
-        }
-
-        for (int item : fragileBlocks)
-        {
-            fragileBlockSet.add(item);
         }
 
         boolean exists = (main).exists();
@@ -204,8 +201,8 @@ public final class SettingsManager
         bypassBlocks = Helper.toTypeEntries(loadStringList("bypass-blocks"));
         unprotectableBlocks = Helper.toTypeEntries(loadStringList("unprotectable-blocks"));
         hidingMaskBlocs = Helper.toTypeEntries(loadStringList("hiding-mask-blocks"));
-        toolItems = loadIntList("tool-items");
-        repairableItems = loadIntList("repairable-items");
+        toolItems = Helper.toTypeEntries(loadStringList("tool-items"));
+        repairableItems = Helper.toTypeEntries(loadStringList("repairable-items"));
 
         // ********************************** Log
 
@@ -284,10 +281,10 @@ public final class SettingsManager
         disableBypassAlertsForAdmins = loadBoolean("settings.disable-bypass-alerts-for-admins");
         offByDefault = loadBoolean("settings.off-by-default");
         linesPerPage = loadInt("settings.lines-per-page");
-        logToHawkEye = loadBoolean("settings.log-to-hawkeye");
         debug = loadBoolean("settings.show-debug-info");
         blacklistedWorlds = loadStringList("settings.blacklisted-worlds");
         autoAddClan = loadBoolean("settings.auto-allow-clan-on-fields");
+        autoAddTeam = loadBoolean("settings.auto-allow-team-on-fields");
         oncePerBlockOnMove = loadBoolean("settings.check-once-per-block-on-move");
         useIdInSnitches = loadBoolean("settings.use-blockids-in-snitches");
         fenceMaxDepth = loadInt("settings.fence-max-depth");
@@ -296,13 +293,9 @@ public final class SettingsManager
 
         // ********************************** Cuboid
 
-        cuboidDefiningType = loadInt("cuboid.defining-blocktype");
-        cuboidVisualizationType = loadInt("cuboid.visualization-blocktype");
+        cuboidDefiningType = loadTypeEntry("cuboid.defining-blocktype");
+        cuboidVisualizationType = loadTypeEntry("cuboid.visualization-blocktype");
 
-        // ********************************** Cleanup
-
-        purgeAfterDays = loadInt("cleanup.player-inactivity-purge-days");
-        purgeBannedPlayers = loadBoolean("cleanup.purge-banned-players");
 
         // ********************************** Saving
 
@@ -311,12 +304,12 @@ public final class SettingsManager
 
         // ********************************** Visualization
 
-        visualizeFrameBlock = loadInt("visualization.frame-block-type");
-        visualizeBlock = loadInt("visualization.block-type");
+        visualizeFrameBlock = loadTypeEntry("visualization.frame-block-type");
+        visualizeBlock = loadTypeEntry("visualization.block-type");
         visualizeSeconds = loadInt("visualization.seconds");
         visualizationNewStyle = loadBoolean("visualization.new-dotted-style");
         visualizeEndOnMove = loadBoolean("visualization.end-on-player-move");
-        visualizeMarkBlock = loadInt("visualization.mark-block-type");
+        visualizeMarkBlock = loadTypeEntry("visualization.mark-block-type");
         visualizeDensity = loadInt("visualization.default-density");
         visualizeSendSize = loadInt("visualization.blocks-to-send");
         visualizeMaxFields = loadInt("visualization.max-fields-to-visualize-at-once");
@@ -392,14 +385,8 @@ public final class SettingsManager
     private BlockTypeEntry loadTypeEntry(String path)
     {
         String value = config.getString(path);
-
-        if (Helper.isTypeEntry(value))
-        {
-            cleanConfig.set(path, value);
-            return Helper.toTypeEntry(value);
-        }
-
-        return null;
+        cleanConfig.set(path, value);
+        return new BlockTypeEntry(value);
     }
 
     private List<Integer> loadIntList(String path)
@@ -585,7 +572,6 @@ public final class SettingsManager
         return false;
     }
 
-    //TODO: Spout
     public boolean isCrop(Block block)
     {
         return block.getType().equals(Material.SOIL) ||
@@ -704,23 +690,33 @@ public final class SettingsManager
     /**
      * Check if a block is one of the tool item types
      *
-     * @param typeId
+     * @param entry
      * @return
      */
-    public boolean isToolItemType(int typeId)
+    public boolean isToolItemType(BlockTypeEntry entry)
     {
-        return getToolItems().contains(typeId);
+        if (!entry.isValid())
+        {
+            return false;
+        }
+
+        return toolItems.contains(entry);
     }
 
     /**
      * Check if a item is one of the repairable item types
      *
-     * @param typeId
+     * @param entry
      * @return
      */
-    public boolean isRepairableItemType(int typeId)
+    public boolean isRepairableItemType(BlockTypeEntry entry)
     {
-        return repairableItems.contains(typeId);
+        if (!entry.isValid())
+        {
+            return false;
+        }
+
+        return repairableItems.contains(entry);
     }
 
     /**
@@ -845,27 +841,11 @@ public final class SettingsManager
     }
 
     /**
-     * @return the logToHawkEye
-     */
-    public boolean isLogToHawkEye()
-    {
-        return logToHawkEye;
-    }
-
-    /**
      * @return the blacklistedWorlds
      */
     public List<String> getBlacklistedWorlds()
     {
         return Collections.unmodifiableList(blacklistedWorlds);
-    }
-
-    /**
-     * @return the purgeAfterDays
-     */
-    public int getPurgeAfterDays()
-    {
-        return purgeAfterDays;
     }
 
     /**
@@ -895,7 +875,7 @@ public final class SettingsManager
     /**
      * @return the visualizeMarkBlock
      */
-    public int getVisualizeMarkBlock()
+    public BlockTypeEntry getVisualizeMarkBlock()
     {
         return visualizeMarkBlock;
     }
@@ -903,7 +883,7 @@ public final class SettingsManager
     /**
      * @return the visualizeBlock
      */
-    public int getVisualizeBlock()
+    public BlockTypeEntry getVisualizeBlock()
     {
         return visualizeBlock;
     }
@@ -962,22 +942,6 @@ public final class SettingsManager
     public List<BlockTypeEntry> getUnprotectableBlocks()
     {
         return Collections.unmodifiableList(unprotectableBlocks);
-    }
-
-    /**
-     * @return the toolItems
-     */
-    public List<Integer> getToolItems()
-    {
-        return Collections.unmodifiableList(toolItems);
-    }
-
-    /**
-     * @return the repairableItems
-     */
-    public List<Integer> getRepairableItems()
-    {
-        return Collections.unmodifiableList(repairableItems);
     }
 
     /**
@@ -1381,27 +1345,25 @@ public final class SettingsManager
         return new ArrayList<Integer>(throughFieldsSet);
     }
 
-    public boolean isFragileBlock(Block block)
+    /**
+     * @return the throughFieldsSet
+     */
+    public HashSet<Byte> getThroughFieldsByteSet()
     {
-        return fragileBlockSet.contains(block.getTypeId());
+        return throughFieldsByteSet;
     }
 
-    public boolean isFragileBlock(BlockTypeEntry entry)
-    {
-        return fragileBlockSet.contains(entry.getTypeId());
-    }
-
-    public int getCuboidDefiningType()
+    public BlockTypeEntry getCuboidDefiningType()
     {
         return cuboidDefiningType;
     }
 
-    public int getCuboidVisualizationType()
+    public BlockTypeEntry getCuboidVisualizationType()
     {
         return cuboidVisualizationType;
     }
 
-    public int getVisualizeFrameBlock()
+    public BlockTypeEntry getVisualizeFrameBlock()
     {
         return visualizeFrameBlock;
     }
@@ -1559,11 +1521,6 @@ public final class SettingsManager
         return disableSimpleClanHook;
     }
 
-    public boolean isPurgeBannedPlayers()
-    {
-        return purgeBannedPlayers;
-    }
-
     public boolean isLogRentsAndPurchases()
     {
         return logRentsAndPurchases;
@@ -1634,5 +1591,10 @@ public final class SettingsManager
     public boolean isVisualizeOnExpand()
     {
         return visualizeOnExpand;
+    }
+
+    public boolean isAutoAddTeam()
+    {
+        return autoAddTeam;
     }
 }

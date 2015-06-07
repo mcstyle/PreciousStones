@@ -3,6 +3,7 @@ package net.sacredlabyrinth.Phaed.PreciousStones.entries;
 import net.sacredlabyrinth.Phaed.PreciousStones.*;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -22,21 +23,6 @@ public class FieldSign
     private String failReason;
 
     public FieldSign(Block signBlock)
-    {
-        if (!SignHelper.isSign(signBlock))
-        {
-            valid = false;
-            return;
-        }
-
-        sign = ((Sign) signBlock.getState());
-
-        String[] lines = sign.getLines();
-
-        valid = extractData(signBlock, lines);
-    }
-
-    public FieldSign(Block signBlock, boolean silent)
     {
         if (!SignHelper.isSign(signBlock))
         {
@@ -97,6 +83,11 @@ public class FieldSign
             if (!PreciousStones.getInstance().getPermissionsManager().hasEconomy())
             {
                 item = PreciousStones.getInstance().getSettingsManager().getDefaulItemCurrency();
+
+                if (item == null)
+                {
+                    item = new BlockTypeEntry(Material.GOLD_INGOT);
+                }
             }
         }
 

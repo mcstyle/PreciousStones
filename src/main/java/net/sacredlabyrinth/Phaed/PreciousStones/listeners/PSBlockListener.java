@@ -7,10 +7,8 @@ import net.sacredlabyrinth.Phaed.PreciousStones.entries.FieldSign;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.DoubleChest;
+import org.bukkit.Material;
+import org.bukkit.block.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -23,6 +21,8 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 import java.util.Set;
@@ -76,7 +76,6 @@ public class PSBlockListener implements Listener
             return;
         }
 
-
         Block source = event.getSource();
         Block destination = event.getBlock();
 
@@ -90,22 +89,37 @@ public class PSBlockListener implements Listener
             return;
         }
 
-        // if the destination area is not protected, don't bother
-
-        Field destField = plugin.getForceFieldManager().getEnabledSourceField(destination.getLocation(), FieldFlag.PREVENT_FIRE);
-
-        if (destField == null)
+        if (event.getNewState().getType().equals(Material.FIRE))
         {
-            return;
-        }
+            // prevent fire spread
 
-        // if the source is outside protection, or if its protected by a different owner, then block the water
+            Field field = plugin.getForceFieldManager().getEnabledSourceField(source.getLocation(), FieldFlag.PREVENT_FIRE_SPREAD);
 
-        Field sourceField = plugin.getForceFieldManager().getEnabledSourceField(source.getLocation(), FieldFlag.PREVENT_FIRE);
+            if (field != null)
+            {
+                event.setCancelled(true);
+                return;
+            }
 
-        if (sourceField == null || !sourceField.getOwner().equalsIgnoreCase(destField.getOwner()))
-        {
-            event.setCancelled(true);
+            // prevent fire spread from the outside to inside
+
+            // if the destination area is not protected, don't bother
+
+            Field destField = plugin.getForceFieldManager().getEnabledSourceField(destination.getLocation(), FieldFlag.PREVENT_FIRE);
+
+            if (destField == null)
+            {
+                return;
+            }
+
+            // if the source is outside protection, or if its protected by a different owner, then block the spread
+
+            Field sourceField = plugin.getForceFieldManager().getEnabledSourceField(source.getLocation(), FieldFlag.PREVENT_FIRE);
+
+            if (sourceField == null || !sourceField.getOwner().equalsIgnoreCase(destField.getOwner()))
+            {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -349,14 +363,14 @@ public class PSBlockListener implements Listener
                     {
                         plugin.getTranslocationManager().applyTranslocation(field);
                         field.setDisabled(false);
-                        field.dirtyFlags();
+                        field.dirtyFlags("onBlockRedstoneChange1");
                     }
                 }
                 else
                 {
                     plugin.getTranslocationManager().clearTranslocation(field);
                     field.setDisabled(true);
-                    field.dirtyFlags();
+                    field.dirtyFlags("onBlockRedstoneChange2");
                 }
             }
             return;
@@ -439,11 +453,6 @@ public class PSBlockListener implements Listener
             return;
         }
 
-        handleBreak(player, block, event);
-    }
-
-    private void handleBreak(Player player, Block block, Cancellable event)
-    {
         // do not allow break of non-field blocks during cuboid definition
 
         if (plugin.getCuboidManager().hasOpenCuboid(player) && !plugin.getForceFieldManager().isField(block))
@@ -579,11 +588,11 @@ public class PSBlockListener implements Listener
                 {
                     if (FieldFlag.GRIEF_REVERT.applies(field, player))
                     {
-                        if (plugin.getPermissionsManager().has(player, "preciousstones.bypass.destroy") || field.getSettings().canGrief(block.getTypeId()))
+                        if (plugin.getPermissionsManager().has(player, "preciousstones.bypass.destroy") || field.getSettings().canGrief(new BlockTypeEntry(block)))
                         {
                             PreciousStones.debug("bypassed");
 
-                            if (field.getSettings().canGrief(block.getTypeId()))
+                            if (field.getSettings().canGrief(new BlockTypeEntry(block)))
                             {
                                 PreciousStones.debug("can-grief");
                             }
@@ -661,6 +670,19 @@ public class PSBlockListener implements Listener
                 {
                     f.clearRents();
                 }
+            }
+        }
+
+        // -------------------------------------------------------------------------------- set metadata
+
+        FieldSettings settings = plugin.getSettingsManager().getFieldSettings(block);
+
+        if (settings != null)
+        {
+            if (settings.isMetaAutoSet())
+            {
+                block.getDrops().clear();
+                plugin.getForceFieldManager().dropBlock(block, new BlockTypeEntry(block), settings);
             }
         }
     }
@@ -752,43 +774,17 @@ public class PSBlockListener implements Listener
     private void removeAndRefundBlock(Player player, Block block, Field field, Cancellable event)
     {
         PreciousStones.debug("releasing field");
+        event.setCancelled(true);
 
         if (field.hasFlag(FieldFlag.SINGLE_USE))
         {
-            event.setCancelled(true);
             plugin.getForceFieldManager().releaseWipe(block);
         }
         else
         {
-            if (block.getTypeId() == field.getTypeId())
-            {
-                if (plugin.getSettingsManager().isFragileBlock(block))
-                {
-                    PreciousStones.debug("fragile block broken");
-                    event.setCancelled(true);
-                    plugin.getForceFieldManager().release(block);
-                }
-                else
-                {
-                    PreciousStones.debug("silent break");
-                    event.setCancelled(false);
-                    plugin.getForceFieldManager().releaseNoDrop(block);
-                }
-            }
-            else
-            {
-                if (plugin.getSettingsManager().isFragileBlock(new BlockTypeEntry(field.getTypeId(), field.getData())))
-                {
-                    PreciousStones.debug("fragile block broken");
-                    plugin.getForceFieldManager().releaseNoClean(field);
-                }
-                else
-                {
-                    PreciousStones.debug("silent break");
-                    plugin.getForceFieldManager().releaseNoDrop(block);
-                }
-            }
+            plugin.getForceFieldManager().release(block);
         }
+
         if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.purchase"))
         {
             if (!plugin.getSettingsManager().isNoRefunds())
@@ -967,7 +963,7 @@ public class PSBlockListener implements Listener
             }
         }
 
-        // -------------------------------------------------------------------------------------- placing a field
+        // -------------------------------------------------------------------------------------- placing a field (disabled checks)
 
         boolean isDisabled = false;
 
@@ -1334,6 +1330,13 @@ public class PSBlockListener implements Listener
             return false;
         }
 
+        // if the field has a meta name, only items with that name can be placed
+
+        if (!fs.matchesMetaName(player.getItemInHand()))
+        {
+            return false;
+        }
+
         // cannot place on bad surfaces
 
         if (!fs.isSurface(block))
@@ -1509,7 +1512,7 @@ public class PSBlockListener implements Listener
         {
             Block floor = block.getRelative(BlockFace.DOWN);
 
-            if (!fs.isFertileType(floor.getTypeId()) && floor.getTypeId() != fs.getGroundBlock())
+            if (!fs.isFertileType(new BlockTypeEntry(floor)) && floor.getTypeId() != fs.getGroundBlock().getTypeId())
             {
                 ChatBlock.send(player, "foresterNeedsFertile", fs.getTitle());
                 return false;
@@ -1777,9 +1780,10 @@ public class PSBlockListener implements Listener
         {
             if (s.isFieldSign())
             {
-                ChatBlock.send(player, s.getFailReason());
-
-                event.setCancelled(true);
+                if (s.getFailReason() != null)
+                {
+                    ChatBlock.send(player, s.getFailReason());
+                }
             }
         }
     }
@@ -1817,13 +1821,13 @@ public class PSBlockListener implements Listener
                     location = ((Horse) holder).getLocation();
                 }
             }
-            else if (holder instanceof Entity)
-            {
-                location = ((Entity) holder).getLocation();
-            }
             else if (holder instanceof DoubleChest)
             {
                 location = ((DoubleChest) holder).getLocation();
+            }
+            else if (holder instanceof Chest)
+            {
+                location = ((Chest) holder).getLocation();
             }
             else if (holder instanceof BlockState)
             {
@@ -1832,6 +1836,10 @@ public class PSBlockListener implements Listener
             else if (holder instanceof Block)
             {
                 location = ((Block) holder).getLocation();
+            }
+            else if (holder instanceof Entity)
+            {
+                location = ((Entity) holder).getLocation();
             }
             else
             {

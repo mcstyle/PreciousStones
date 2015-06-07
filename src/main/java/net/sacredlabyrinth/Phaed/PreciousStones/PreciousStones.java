@@ -4,6 +4,7 @@ import net.sacredlabyrinth.Phaed.PreciousStones.api.Api;
 import net.sacredlabyrinth.Phaed.PreciousStones.api.IApi;
 import net.sacredlabyrinth.Phaed.PreciousStones.listeners.*;
 import net.sacredlabyrinth.Phaed.PreciousStones.managers.*;
+import net.sacredlabyrinth.Phaed.PreciousStones.uuid.UUIDMigration;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
@@ -62,7 +63,6 @@ public class PreciousStones extends JavaPlugin
     private McMMOListener mcmmoListener;
     private LWCListener lwcListener;
     private static IApi api;
-
     /**
      * @return the instance
      */
@@ -108,7 +108,7 @@ public class PreciousStones extends JavaPlugin
     }
 
     /**
-     * Parameterized info logger
+     * Parametrized info logger
      *
      * @param msg
      * @param arg
@@ -123,6 +123,12 @@ public class PreciousStones extends JavaPlugin
      */
     public void onEnable()
     {
+        if (!UUIDMigration.canReturnUUID())
+        {
+            log("This version of PreciousStones only works with Bukkit 1.7.5+");
+            return;
+        }
+
         instance = this;
         settingsManager = new SettingsManager();
         languageManager = new LanguageManager();
@@ -249,10 +255,19 @@ public class PreciousStones extends JavaPlugin
 
     public void onDisable()
     {
-        getForceFieldManager().doFinalize();
-        getPlayerManager().savePlayerEntries();
-        getStorageManager().processQueue();
+        PreciousStones.log("Shutting Down: Cancelling all tasks...");
         getServer().getScheduler().cancelTasks(this);
+
+        PreciousStones.log("Shutting Down: Saving all pending data...");
+        getForceFieldManager().offerAllDirtyFields();
+        getPlayerManager().offerOnlinePlayerEntries();
+        getStorageManager().processQueue();
+
+        PreciousStones.log("Shutting Down: Clearing chunks from memory...");
+        getForceFieldManager().clearChunkLists();
+        getUnbreakableManager().clearChunkLists();
+
+        PreciousStones.log("Shutting Down: Closing db connection...");
         getStorageManager().closeConnection();
     }
 
@@ -265,7 +280,7 @@ public class PreciousStones extends JavaPlugin
 
         try
         {
-            BufferedReader in = new BufferedReader(new InputStreamReader(new URL("http://minecraftcubed.net/pluginmessage/").openStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(new URL("https://minecraftcubed.net/pluginmessage/").openStream()));
 
             String message;
             while ((message = in.readLine()) != null)
@@ -502,11 +517,6 @@ public class PreciousStones extends JavaPlugin
     public TeleportationManager getTeleportationManager()
     {
         return teleportationManager;
-    }
-
-    public static boolean hasSpout()
-    {
-        return PreciousStones.getInstance().getPermissionsManager().hasSpout();
     }
 
     public ArrayList<String> getMessages()

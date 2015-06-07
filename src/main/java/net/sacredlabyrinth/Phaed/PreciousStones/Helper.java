@@ -11,10 +11,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -280,16 +278,16 @@ public class Helper
             return typeId + "";
         }
 
-        return friendlyBlockType(Material.getMaterial(typeId).toString());
+        return MaterialName.getIDName(Material.getMaterial(typeId));
     }
 
     /**
-     * Convert block type names to friendly format
+     * Convert names to friendly format
      *
      * @param type
      * @return
      */
-    public static String friendlyBlockType(String type)
+    public static String friendlyName(String type)
     {
         String out = "";
 
@@ -632,54 +630,6 @@ public class Helper
     }
 
     /**
-     * Returns a type entry from a string
-     *
-     * @param rawItem
-     * @return
-     */
-    public static BlockTypeEntry toTypeEntry(String rawItem)
-    {
-        if (hasData(rawItem))
-        {
-            String[] split = rawItem.split("[:]");
-            return new BlockTypeEntry(Integer.parseInt(split[0]), Byte.parseByte(split[1]));
-        }
-        else
-        {
-            if (!isInteger(rawItem))
-            {
-                return null;
-            }
-
-            return new BlockTypeEntry(Integer.parseInt(rawItem), (byte) 0);
-        }
-    }
-
-    /**
-     * Returns a type entry from a string
-     *
-     * @param rawItem
-     * @return
-     */
-    public static BlockTypeEntry toSpoutTypeEntry(String rawItem)
-    {
-        if (hasData(rawItem))
-        {
-            String[] split = rawItem.split("[:]");
-            return new BlockTypeEntry(Integer.parseInt(split[0]), Byte.parseByte(split[1]), true);
-        }
-        else
-        {
-            if (!isInteger(rawItem))
-            {
-                return null;
-            }
-
-            return new BlockTypeEntry(Integer.parseInt(rawItem), (byte) 0, true);
-        }
-    }
-
-    /**
      * Returns a list of type entries from a string list
      *
      * @param rawList
@@ -691,11 +641,11 @@ public class Helper
 
         for (Object rawItem : rawList)
         {
-            BlockTypeEntry type = Helper.toTypeEntry(rawItem.toString());
+            BlockTypeEntry entry = new BlockTypeEntry(rawItem.toString());
 
-            if (type != null)
+            if (entry.isValid())
             {
-                types.add(type);
+                types.add(entry);
             }
         }
 
@@ -714,11 +664,11 @@ public class Helper
 
         for (String rawItem : rawList)
         {
-            BlockTypeEntry type = Helper.toTypeEntry(rawItem);
+            BlockTypeEntry entry = new BlockTypeEntry(rawItem);
 
-            if (type != null)
+            if (entry.isValid())
             {
-                types.add(type);
+                types.add(entry);
             }
         }
 
@@ -923,7 +873,7 @@ public class Helper
      */
     public static Player getClosestPlayer(Location target, int radius)
     {
-        Player[] players = PreciousStones.getInstance().getServer().getOnlinePlayers();
+        Collection<Player> players = getOnlinePlayers();
 
         double closestDistance = radius;
         Player closestPlayer = null;
@@ -947,5 +897,46 @@ public class Helper
         }
 
         return closestPlayer;
+    }
+
+
+    public static Collection<Player> getOnlinePlayers()
+    {
+        try
+        {
+            Method method = Bukkit.class.getDeclaredMethod("getOnlinePlayers");
+            Object players = method.invoke(null);
+
+            if (players instanceof Player[])
+            {
+                return new ArrayList<>(Arrays.asList((Player[]) players));
+            }
+            else
+            {
+                return ((Collection<Player>) players);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
+     * Get the method name for a depth in call stack. <br />
+     * Utility function
+     *
+     * @param depth depth in the call stack (0 means current method, 1 means call method, ...)
+     * @return method name
+     */
+    public static String getMethodName(final int depth)
+    {
+        final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+
+        //System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
+        // return ste[ste.length - depth].getMethodName();  //Wrong, fails for depth = 0
+        return ste[ste.length - 1 - depth].getMethodName(); //Thank you Tom Tresansky
     }
 }

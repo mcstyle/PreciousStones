@@ -15,8 +15,7 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
-import org.bukkit.plugin.Plugin;
-import uk.co.oliwali.HawkEye.util.HawkEyeAPI;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -26,7 +25,6 @@ import java.util.*;
 public class CommunicationManager
 {
     private PreciousStones plugin;
-    private boolean useHawkEye;
     private HashMap<String, ChatBlock> chatBlocks = new HashMap<String, ChatBlock>();
 
     /**
@@ -35,21 +33,6 @@ public class CommunicationManager
     public CommunicationManager()
     {
         plugin = PreciousStones.getInstance();
-        useHawkEye = useHawkEye();
-    }
-
-    private boolean useHawkEye()
-    {
-        if (plugin.getSettingsManager().isLogToHawkEye())
-        {
-            Plugin plug = plugin.getServer().getPluginManager().getPlugin("HawkEye");
-
-            if (plug != null)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -125,7 +108,7 @@ public class CommunicationManager
     {
         if (plugin.getSettingsManager().isLogRentsAndPurchases())
         {
-            PreciousStones.log("logPayment", renter, s.getPeriod(), owner, s.getField().getType(), s.getPrice(), (s.getItem() != null) ? s.getItem().getFriendly() : "", s.getField().getCoords());
+            PreciousStones.log("logPayment", renter, s.getPeriod(), owner, s.getField().getType(), s.getPrice(), (s.getItem() != null) ? s.getItem() : "", s.getField().getCoords());
         }
     }
 
@@ -133,7 +116,7 @@ public class CommunicationManager
     {
         if (plugin.getSettingsManager().isLogRentsAndPurchases())
         {
-            PreciousStones.log("logPaymentCollect", owner, s.getPrice(), (s.getItem() != null) ? s.getItem().getFriendly() : "", renter, s.getField().getCoords());
+            PreciousStones.log("logPaymentCollect", owner, s.getPrice(), (s.getItem() != null) ? s.getItem() : "", renter, s.getField().getCoords());
         }
     }
 
@@ -141,7 +124,7 @@ public class CommunicationManager
     {
         if (plugin.getSettingsManager().isLogRentsAndPurchases())
         {
-            PreciousStones.log("logPurchase", renter, owner, s.getField().getType(), s.getPrice(), (s.getItem() != null) ? s.getItem().getFriendly() : "", s.getField().getCoords());
+            PreciousStones.log("logPurchase", renter, owner, s.getField().getType(), s.getPrice(), (s.getItem() != null) ? s.getItem() : "", s.getField().getCoords());
         }
     }
 
@@ -149,7 +132,7 @@ public class CommunicationManager
     {
         if (plugin.getSettingsManager().isLogRentsAndPurchases())
         {
-            PreciousStones.log("logPurchaseCollect", owner, s.getPrice(), (s.getItem() != null) ? s.getItem().getFriendly() : "", renter, s.getField().getCoords());
+            PreciousStones.log("logPurchaseCollect", owner, s.getPrice(), (s.getItem() != null) ? s.getItem() : "", renter, s.getField().getCoords());
         }
     }
 
@@ -173,14 +156,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unbreakable Place", player, unbreakableblock.getLocation(), unbreakableblock.getType().toString());
-            }
-            else
-            {
-                PreciousStones.log("logUnbreakablePlace", player.getName(), unbreakable.getDetails());
-            }
+
+            PreciousStones.log("logUnbreakablePlace", player.getName(), unbreakable.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -225,14 +203,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogRollback())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Grief-Reversion", player, field.getLocation(), "blocks:" + count);
-            }
-            else
-            {
-                PreciousStones.log("logBlockReverted", field.getOwner(), field.getSettings().getTitle(), count, field.getCoords());
-            }
+
+            PreciousStones.log("logBlockReverted", field.getOwner(), field.getSettings().getTitle(), count, field.getCoords());
+
         }
     }
 
@@ -306,14 +279,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogTranslocation())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Translocation", player, field.getLocation(), "blocks:" + count);
-            }
-            else
-            {
-                PreciousStones.log("logTranslocationTranslocated", field.getOwner(), field.getName(), count, field.getCoords());
-            }
+
+            PreciousStones.log("logTranslocationTranslocated", field.getOwner(), field.getName(), count, field.getCoords());
+
         }
     }
 
@@ -343,15 +311,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogTranslocation())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Stored", player, field.getLocation(), "");
-            }
-            else
-            {
-                PreciousStones.log("logTranslocationStored", field.getOwner(), field.getName(), count, field.getCoords());
 
-            }
+            PreciousStones.log("logTranslocationStored", field.getOwner(), field.getName(), count, field.getCoords());
+
         }
     }
 
@@ -376,14 +338,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Place", player, fieldblock.getLocation(), fs.getTitle());
-            }
-            else
-            {
-                PreciousStones.log("logFieldPlaced", player.getName(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logFieldPlaced", player.getName(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -425,14 +382,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Cuboid Field close", player, field.getBlock().getLocation(), fs.getTitle());
-            }
-            else
-            {
-                PreciousStones.log("logCuboidFieldPlaced", player.getName(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logCuboidFieldPlaced", player.getName(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -476,14 +428,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Place", player, fieldblock.getLocation(), fs.getTitle() + " (Breakable)");
-            }
-            else
-            {
-                PreciousStones.log("logBreakablePlaced", player.getName(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBreakablePlaced", player.getName(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -518,14 +465,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unbreakable Break", player, unbreakableblock.getLocation(), unbreakableblock.getType().toString());
-            }
-            else
-            {
-                PreciousStones.log("logDestroyedOwnUnbreakable", player.getName(), Helper.getDetails(unbreakableblock));
-            }
+
+            PreciousStones.log("logDestroyedOwnUnbreakable", player.getName(), Helper.getDetails(unbreakableblock));
+
         }
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -568,14 +510,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Break", player, fieldblock.getLocation(), fs.getTitle());
-            }
-            else
-            {
-                PreciousStones.log("logDestroyedOwnField", player.getName(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyedOwnField", player.getName(), fs.getTitle(), field.getDetails());
+
         }
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -618,14 +555,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Break", player, fieldblock.getLocation(), fs.getTitle());
-            }
-            else
-            {
-                PreciousStones.log("logDestroyOthers", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyOthers", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -669,14 +601,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Break", player, fieldblock.getLocation(), fs.getTitle() + " (Breakable)");
-            }
-            else
-            {
-                PreciousStones.log("logDestroyBreakableField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyBreakableField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -719,14 +646,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Bypass Place in Field", player, block.getLocation(), block.getType().toString() + " (conflict: " + field.getOwner() + " " + fs.getTitle() + " " + field.toString() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logDestroyedOthersField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyedOthersField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -769,14 +691,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Bypass Place in Field", player, loc, "PAINTING (conflict: " + field.getOwner() + " " + fs.getTitle() + " " + field.toString() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassPlacedPainting", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBypassPlacedPainting", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -819,14 +736,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unbreakable Bypass Place in Field", player, block.getLocation(), block.getType().toString() + " (conflict: " + field.getOwner() + " " + fs.getTitle() + " " + field.toString() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassPlacedUnbreakable", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBypassPlacedUnbreakable", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -869,14 +781,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Bypass Destroy in Field", player, block.getLocation(), block.getType().toString() + " (conflict: " + field.getOwner() + " " + fs.getTitle() + " " + field.toString() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassDestroy", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBypassDestroy", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -919,14 +826,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Bypass Destroy in Field", player, block.getLocation(), block.getType().toString() + " (conflict: " + field.getOwner() + " " + fs.getTitle() + " " + field.toString() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassDestroyVehicle", player.getName(), (new Vec(block.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBypassDestroyVehicle", player.getName(), (new Vec(block.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -963,14 +865,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unbreakable Bypass Destroy", player, unbreakableblock.getLocation(), unbreakableblock.getType().toString() + " (owner: " + unbreakable.getOwner() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassDestroyUnbreakable", player.getName(), unbreakable.getOwner(), unbreakable.getDetails());
-            }
+
+            PreciousStones.log("logBypassDestroyUnbreakable", player.getName(), unbreakable.getOwner(), unbreakable.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1014,14 +911,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Bypass Destroy", player, fieldblock.getLocation(), fs.getTitle() + " (owner: " + field.getOwner() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassDestroyField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBypassDestroyField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1063,14 +955,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogEntry())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Entry Attempt", player, player.getLocation(), "(field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logEntry", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logEntry", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1118,15 +1005,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogFire())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Fire Attempt", player, block.getLocation(), "(field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("warnFire", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("warnFire", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
         }
+
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -1168,14 +1050,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlaceArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Block Place Attempt", player, block.getLocation(), block.getType().toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlace", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logPlace", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1219,14 +1096,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlaceArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Block Place Attempt", player, hanging.getLocation(), hanging.toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlace", player.getName(), (new Vec(hanging.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+            PreciousStones.log("logPlace", player.getName(), (new Vec(hanging.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1239,6 +1109,50 @@ public class CommunicationManager
             if (plugin.getPermissionsManager().has(pl, "preciousstones.alert.warn.place") && canAlert(pl))
             {
                 ChatBlock.sendPs(pl, "logPlace", player.getName(), (new Vec(hanging.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+            }
+        }
+    }
+
+    /**
+     * @param player
+     * @param item
+     * @param loc
+     * @param field
+     */
+    public void warnPlaceItem(Player player, ItemStack item, Location loc, Field field)
+    {
+        if (field == null)
+        {
+            return;
+        }
+
+        FieldSettings fs = field.getSettings();
+
+        if (plugin.getSettingsManager().isWarnPlace() && canWarn(player))
+        {
+            ChatBlock.send(player, "warnPlace");
+        }
+
+        if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
+        {
+            return;
+        }
+
+        if (plugin.getSettingsManager().isLogPlaceArea())
+        {
+            PreciousStones.log("logPlace", player.getName(), (new Vec(loc)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+        }
+
+        for (Player pl : plugin.getServer().getOnlinePlayers())
+        {
+            if (pl.equals(player))
+            {
+                continue;
+            }
+
+            if (plugin.getPermissionsManager().has(pl, "preciousstones.alert.warn.place") && canAlert(pl))
+            {
+                ChatBlock.sendPs(pl, "logPlace", player.getName(), (new Vec(loc)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
             }
         }
     }
@@ -1270,14 +1184,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlaceArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Block Place Attempt", player, painting.getLocation(), painting.toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlace", player.getName(), (new Vec(painting.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logPlace", player.getName(), (new Vec(painting.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1320,14 +1229,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUse())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Use Attempt", player, block.getLocation(), block.getType().toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logUse", player.getName(), block.getType().toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logUse", player.getName(), block.getType().toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1370,14 +1274,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPlaceArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Block Place Attempt", player, block.getLocation(), block.getType().toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBucketEmpty", player.getName(), block.getType().toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logBucketEmpty", player.getName(), block.getType().toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1414,14 +1313,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroy())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unbreakable Destroy", player, unbreakableblock.getLocation(), unbreakableblock.getType().toString());
-            }
-            else
-            {
-                PreciousStones.log("logDestroyUnbreakable", player.getName(), unbreakable.getOwner(), unbreakable.getDetails());
-            }
+
+            PreciousStones.log("logDestroyUnbreakable", player.getName(), unbreakable.getOwner(), unbreakable.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1462,14 +1356,9 @@ public class CommunicationManager
 
             if (plugin.getSettingsManager().isLogDestroy())
             {
-                if (useHawkEye)
-                {
-                    HawkEyeAPI.addCustomEntry(plugin, "Field Destroy", player, fieldblock.getLocation(), fs.getTitle());
-                }
-                else
-                {
-                    PreciousStones.log("logDestroyField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-                }
+
+                PreciousStones.log("logDestroyField", player.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
             }
 
             for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1513,14 +1402,8 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroyArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Destroy Attempt", player, damagedblock.getLocation(), damagedblock.getType().toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logDestroyInField", player.getName(), (new Vec(damagedblock)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyInField", player.getName(), (new Vec(damagedblock)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1563,14 +1446,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroyArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Destroy Attempt", player, hanging.getLocation(), hanging.toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logDestroyInField", player.getName(), (new Vec(hanging.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyInField", player.getName(), (new Vec(hanging.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1613,14 +1491,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroyArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Destroy Attempt", player, painting.getLocation(), painting.toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logDestroyInField", player.getName(), (new Vec(painting.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyInField", player.getName(), (new Vec(painting.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1663,14 +1536,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogDestroyArea())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Vehicle destroy Attempt", player, vehicle.getLocation(), vehicle.getType().toString() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logDestroyVehicle", player.getName(), (new Vec(vehicle.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logDestroyVehicle", player.getName(), (new Vec(vehicle.getLocation())).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1720,15 +1588,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogConflictPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unbreakable Conflict Place", player, block.getLocation(), block.getType().toString() + " (conflict: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceUnbreakableConflict", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logPlaceUnbreakableConflict", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
         }
+
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -1783,15 +1646,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogConflictPlace())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Field Conflict Place", player, block.getLocation(), fsconflict.getTitle() + " (conflict: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceFieldConflit", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logPlaceFieldConflit", player.getName(), (new Vec(block)).toString(), field.getOwner(), fs.getTitle(), field.getDetails());
         }
+
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -1833,14 +1691,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogPvp())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "PvP Attempt", attacker, victim.getLocation(), victim.getName() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPvP", attacker.getName(), victim.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
+
+            PreciousStones.log("logPvP", attacker.getName(), victim.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -1901,16 +1754,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogBypassPvp())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "PvP Bypass", attacker, victim.getLocation(), victim.getName() + " (field: " + field.getOwner() + " " + fs.getTitle() + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassAttack", attacker.getName(), victim.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
-            }
-        }
 
+            PreciousStones.log("logBypassAttack", attacker.getName(), victim.getName(), field.getOwner(), fs.getTitle(), field.getDetails());
+
+        }
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
             if (pl.equals(attacker))
@@ -1941,7 +1788,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnFieldPlaceUnprotectableTouching", Helper.friendlyBlockType(unprotectableblock.getType().toString()));
+            ChatBlock.send(player, "warnFieldPlaceUnprotectableTouching", Helper.friendlyBlockType(unprotectableblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -1951,15 +1798,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Protect Attempt", player, protectionblock.getLocation(), fs.getTitle() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceUnprotectableTouchingField", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
-            }
+
+            PreciousStones.log("logPlaceUnprotectableTouchingField", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
         }
+
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -1984,7 +1826,7 @@ public class CommunicationManager
     {
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnUnbreakablePlaceUnprotectableTouching", Helper.friendlyBlockType(unprotectableblock.getType().toString()));
+            ChatBlock.send(player, "warnUnbreakablePlaceUnprotectableTouching", Helper.friendlyBlockType(unprotectableblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -1994,15 +1836,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Protect Attempt", player, protectionblock.getLocation(), protectionblock.getType().toString() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceUnprotectableTouchingUnbreakable", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
-            }
+
+            PreciousStones.log("logPlaceUnprotectableTouchingUnbreakable", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
         }
+
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -2028,7 +1865,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnCannotProtect", Helper.friendlyBlockType(touchingblock.getType().toString()));
+            ChatBlock.send(player, "warnCannotProtect", Helper.friendlyBlockType(touchingblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2038,14 +1875,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Protect Attempt", player, placedblock.getLocation(), placedblock.getType().toString() + " (unprotectable: " + touchingblock.getType().toString() + " " + Helper.toLocationString(touchingblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceTouchingUnbreakableUnprotectable", player.getName(), Helper.getDetails(touchingblock));
-            }
+
+            PreciousStones.log("logPlaceTouchingUnbreakableUnprotectable", player.getName(), Helper.getDetails(touchingblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2079,7 +1911,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnCannotProtect", Helper.friendlyBlockType(touchingblock.getType().toString()));
+            ChatBlock.send(player, "warnCannotProtect", Helper.friendlyBlockType(touchingblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2089,14 +1921,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Protect Attempt", player, placedblock.getLocation(), fs.getTitle() + " (unprotectable: " + touchingblock.getType().toString() + " " + Helper.toLocationString(touchingblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceTouchingFieldUnprotectable", player.getName(), Helper.getDetails(touchingblock));
-            }
+
+            PreciousStones.log("logPlaceTouchingFieldUnprotectable", player.getName(), Helper.getDetails(touchingblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2129,7 +1956,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnCannotProtectInside", Helper.friendlyBlockType(unprotectableblock.getType().toString()), fs.getTitle());
+            ChatBlock.send(player, "warnCannotProtectInside", Helper.friendlyBlockType(unprotectableblock.getType().getId()), fs.getTitle());
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2139,14 +1966,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Protect Attempt", player, field.getLocation(), fs.getTitle() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceUnprotectableInField", player.getName(), Helper.getDetails(unprotectableblock), field.getDetails());
-            }
+
+            PreciousStones.log("logPlaceUnprotectableInField", player.getName(), Helper.getDetails(unprotectableblock), field.getDetails());
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2179,7 +2001,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnPlaceFieldInUnprotectable", fs.getTitle(), Helper.friendlyBlockType(unprotectableblock.getType().toString()));
+            ChatBlock.send(player, "warnPlaceFieldInUnprotectable", fs.getTitle(), Helper.friendlyBlockType(unprotectableblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2189,14 +2011,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Protect Attempt", player, fieldtypeblock.getLocation(), fs.getTitle() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logPlaceFieldUnprotectableInArea", player.getName(), fieldtypeblock.getType(), Helper.getDetails(unprotectableblock));
-            }
+
+            PreciousStones.log("logPlaceFieldUnprotectableInArea", player.getName(), fieldtypeblock.getType(), Helper.getDetails(unprotectableblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2222,7 +2039,7 @@ public class CommunicationManager
     {
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnBypassPlacedUnprotectableInUnbreakable", Helper.friendlyBlockType(unprotectableblock.getType().toString()), Helper.friendlyBlockType(protectionblock.getType().toString()));
+            ChatBlock.send(player, "warnBypassPlacedUnprotectableInUnbreakable", Helper.friendlyBlockType(unprotectableblock.getType().getId()), Helper.friendlyBlockType(protectionblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2232,14 +2049,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Bypass Protect", player, protectionblock.getLocation(), protectionblock.getType().toString() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logUnbreakableBypassUnprotectableTouching", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
-            }
+
+            PreciousStones.log("logUnbreakableBypassUnprotectableTouching", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2272,7 +2084,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnBypassPlacedUnprotectableInField", Helper.friendlyBlockType(unprotectableblock.getType().toString()), Helper.friendlyBlockType(protectionblock.getType().toString()));
+            ChatBlock.send(player, "warnBypassPlacedUnprotectableInField", Helper.friendlyBlockType(unprotectableblock.getType().getId()), Helper.friendlyBlockType(protectionblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2282,14 +2094,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Bypass Protect", player, protectionblock.getLocation(), fs.getTitle() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logFieldBypassUnprotectableTouching", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
-            }
+
+            PreciousStones.log("logFieldBypassUnprotectableTouching", player.getName(), Helper.getDetails(unprotectableblock), Helper.getDetails(protectionblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2316,7 +2123,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnUnprotectableBypassProtected", Helper.friendlyBlockType(unprotectableblock.getType().toString()));
+            ChatBlock.send(player, "warnUnprotectableBypassProtected", Helper.friendlyBlockType(unprotectableblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2326,14 +2133,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Bypass Protect", player, placedblock.getLocation(), placedblock.getType().toString() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassTouchingUnprotectable", player.getName(), Helper.getDetails(placedblock), Helper.getDetails(unprotectableblock));
-            }
+
+            PreciousStones.log("logBypassTouchingUnprotectable", player.getName(), Helper.getDetails(placedblock), Helper.getDetails(unprotectableblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2366,7 +2168,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnUnprotectableBypassPlaced", Helper.friendlyBlockType(unprotectableblock.getType().toString()), fs.getTitle());
+            ChatBlock.send(player, "warnUnprotectableBypassPlaced", Helper.friendlyBlockType(unprotectableblock.getType().getId()), fs.getTitle());
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2376,15 +2178,10 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Bypass Protect", player, field.getLocation(), fs.getTitle() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassPlaceUnprotectableInField", player.getName(), Helper.getDetails(unprotectableblock), field.getDetails());
-            }
+
+            PreciousStones.log("logBypassPlaceUnprotectableInField", player.getName(), Helper.getDetails(unprotectableblock), field.getDetails());
         }
+
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
         {
@@ -2416,7 +2213,7 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isWarnUnprotectable() && canWarn(player))
         {
-            ChatBlock.send(player, "warnFieldBypassPlacedUnprotectable", fs.getTitle(), Helper.friendlyBlockType(unprotectableblock.getType().toString()));
+            ChatBlock.send(player, "warnFieldBypassPlacedUnprotectable", fs.getTitle(), Helper.friendlyBlockType(unprotectableblock.getType().getId()));
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.bypass.log"))
@@ -2426,14 +2223,9 @@ public class CommunicationManager
 
         if (plugin.getSettingsManager().isLogUnprotectable())
         {
-            if (useHawkEye)
-            {
-                HawkEyeAPI.addCustomEntry(plugin, "Unprotectable Bypass Protect", player, fieldtypeblock.getLocation(), fs.getTitle() + " (unprotectable: " + unprotectableblock.getType().toString() + " " + Helper.toLocationString(unprotectableblock.getLocation()) + ")");
-            }
-            else
-            {
-                PreciousStones.log("logBypassFieldInUnprotectable", player.getName(), fieldtypeblock.getType(), Helper.getDetails(unprotectableblock));
-            }
+
+            PreciousStones.log("logBypassFieldInUnprotectable", player.getName(), fieldtypeblock.getType(), Helper.getDetails(unprotectableblock));
+
         }
 
         for (Player pl : plugin.getServer().getOnlinePlayers())
@@ -2740,6 +2532,32 @@ public class CommunicationManager
 
         cb.addRow("  " + color + ChatBlock.format("_type") + ": ", ChatColor.AQUA + fs.getTitle(), "");
 
+        if (fs.hasMetaName())
+        {
+            List<String> lore = fs.getMetaLore();
+
+            boolean firstAdded = false;
+
+            for (int i = 0; i < lore.size(); i++)
+            {
+                if (lore.get(i) == null || lore.get(i).isEmpty())
+                {
+                    continue;
+                }
+
+                if (!firstAdded)
+                {
+                    cb.addRow("  " + color + ChatBlock.format("_lore") + ": ", lore.get(i), "");
+                    firstAdded = true;
+                }
+                else
+
+                {
+                    cb.addRow("  ", ChatColor.AQUA + lore.get(i), "");
+                }
+            }
+        }
+
         if (fs.hasNameableFlag())
         {
             if (field.isNamed())
@@ -2987,7 +2805,10 @@ public class CommunicationManager
 
             BlockTypeEntry entry = new BlockTypeEntry(fs.getTypeId(), fs.getData());
 
-            cb.addRow(ChatBlock.format("headerConfiguredFields", fs.getTitle(), entry.toString(), fs.getRadius()) + customHeight + customVolume);
+            if (entry.isValid())
+            {
+                cb.addRow(ChatBlock.format("headerConfiguredFields", fs.getTitle(), entry, fs.getRadius()) + customHeight + customVolume);
+            }
         }
 
         if (cb.size() > 0)
@@ -3030,15 +2851,15 @@ public class CommunicationManager
             return false;
         }
 
-        TreeMap<String, PlayerEntry> players = plugin.getPlayerManager().getPlayers();
+        Map<String, List<Field>> fieldsByOwner = plugin.getForceFieldManager().getFieldsByOwner();
 
         cb.setAlignment("l", "c");
 
         cb.addRow("  " + ChatColor.GRAY + ChatBlock.format("_name"), ChatBlock.format("_count"));
 
-        for (String playerName : players.keySet())
+        for (String playerName : fieldsByOwner.keySet())
         {
-            int count = plugin.getForceFieldManager().getFieldCount(playerName, type);
+            int count = fieldsByOwner.get(playerName).size();
 
             if (count > 0)
             {
@@ -3133,7 +2954,7 @@ public class CommunicationManager
 
             if (plugin.getSettingsManager().haveLimits())
             {
-                cb.addRow("  " + ChatColor.AQUA + fs.getTitle(), "{yellow} " + count, ChatColor.WHITE + " " + strLimit);
+                cb.addRow("  " + ChatColor.AQUA + fs.getTitle(), "{yellow} " + count, color + " " + strLimit);
             }
             else
             {
@@ -3513,7 +3334,7 @@ public class CommunicationManager
             cb.addRow("menu54");
         }
 
-        if (hasPlayer)
+        if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.blacklistcommand") && hasPlayer)
         {
             cb.addRow("menu57");
             cb.addRow("menu58");
@@ -3544,7 +3365,7 @@ public class CommunicationManager
             cb.addRow("menu21");
         }
 
-        if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.create.forcefield") && hasPlayer)
+        if (plugin.getPermissionsManager().has(player, "preciousstones.benefit.openclose.forcefield") && hasPlayer)
         {
             cb.addRow("menu53");
         }
@@ -3678,6 +3499,11 @@ public class CommunicationManager
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.rent"))
         {
             cb.addRow("menu59");
+        }
+
+        if (plugin.getPermissionsManager().has(player, "preciousstones.admin.migrate"))
+        {
+            cb.addRow("menu68");
         }
 
         if (plugin.getPermissionsManager().has(player, "preciousstones.admin.debug"))

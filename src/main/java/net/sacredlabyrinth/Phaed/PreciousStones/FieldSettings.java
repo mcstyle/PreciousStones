@@ -3,11 +3,11 @@ package net.sacredlabyrinth.Phaed.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockTypeEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Vec;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
@@ -18,15 +18,17 @@ import java.util.logging.Level;
  */
 public class FieldSettings
 {
+    private String metaName = "";
+    private boolean metaAutoSet = false;
+    private List<String> metaLore = new ArrayList<String>();
     private int foresterUses = 1;
-    private int groundBlock = 2;
+    private BlockTypeEntry groundBlock;
     private int treeCount = 64;
     private int creatureCount = 6;
     private int growTime = 20;
     private int shrubDensity = 64;
     private boolean validField = true;
     private BlockTypeEntry type;
-    private boolean spoutBlock;
     private int radius = 0;
     private int fenceItem = 0;
     private int fenceItemPrice = 0;
@@ -68,23 +70,23 @@ public class FieldSettings
     private List<String> commandOnExit = new ArrayList<String>();
     private List<String> playerCommandOnEnter = new ArrayList<String>();
     private List<String> playerCommandOnExit = new ArrayList<String>();
-    private List<Integer> teleportIfHoldingItems = new ArrayList<Integer>();
-    private List<Integer> teleportIfNotHoldingItems = new ArrayList<Integer>();
-    private List<Integer> teleportIfHasItems = new ArrayList<Integer>();
-    private List<Integer> teleportIfNotHasItems = new ArrayList<Integer>();
+    private List<BlockTypeEntry> teleportIfHoldingItems = new ArrayList<BlockTypeEntry>();
+    private List<BlockTypeEntry> teleportIfNotHoldingItems = new ArrayList<BlockTypeEntry>();
+    private List<BlockTypeEntry> teleportIfHasItems = new ArrayList<BlockTypeEntry>();
+    private List<BlockTypeEntry> teleportIfNotHasItems = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> unusableItems = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> teleportIfWalkingOn = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> teleportIfNotWalkingOn = new ArrayList<BlockTypeEntry>();
     private List<Integer> treeTypes = new ArrayList<Integer>();
     private List<Integer> shrubTypes = new ArrayList<Integer>();
     private List<String> creatureTypes = new ArrayList<String>();
-    private List<Integer> fertileBlocks = new ArrayList<Integer>();
+    private List<BlockTypeEntry> fertileBlocks = new ArrayList<BlockTypeEntry>();
     private List<Integer> limits = new ArrayList<Integer>();
     private List<BlockTypeEntry> surfaces = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> translocationBlacklist = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> preventPlaceBlacklist = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> preventDestroyBlacklist = new ArrayList<BlockTypeEntry>();
-    private List<Integer> preventUse = new ArrayList<Integer>();
+    private List<BlockTypeEntry> preventUse = new ArrayList<BlockTypeEntry>();
     private List<BlockTypeEntry> confiscatedItems = new ArrayList<BlockTypeEntry>();
     private List<String> allowedWorlds = new ArrayList<String>();
     private List<String> allowedOnlyInside = new ArrayList<String>();
@@ -94,7 +96,7 @@ public class FieldSettings
     private List<FieldFlag> reversedFlags = new ArrayList<FieldFlag>();
     private List<FieldFlag> alledflags = new ArrayList<FieldFlag>();
     private List<FieldFlag> disabledFlags = new ArrayList<FieldFlag>();
-    private List<Integer> allowGrief = new ArrayList<Integer>();
+    private List<BlockTypeEntry> allowGrief = new ArrayList<BlockTypeEntry>();
     private HashMap<PotionEffectType, Integer> potions = new HashMap<PotionEffectType, Integer>();
     private List<PotionEffectType> neutralizePotions = new ArrayList<PotionEffectType>();
     private List<String> allowedPlayers = new ArrayList<String>();
@@ -132,23 +134,7 @@ public class FieldSettings
             return;
         }
 
-        spoutBlock = loadBoolean("spout");
-
-        if (spoutBlock)
-        {
-            if (PreciousStones.hasSpout())
-            {
-                type = loadSpoutTypeEntry("block");
-            }
-            else
-            {
-                PreciousStones.log(Level.WARNING, "** Spout not loaded, spout field skipped: %s", title);
-            }
-        }
-        else
-        {
-            type = loadTypeEntry("block");
-        }
+        type = loadTypeEntry("block");
 
         if (type == null)
         {
@@ -228,6 +214,7 @@ public class FieldSettings
         //**************************
 
         loadBoolean("prevent-fire");
+        loadBoolean("prevent-fire-spread");
         loadBoolean("prevent-use-all");
         loadBoolean("enable-with-redstone");
         loadBoolean("allow-place");
@@ -256,6 +243,7 @@ public class FieldSettings
         loadBoolean("prevent-vehicle-enter");
         loadBoolean("prevent-vehicle-exit");
         loadBoolean("prevent-item-frame-take");
+        loadBoolean("protect-armor-stands");
         loadBoolean("prevent-entity-interact");
         loadBoolean("protect-animals");
         loadBoolean("protect-villagers");
@@ -340,6 +328,9 @@ public class FieldSettings
         loadBoolean("command-blacklisting");
         loadBoolean("anti-plot");
 
+        metaAutoSet = loadBoolean("meta-autoset");
+        metaName = loadString("meta-name");
+        metaLore = loadStringList("meta-lore");
         foresterUses = loadInt("forester-uses");
         surfaces = loadTypeEntries("surfaces");
         requiredPermission = loadString("required-permission");
@@ -360,16 +351,16 @@ public class FieldSettings
         treeCount = loadInt("tree-count");
         growTime = loadInt("grow-time");
         shrubDensity = loadInt("shrub-density");
-        groundBlock = loadInt("ground-block");
-        preventUse = loadIntList("prevent-use");
+        groundBlock = loadTypeEntry("ground-block");
+        preventUse = loadTypeEntries("prevent-use");
         confiscatedItems = loadTypeEntries("confiscate-items");
         allowedPlayers = loadStringList("always-allow-players");
         deniedPlayers = loadStringList("always-deny-players");
-        allowGrief = loadIntList("allow-grief");
+        allowGrief = loadTypeEntries("allow-grief");
         treeTypes = loadIntList("tree-types");
         shrubTypes = loadIntList("shrub-types");
         creatureTypes = loadStringList("creature-types");
-        fertileBlocks = loadIntList("fertile-blocks");
+        fertileBlocks = loadTypeEntries("fertile-blocks");
         allowedWorlds = loadStringList("allowed-worlds");
         creatureCount = loadInt("creature-count");
         limits = loadIntList("limits");
@@ -400,10 +391,10 @@ public class FieldSettings
         teleportMaxDistance = loadInt("teleport-max-distance");
         teleportIfWalkingOn = loadTypeEntries("teleport-if-walking-on");
         teleportIfNotWalkingOn = loadTypeEntries("teleport-if-not-walking-on");
-        teleportIfHoldingItems = loadIntList("teleport-if-holding-items");
-        teleportIfNotHoldingItems = loadIntList("teleport-if-not-holding-items");
-        teleportIfHasItems = loadIntList("teleport-if-has-items");
-        teleportIfNotHasItems = loadIntList("teleport-if-not-has-items");
+        teleportIfHoldingItems = loadTypeEntries("teleport-if-holding-items");
+        teleportIfNotHoldingItems = loadTypeEntries("teleport-if-not-holding-items");
+        teleportIfHasItems = loadTypeEntries("teleport-if-has-items");
+        teleportIfNotHasItems = loadTypeEntries("teleport-if-not-has-items");
         mustBeAbove = loadInt("must-be-above");
         mustBeBelow = loadInt("must-be-below");
         payToEnable = loadInt("pay-to-enable");
@@ -465,14 +456,15 @@ public class FieldSettings
                     {
                         loadFlags(getKey(flagStr));
                     }
+
+                    PreciousStones.debug("   %s: %s", flagStr, value);
+                    return ChatColor.translateAlternateColorCodes('&', value);
                 }
                 else
                 {
                     PreciousStones.log(Level.WARNING, "** Malformed Flag %s", flagStr);
+                    return null;
                 }
-
-                PreciousStones.debug("   %s: %s", flagStr, value);
-                return value;
             }
             PreciousStones.debug("   %s: *bad*", flagStr);
         }
@@ -513,68 +505,10 @@ public class FieldSettings
     {
         if (containsKey(flagStr))
         {
-            BlockTypeEntry value = null;
             Object typeStr = getValue(flagStr);
+            BlockTypeEntry value = new BlockTypeEntry(typeStr.toString());
 
-            if (Helper.isString(typeStr) && Helper.isTypeEntry((String) typeStr) && Helper.hasData(typeStr.toString()))
-            {
-                value = Helper.toTypeEntry(typeStr.toString());
-            }
-            else
-            {
-                if (Helper.isInteger(typeStr))
-                {
-                    value = new BlockTypeEntry((Integer) typeStr, ((byte) 0));
-                }
-                else if (Helper.isInteger(typeStr.toString()))
-                {
-                    value = new BlockTypeEntry(Integer.parseInt(typeStr.toString()), ((byte) 0));
-                }
-                else
-                {
-                    PreciousStones.log(Level.WARNING, "** Malformed Flag %s", flagStr);
-                }
-            }
-
-            if (value != null)
-            {
-                loadFlags(getKey(flagStr));
-                PreciousStones.debug("   %s: %s", flagStr, value);
-                return value;
-            }
-            PreciousStones.debug("   %s: *bad*", flagStr);
-        }
-        return null;
-    }
-
-    private BlockTypeEntry loadSpoutTypeEntry(String flagStr)
-    {
-        if (containsKey(flagStr))
-        {
-            BlockTypeEntry value = null;
-            Object typeStr = getValue(flagStr);
-
-            if (Helper.isString(typeStr) && Helper.isTypeEntry((String) typeStr) && Helper.hasData(typeStr.toString()))
-            {
-                value = Helper.toSpoutTypeEntry(typeStr.toString());
-            }
-            else
-            {
-                if (Helper.isInteger(typeStr))
-                {
-                    value = new BlockTypeEntry((Integer) typeStr, ((byte) 0), true);
-                }
-                else if (Helper.isInteger(typeStr.toString()))
-                {
-                    value = new BlockTypeEntry(Integer.parseInt(typeStr.toString()), ((byte) 0), true);
-                }
-                else
-                {
-                    PreciousStones.log(Level.WARNING, "** Malformed Flag %s", flagStr);
-                }
-            }
-
-            if (value != null)
+            if (value.isValid())
             {
                 loadFlags(getKey(flagStr));
                 PreciousStones.debug("   %s: %s", flagStr, value);
@@ -599,14 +533,28 @@ public class FieldSettings
                     {
                         loadFlags(getKey(flagStr));
                     }
+
+                    PreciousStones.debug("   %s: %s", flagStr, value);
+
+                    List<String> colored = new ArrayList<String>();
+
+                    for (String s : value)
+                    {
+                        if (s == null || s.isEmpty())
+                        {
+                            colored.add("");
+                        }
+                        else
+                        {
+                            colored.add(ChatColor.translateAlternateColorCodes('&', s));
+                        }
+                    }
+                    return colored;
                 }
                 else
                 {
                     PreciousStones.log(Level.WARNING, "** Malformed Flag %s", flagStr);
                 }
-
-                PreciousStones.debug("   %s: %s", flagStr, value);
-                return value;
             }
             PreciousStones.debug("   %s: *bad*", flagStr);
         }
@@ -627,14 +575,14 @@ public class FieldSettings
                     {
                         loadFlags(getKey(flagStr));
                     }
+
+                    PreciousStones.debug("   %s: %s", flagStr, value);
+                    return value;
                 }
                 else
                 {
                     PreciousStones.log(Level.WARNING, "** Malformed Flag %s", flagStr);
                 }
-
-                PreciousStones.debug("   %s: %s", flagStr, value);
-                return value;
             }
             PreciousStones.debug("   %s: *bad*", flagStr);
         }
@@ -655,14 +603,14 @@ public class FieldSettings
                     {
                         loadFlags(getKey(flagStr));
                     }
+
+                    PreciousStones.debug("   %s: %s", flagStr, value);
+                    return value;
                 }
                 else
                 {
                     PreciousStones.log(Level.WARNING, "** Malformed Flag %s", flagStr);
                 }
-
-                PreciousStones.debug("   %s: %s", flagStr, value);
-                return value;
             }
             PreciousStones.debug("   %s: *bad*", flagStr);
         }
@@ -949,55 +897,75 @@ public class FieldSettings
     /**
      * Checks to see if a player should be teleported for holding this item
      *
-     * @param itemId
+     * @param entry
      * @return
      */
-    public boolean isTeleportHoldingItem(int itemId)
+    public boolean isTeleportHoldingItem(BlockTypeEntry entry)
     {
-        if (teleportIfHasItems.contains(0) && itemId > 0)
+        if (!entry.isValid())
         {
             return true;
         }
 
-        return teleportIfHoldingItems.contains(itemId);
+        if (teleportIfHasItems.contains(new BlockTypeEntry(0)) && entry.getTypeId() != 0)
+        {
+            return true;
+        }
+
+        return teleportIfHoldingItems.contains(entry);
     }
 
     /**
      * Checks to see if a player should be teleported for not holding this item
      *
-     * @param itemId
+     * @param entry
      * @return
      */
-    public boolean isTeleportNotHoldingItem(int itemId)
+    public boolean isTeleportNotHoldingItem(BlockTypeEntry entry)
     {
-        return teleportIfNotHoldingItems.contains(itemId);
+        if (!entry.isValid())
+        {
+            return true;
+        }
+
+        return teleportIfNotHoldingItems.contains(entry);
     }
 
     /**
      * Checks to see if a player should be teleported for having this item
      *
-     * @param itemId
+     * @param entry
      * @return
      */
-    public boolean isTeleportHasItem(int itemId)
+    public boolean isTeleportHasItem(BlockTypeEntry entry)
     {
-        if (teleportIfHasItems.contains(0) && itemId > 0)
+        if (!entry.isValid())
+        {
+            return false;
+        }
+
+        if (teleportIfHasItems.contains(new BlockTypeEntry(0)) && entry.getTypeId() != 0)
         {
             return true;
         }
 
-        return teleportIfHasItems.contains(itemId);
+        return teleportIfHasItems.contains(entry);
     }
 
     /**
      * Checks to see if a player should be teleported for not having this item
      *
-     * @param itemId
+     * @param entry
      * @return
      */
-    public boolean isTeleportHasNotItem(int itemId)
+    public boolean isTeleportHasNotItem(BlockTypeEntry entry)
     {
-        return teleportIfNotHasItems.contains(itemId);
+        if (!entry.isValid())
+        {
+            return false;
+        }
+
+        return teleportIfNotHasItems.contains(entry);
     }
 
     /**
@@ -1025,13 +993,17 @@ public class FieldSettings
     /**
      * Whether a block type can be used in this field
      *
-     * @param type
+     * @param entry
      * @return
      */
-    public boolean canUse(int type)
+    public boolean canUse(BlockTypeEntry entry)
     {
-        return !preventUse.contains(type);
+        if (!entry.isValid())
+        {
+            return true;
+        }
 
+        return !preventUse.contains(entry);
     }
 
     /**
@@ -1118,7 +1090,7 @@ public class FieldSettings
 
         for (PotionEffectType potion : potions.keySet())
         {
-            out += Helper.friendlyBlockType(potion.getName()) + ", ";
+            out += Helper.friendlyName(potion.getName()) + ", ";
         }
 
         return Helper.stripTrailing(out, ", ");
@@ -1135,7 +1107,7 @@ public class FieldSettings
 
         for (PotionEffectType potion : neutralizePotions)
         {
-            out += Helper.friendlyBlockType(potion.getName()) + ", ";
+            out += Helper.friendlyName(potion.getName()) + ", ";
         }
 
         return Helper.stripTrailing(out, ", ");
@@ -1166,12 +1138,17 @@ public class FieldSettings
     /**
      * Whether a block type can be griefed in a grief revert field
      *
-     * @param type
+     * @param entry
      * @return
      */
-    public boolean canGrief(int type)
+    public boolean canGrief(BlockTypeEntry entry)
     {
-        return allowGrief.contains(type);
+        if (!entry.isValid())
+        {
+            return false;
+        }
+
+        return allowGrief.contains(entry);
     }
 
     /**
@@ -1426,12 +1403,17 @@ public class FieldSettings
         return growTime;
     }
 
-    public boolean isFertileType(int type)
+    public boolean isFertileType(BlockTypeEntry entry)
     {
-        return fertileBlocks.contains(type);
+        if (!entry.isValid())
+        {
+            return false;
+        }
+
+        return fertileBlocks.contains(entry);
     }
 
-    public int getGroundBlock()
+    public BlockTypeEntry getGroundBlock()
     {
         return groundBlock;
     }
@@ -1565,11 +1547,6 @@ public class FieldSettings
         return payToEnable;
     }
 
-    public boolean isSpoutBlock()
-    {
-        return spoutBlock;
-    }
-
     public String getDeleteIfNoPermission()
     {
         return deleteIfNoPermission;
@@ -1601,7 +1578,7 @@ public class FieldSettings
 
         for (BlockTypeEntry entry : surfaces)
         {
-            out += entry.getFriendly() + ", ";
+            out += entry + ", ";
         }
 
         return Helper.stripTrailing(out, ", ");
@@ -1610,5 +1587,42 @@ public class FieldSettings
     public int getForesterUses()
     {
         return foresterUses;
+    }
+
+    public boolean matchesMetaName(ItemStack item)
+    {
+        if (!hasMetaName())
+        {
+            return true;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+
+        if (meta != null && meta.getDisplayName() != null)
+        {
+            return meta.getDisplayName().equals(metaName);
+        }
+
+        return false;
+    }
+
+    public boolean hasMetaName()
+    {
+        return metaName != null && !metaName.isEmpty();
+    }
+
+    public String getMetaName()
+    {
+        return metaName;
+    }
+
+    public List<String> getMetaLore()
+    {
+        return metaLore;
+    }
+
+    public boolean isMetaAutoSet()
+    {
+        return metaAutoSet;
     }
 }

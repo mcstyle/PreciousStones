@@ -1,9 +1,11 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.managers;
 
 import net.sacredlabyrinth.Phaed.PreciousStones.*;
+import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockTypeEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -170,7 +172,7 @@ public final class EntryManager
                                 ItemStack[] armors = player.getInventory().getArmorContents();
                                 for (ItemStack armor : armors)
                                 {
-                                    if (plugin.getSettingsManager().isRepairableItemType(armor.getTypeId()))
+                                    if (plugin.getSettingsManager().isRepairableItemType(new BlockTypeEntry(armor.getType())))
                                     {
                                         short dur = armor.getDurability();
                                         if (dur > 0)
@@ -193,7 +195,7 @@ public final class EntryManager
                                 {
                                     if (item != null)
                                     {
-                                        if (plugin.getSettingsManager().isRepairableItemType(item.getTypeId()))
+                                        if (plugin.getSettingsManager().isRepairableItemType(new BlockTypeEntry(item.getType())))
                                         {
                                             short dur = item.getDurability();
                                             if (dur > 0)
@@ -293,6 +295,106 @@ public final class EntryManager
         return null;
     }
 
+    public void reevaluateEnteredFields(Player player)
+    {
+        if (player == null)
+        {
+            return;
+        }
+
+        // refund confiscated items if not in confiscation fields
+
+        Field confField = plugin.getForceFieldManager().getEnabledSourceField(player.getLocation(), FieldFlag.CONFISCATE_ITEMS);
+
+        if (confField == null)
+        {
+            plugin.getConfiscationManager().returnItems(player);
+        }
+
+        // undo a player's visualization if it exists
+
+        if (plugin.getSettingsManager().isVisualizeEndOnMove())
+        {
+            if (!plugin.getPermissionsManager().has(player, "preciousstones.admin.visualize"))
+            {
+                if (!plugin.getCuboidManager().hasOpenCuboid(player))
+                {
+                    plugin.getVisualizationManager().revert(player);
+                }
+            }
+        }
+
+        // remove player from any entry field he is not currently in
+
+        List<Field> entryFields = plugin.getEntryManager().getPlayerEntryFields(player);
+
+        if (entryFields != null)
+        {
+            for (Field entryField : entryFields)
+            {
+                if (!entryField.envelops(player.getLocation()))
+                {
+                    plugin.getEntryManager().leaveField(player, entryField);
+
+                    if (!plugin.getEntryManager().containsSameNameOwnedField(player, entryField))
+                    {
+                        plugin.getEntryManager().leaveOverlappedArea(player, entryField);
+                    }
+                }
+            }
+        }
+
+        // get all the fields the player is currently standing in
+
+        List<Field> currentFields = plugin.getForceFieldManager().getEnabledSourceFields(player.getLocation(), FieldFlag.ALL);
+
+        // check for prevent-entry fields and teleport him away if hes not allowed in it
+
+        if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entry"))
+        {
+            for (Field field : currentFields)
+            {
+                if (FieldFlag.PREVENT_ENTRY.applies(field, player))
+                {
+                    Location loc = plugin.getPlayerManager().getOutsideFieldLocation(field, player);
+                    Location outside = plugin.getPlayerManager().getOutsideLocation(player);
+
+                    if (outside != null)
+                    {
+                        Field f = plugin.getForceFieldManager().getEnabledSourceField(outside, FieldFlag.PREVENT_ENTRY);
+
+                        if (f != null)
+                        {
+                            loc = outside;
+                        }
+                    }
+
+                    player.teleport(loc);
+                    plugin.getCommunicationManager().warnEntry(player, field);
+                    return;
+                }
+            }
+        }
+
+        // did not get teleported out so now we update his last known outside location
+
+        plugin.getPlayerManager().updateOutsideLocation(player);
+
+        // enter all fields hes is not currently entered into yet
+
+        for (Field currentField : currentFields)
+        {
+            if (!plugin.getEntryManager().enteredField(player, currentField))
+            {
+                if (!plugin.getEntryManager().containsSameNameOwnedField(player, currentField))
+                {
+                    plugin.getEntryManager().enterOverlappedArea(player, currentField);
+                }
+                plugin.getEntryManager().enterField(player, currentField);
+            }
+        }
+    }
+
     /**
      * Runs when a player enters an overlapped area
      *
@@ -345,7 +447,10 @@ public final class EntryManager
             {
                 if (!field.hasFlag(FieldFlag.SNEAKING_BYPASS) || !player.isSneaking())
                 {
-                    plugin.getForceFieldManager().announceAllowedPlayers(field, ChatBlock.format("entryAnnounce", player.getName(), field.getName(), field.getCoords()));
+                    if (!plugin.getPermissionsManager().isVanished(player))
+                    {
+                        plugin.getForceFieldManager().announceAllowedPlayers(field, ChatBlock.format("entryAnnounce", player.getName(), field.getName(), field.getCoords()));
+                    }
                 }
             }
         }
@@ -570,7 +675,7 @@ public final class EntryManager
             {
                 if (plugin.getPermissionsManager().has(player, "preciousstones.bypass.hiding"))
                 {
-                    player.sendBlockChange(field.getLocation(), field.getTypeId(), field.getData());
+                    player.sendBlockChange(field.getLocation(), field.getTypeId(), (byte) field.getData());
                 }
             }
         }
@@ -825,53 +930,6 @@ public final class EntryManager
     public boolean hasInhabitants(Field field)
     {
         return enteredFields.contains(field);
-    }
-
-    /**
-     * @param field
-     * @return
-     */
-    public Player getClosestInhabitant(Field field)
-    {
-        HashSet<String> inhabitants = new HashSet<String>();
-
-        synchronized (entriesByPlayer)
-        {
-            for (String playerName : entriesByPlayer.keySet())
-            {
-                EntryFields ef = entriesByPlayer.get(playerName);
-                List<Field> fields = ef.getFields();
-
-                for (Field testfield : fields)
-                {
-                    if (field.equals(testfield))
-                    {
-                        inhabitants.add(playerName);
-                    }
-                }
-            }
-        }
-
-        Player closestPlayer = null;
-        double closestDistance = 9999999;
-
-        for (String inhabitant : inhabitants)
-        {
-            Player player = PreciousStones.getInstance().getServer().getPlayer(inhabitant);
-
-            if (player != null)
-            {
-                double distance = player.getLocation().distance(field.getLocation());
-
-                if (distance < closestDistance)
-                {
-                    closestPlayer = player;
-                    closestDistance = distance;
-                }
-            }
-        }
-
-        return closestPlayer;
     }
 
     /**

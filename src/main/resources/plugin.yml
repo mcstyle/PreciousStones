@@ -4,7 +4,7 @@ main: net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones
 version: ${project.version}
 dev-url: http://dev.bukkit.org/server-mods/preciousstones/
 load: 'postworld'
-softdepend: [Permissions, PermissionsBukkit, SimpleClans, HawkEye, Vault, CombatTag, WorldGuard, LWC, Lockette, Spout, mcMMO, SCCore]
+softdepend: [Permissions, PermissionsBukkit, SimpleClans, Vault, CombatTag, WorldGuard, LWC, Lockette, mcMMO, SCCore]
 commands:
   ps:
     description: All of the PreciousStones commands
@@ -14,6 +14,8 @@ permissions:
     description: Can use /ps fields
   preciousstones.benefit.create.forcefield:
     description: Can create forcefield blocks
+  preciousstones.benefit.openclose.forcefield:
+    description: Can open or close forcefields
   preciousstones.benefit.create.unbreakable:
     description: Can create unbreakable blocks
   preciousstones.benefit.disable:
@@ -68,6 +70,8 @@ permissions:
     description: Can hide/unhide his fields
   preciousstones.benefit.setlimit:
     description: Can set renting limits
+  preciousstones.benefit.blacklistcommand:
+    description: Can blacklist commands
   preciousstones.admin.hideall:
     description: Can hide/unhide all of his fields
   preciousstones.whitelist.allow:
@@ -143,7 +147,9 @@ permissions:
   preciousstones.bypass.commandblacklist:
     description: Can toggle bypass mode
   preciousstones.bypass.item-frame-take:
-    description: Can toggle bypass mode
+    description: Can take item frames
+  preciousstones.bypass.armor-stand-take:
+    description: Can take armor stands
   preciousstones.bypass.entity-interact:
     description: Can bypass interaction with entity protections
   preciousstones.bypass.required-permission:
@@ -216,6 +222,8 @@ permissions:
     description: Can use /ps reset
   preciousstones.admin.isadmin:
     description: Can used internally to detect admins
+  preciousstones.admin.migrate:
+    description: Can migrate all fields from one to another
   preciousstones.admin.counts:
     description: Gives you the counts of pstones each player hass
   preciousstones.admin.locations:
@@ -276,6 +284,7 @@ permissions:
       preciousstones.benefit.info: true
       preciousstones.benefit.create.forcefield: true
       preciousstones.benefit.create.unbreakable: true
+      preciousstones.benefit.openclose.forcefield: true
       preciousstones.benefit.heal: true
       preciousstones.benefit.potions: true
       preciousstones.benefit.giveair: true
@@ -304,6 +313,7 @@ permissions:
       preciousstones.benefit.hide: true
       preciousstones.benefit.setlimit: true
       preciousstones.benefit.take: true
+      preciousstones.benefit.blacklistcommand: true
   preciousstones.whitelist.*:
     description: Can whitelist others into fields
     default: false
@@ -355,6 +365,7 @@ permissions:
       preciousstones.bypass.no-allowing: true
       preciousstones.bypass.hiding: true
       preciousstones.bypass.item-frame-take: true
+      preciousstones.bypass.armor-stand-take: true
       preciousstones.bypass.commandblacklist: true
       preciousstones.bypass.entity-interact: true
       preciousstones.bypass.required-permission: true
@@ -402,6 +413,7 @@ permissions:
       preciousstones.admin.disableall: true
       preciousstones.admin.hideall: true
       preciousstones.admin.rent: true
+      preciousstones.admin.migrate: true
   preciousstones.override.*:
     description: These players will receive no warnings or notifications
     default: false

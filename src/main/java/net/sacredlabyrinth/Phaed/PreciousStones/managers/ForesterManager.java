@@ -3,6 +3,7 @@ package net.sacredlabyrinth.Phaed.PreciousStones.managers;
 import net.sacredlabyrinth.Phaed.PreciousStones.FieldFlag;
 import net.sacredlabyrinth.Phaed.PreciousStones.FieldSettings;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
+import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockTypeEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
 import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Vec;
 import org.bukkit.*;
@@ -95,10 +96,10 @@ public final class ForesterManager
                     {
                         int type = world.getBlockTypeIdAt(vec.getX(), vec.getY(), vec.getZ());
 
-                        if (field.getSettings().isFertileType(type))
+                        if (field.getSettings().isFertileType(new BlockTypeEntry(type)))
                         {
                             Block fertile = world.getBlockAt(vec.getX(), vec.getY(), vec.getZ());
-                            fertile.setTypeId(field.getSettings().getGroundBlock());
+                            fertile.setTypeId(field.getSettings().getGroundBlock().getTypeId());
 
                             if (!field.getSettings().getShrubTypes().isEmpty())
                             {
@@ -154,7 +155,7 @@ public final class ForesterManager
 
             if (!isSeeThrough(type))
             {
-                if (type == field.getSettings().getGroundBlock())
+                if (type == field.getSettings().getGroundBlock().getTypeId())
                 {
                     Block block = world.getBlockAt(xr, y + 1, zr);
 

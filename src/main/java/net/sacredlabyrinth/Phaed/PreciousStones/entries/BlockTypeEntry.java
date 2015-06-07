@@ -1,63 +1,97 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.entries;
 
-import net.sacredlabyrinth.Phaed.PreciousStones.Helper;
-import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
+import net.sacredlabyrinth.Phaed.PreciousStones.MaterialName;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.material.CustomBlock;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author phaed
  */
 public class BlockTypeEntry
 {
-    private final int typeId;
-    private byte data;
-    private boolean isSpout;
+    private final Material material;
+    private byte data = 0;
 
     /**
      * @param block
      */
     public BlockTypeEntry(Block block)
     {
-        if (PreciousStones.hasSpout())
-        {
-            SpoutBlock sblock = (SpoutBlock) block;
-            CustomBlock customBlock = sblock.getCustomBlock();
-
-            if (customBlock != null)
-            {
-                this.typeId = customBlock.getCustomId();
-                this.data = sblock.getCustomBlockData();
-                this.isSpout = true;
-                return;
-            }
-        }
-
-        this.typeId = block.getTypeId();
+        this.material = block.getType();
         this.data = block.getData();
-        this.isSpout = false;
     }
 
-    public BlockTypeEntry(String packed)
+    /**
+     * @param material
+     */
+    public BlockTypeEntry(Material material)
     {
-        String[] unpacked = packed.split("[:]");
-        this.typeId = Integer.parseInt(unpacked[0]);
+        this.material = material;
+    }
 
-        if (unpacked.length > 1)
+    public BlockTypeEntry(String string)
+    {
+        // int
+        Pattern pattern = Pattern.compile("(?i)^(\\d+)$");
+        Matcher matcher = pattern.matcher(string);
+        if (matcher.find())
         {
-            this.data = Byte.parseByte(unpacked[1]);
+            this.material = Material.getMaterial(Integer.parseInt(matcher.group(1)));
+            return;
+        }
 
-            if (unpacked.length > 2)
+        // int:int
+        matcher.reset();
+        pattern = Pattern.compile("(?i)^(\\d+):(\\d+)$");
+        matcher = pattern.matcher(string);
+        if (matcher.find())
+        {
+            this.material = Material.getMaterial(Integer.parseInt(matcher.group(1)));
+            this.data = Byte.parseByte(matcher.group(2));
+            return;
+        }
+
+        // string:int
+        matcher.reset();
+        pattern = Pattern.compile("(?i)^(.*):(\\d+)$");
+        matcher = pattern.matcher(string);
+        if (matcher.find())
+        {
+            this.material = MaterialName.getBlockMaterial(matcher.group(1));
+            this.data = Byte.parseByte(matcher.group(2));
+            return;
+        }
+
+        // name
+        matcher.reset();
+        pattern = Pattern.compile("(?i)^(.*)$");
+        matcher = pattern.matcher(string);
+        if (matcher.find())
+        {
+            String name = matcher.group(1);
+            Material m = MaterialName.getBlockMaterial(name);
+
+            if (m == null)
             {
-                this.isSpout = Boolean.parseBoolean(unpacked[2]);
+                m = MaterialName.getItemMaterial(name);
+            }
+
+            if (m != null)
+            {
+                this.material = m;
+            }
+            else
+            {
+                this.material = null;
             }
         }
         else
         {
-            this.data = 0;
-            this.isSpout = false;
+            this.material = null;
         }
     }
 
@@ -66,9 +100,8 @@ public class BlockTypeEntry
      */
     public BlockTypeEntry(BlockState block)
     {
-        this.typeId = block.getTypeId();
+        this.material = block.getType();
         this.data = block.getRawData();
-        this.isSpout = false;
     }
 
     /**
@@ -77,20 +110,8 @@ public class BlockTypeEntry
      */
     public BlockTypeEntry(int typeId, byte data)
     {
-        this.typeId = typeId;
+        this.material = Material.getMaterial(typeId);
         this.data = data;
-        this.isSpout = false;
-    }
-
-    /**
-     * @param typeId
-     * @param data
-     */
-    public BlockTypeEntry(int typeId, byte data, boolean isSpout)
-    {
-        this.typeId = typeId;
-        this.data = data;
-        this.isSpout = isSpout;
     }
 
     /**
@@ -98,9 +119,7 @@ public class BlockTypeEntry
      */
     public BlockTypeEntry(int typeId)
     {
-        this.typeId = typeId;
-        this.data = 0;
-        this.isSpout = false;
+        this.material = Material.getMaterial(typeId);
     }
 
     /**
@@ -108,7 +127,7 @@ public class BlockTypeEntry
      */
     public int getTypeId()
     {
-        return typeId;
+        return this.getMaterial().getId();
     }
 
     /**
@@ -165,26 +184,18 @@ public class BlockTypeEntry
         int hash = 7;
         hash = 47 * hash + this.getTypeId();
         hash = 47 * hash + this.getData();
-        hash = 47 * hash + (this.isSpout() ? 1 : 0);
         return hash;
     }
 
     @Override
     public String toString()
     {
-        if (isSpout)
+        if (getData() == 0)
         {
-            return getTypeId() + ":" + getData() + ":" + isSpout();
+            return MaterialName.getIDName(getMaterial()) + "";
         }
-        else
-        {
-            if (getData() == 0)
-            {
-                return getTypeId() + "";
-            }
 
-            return getTypeId() + ":" + getData();
-        }
+        return MaterialName.getIDName(getMaterial()) + ":" + getData();
     }
 
     public void setData(byte data)
@@ -194,29 +205,12 @@ public class BlockTypeEntry
 
     public boolean isValid()
     {
-        if (isSpout())
-        {
-            return true;
-        }
-
-        return getTypeId() >= 0;
+        return getMaterial() != null;
     }
 
-    public String getFriendly()
+    public Material getMaterial()
     {
-        if (isSpout())
-        {
-            return getTypeId() + "";
-        }
-        else
-        {
-            return Helper.friendlyBlockType(getTypeId());
-        }
-    }
-
-    public boolean isSpout()
-    {
-        return isSpout;
+        return material;
     }
 }
 

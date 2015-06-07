@@ -292,7 +292,7 @@ public class Field extends AbstractVec implements Comparable<Field>
     public int canSetCuboidRadius(int radius)
     {
         int volume = getMaxVolume();
-        int newVolume = ((radius * 2) + 1) * 3;
+        int newVolume = (int) Math.pow((radius * 2) + 1, 3.0);
 
         return newVolume - volume;
     }
@@ -449,7 +449,7 @@ public class Field extends AbstractVec implements Comparable<Field>
     /**
      * @return the block data
      */
-    public byte getData()
+    public short getData()
     {
         return type.getData();
     }
@@ -626,13 +626,13 @@ public class Field extends AbstractVec implements Comparable<Field>
         if (offlinePlayer != null)
         {
             ScoreboardManager manager = Bukkit.getScoreboardManager();
-            Scoreboard board = manager.getNewScoreboard();
+            Scoreboard board = manager.getMainScoreboard();
 
             Team team = board.getPlayerTeam(offlinePlayer);
 
             if (team != null)
             {
-                if (allowed.contains("t:" + team.getName()))
+                if (allowed.contains("t:" + team.getName().toLowerCase()))
                 {
                     return true;
                 }
@@ -1440,7 +1440,7 @@ public class Field extends AbstractVec implements Comparable<Field>
                                     }
                                 }
 
-                                disableFlag(flagStr.toString());
+                                disableFlag(flagStr.toString(), true);
                             }
                         }
                         else if (flag.equals("insertedFlags"))
@@ -1567,6 +1567,7 @@ public class Field extends AbstractVec implements Comparable<Field>
         {
             flags.add(Helper.toFieldFlag(flagStr));
             dirty.add(DirtyFieldReason.FLAGS);
+            PreciousStones.debug("DirtyFlags: enableFlag");
         }
     }
 
@@ -1575,7 +1576,7 @@ public class Field extends AbstractVec implements Comparable<Field>
      *
      * @param flagStr
      */
-    public void disableFlag(String flagStr)
+    public void disableFlag(String flagStr, boolean skipSave)
     {
         boolean hasFlag = false;
 
@@ -1592,7 +1593,12 @@ public class Field extends AbstractVec implements Comparable<Field>
         if (hasFlag && !disabledFlags.contains(Helper.toFieldFlag(flagStr)))
         {
             disabledFlags.add(Helper.toFieldFlag(flagStr));
-            dirty.add(DirtyFieldReason.FLAGS);
+
+            if (!skipSave)
+            {
+                dirty.add(DirtyFieldReason.FLAGS);
+                PreciousStones.debug("DirtyFlags: disableFlag");
+            }
         }
     }
 
@@ -1646,7 +1652,7 @@ public class Field extends AbstractVec implements Comparable<Field>
 
         if (hasFlag)
         {
-            disableFlag(flagStr);
+            disableFlag(flagStr, false);
             return false;
         }
         else
@@ -1670,6 +1676,7 @@ public class Field extends AbstractVec implements Comparable<Field>
             flags.add(flag);
         }
         dirty.add(DirtyFieldReason.FLAGS);
+        PreciousStones.debug("DirtyFlags: RevertFlags");
     }
 
     /**
@@ -1747,8 +1754,7 @@ public class Field extends AbstractVec implements Comparable<Field>
         if (!flags.contains(Helper.toFieldFlag(flagStr)))
         {
             flags.add(Helper.toFieldFlag(flagStr));
-            dirty.add(DirtyFieldReason.FLAGS);
-            PreciousStones.getInstance().getStorageManager().offerField(this);
+            dirtyFlags("insertFlag");
             return true;
         }
         return false;
@@ -1786,6 +1792,7 @@ public class Field extends AbstractVec implements Comparable<Field>
     {
         this.revertSecs = revertSecs;
         dirty.add(DirtyFieldReason.FLAGS);
+        PreciousStones.debug("DirtyFlags: setRevertSecs");
     }
 
     /**
@@ -2017,7 +2024,7 @@ public class Field extends AbstractVec implements Comparable<Field>
                         }
 
                         thisField.setDisabled(true);
-                        thisField.dirtyFlags();
+                        thisField.dirtyFlags("startDisabler");
                     }
                 }
             }, 20L * settings.getAutoDisableTime());
@@ -2246,9 +2253,10 @@ public class Field extends AbstractVec implements Comparable<Field>
         this.newOwner = newOwner;
     }
 
-    public void dirtyFlags()
+    public void dirtyFlags(String reason)
     {
         dirty.add(DirtyFieldReason.FLAGS);
+        PreciousStones.debug("DirtyFlags: " + reason);
         PreciousStones.getInstance().getStorageManager().offerField(this);
     }
 
@@ -2353,7 +2361,7 @@ public class Field extends AbstractVec implements Comparable<Field>
 
         for (Player player : fieldInhabitants)
         {
-            player.sendBlockChange(getLocation(), getTypeId(), getData());
+            player.sendBlockChange(getLocation(), getTypeId(), (byte)getData());
         }
     }
 
@@ -2384,14 +2392,12 @@ public class Field extends AbstractVec implements Comparable<Field>
         if (!isHidden())
         {
             hidden = true;
-            dirtyFlags();
+            dirtyFlags("hide");
 
             BlockTypeEntry maskType = findMaskType();
             Block block = getBlock();
             block.setTypeId(maskType.getTypeId());
             block.setData(maskType.getData());
-
-            PreciousStones.getInstance().getStorageManager().offerField(this);
         }
 
         if (isParent())
@@ -2422,13 +2428,11 @@ public class Field extends AbstractVec implements Comparable<Field>
         if (isHidden())
         {
             hidden = false;
-            dirtyFlags();
+            dirtyFlags("unHide");
 
             Block block = getBlock();
             block.setTypeId(getTypeId());
-            block.setData(getData());
-
-            PreciousStones.getInstance().getStorageManager().offerField(this);
+            block.setData((byte)getData());
         }
 
         if (isParent())
@@ -2461,7 +2465,7 @@ public class Field extends AbstractVec implements Comparable<Field>
             if (matchesBlockType())
             {
                 hidden = false;
-                dirtyFlags();
+                dirtyFlags("");
             }
         }
         else
@@ -2469,7 +2473,7 @@ public class Field extends AbstractVec implements Comparable<Field>
             if (!matchesBlockType())
             {
                 hidden = true;
-                dirtyFlags();
+                dirtyFlags("");
             }
         }*/
 
@@ -2579,15 +2583,13 @@ public class Field extends AbstractVec implements Comparable<Field>
         {
             blacklistedCommands.add(command);
         }
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("addBlacklistedCommand");
     }
 
     public void clearBlacklistedCommands()
     {
         blacklistedCommands.clear();
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("clearBlacklistedCommands");
     }
 
     public boolean isBlacklistedCommand(String command)
@@ -2633,15 +2635,13 @@ public class Field extends AbstractVec implements Comparable<Field>
         {
             whitelistedBlocks.add(type);
         }
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("addWhitelistedBlock");
     }
 
     public void deleteWhitelistedBlock(BlockTypeEntry type)
     {
         whitelistedBlocks.remove(type);
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("deleteWhitelistedBlock");
     }
 
     public boolean hasForesterUse()
@@ -2657,8 +2657,7 @@ public class Field extends AbstractVec implements Comparable<Field>
     public void recordForesterUse()
     {
         foresterUsed++;
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("recordForesterUse");
     }
 
     public int getForesterUsed()
@@ -2745,8 +2744,7 @@ public class Field extends AbstractVec implements Comparable<Field>
                 PreciousStones.getInstance().getEntryManager().enterField(player, this);
             }
 
-            dirtyFlags();
-            PreciousStones.getInstance().getStorageManager().offerField(this);
+            dirtyFlags("addRent");
         }
     }
 
@@ -2755,8 +2753,7 @@ public class Field extends AbstractVec implements Comparable<Field>
         renterEntries.remove(entry);
         renters.remove(entry.getPlayerName().toLowerCase());
 
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("removeRenter");
     }
 
     public boolean clearRents()
@@ -2768,8 +2765,7 @@ public class Field extends AbstractVec implements Comparable<Field>
             purchase = null;
             cleanFieldSign();
 
-            dirtyFlags();
-            PreciousStones.getInstance().getStorageManager().offerField(this);
+            dirtyFlags("clearRents");
             return true;
         }
         return false;
@@ -2794,8 +2790,7 @@ public class Field extends AbstractVec implements Comparable<Field>
 
             payment.clear();
 
-            dirtyFlags();
-            PreciousStones.getInstance().getStorageManager().offerField(this);
+            dirtyFlags("removeRents");
             return true;
         }
 
@@ -2843,8 +2838,7 @@ public class Field extends AbstractVec implements Comparable<Field>
     {
         purchase = new PaymentEntry(playerName, fieldName, item, amount);
 
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("addPurchase");
     }
 
     public void addPayment(String playerName, String fieldName, BlockTypeEntry item, int amount)
@@ -2865,8 +2859,7 @@ public class Field extends AbstractVec implements Comparable<Field>
             payment.add(new PaymentEntry(playerName, fieldName, item, amount));
         }
 
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("addPayment");
     }
 
     public boolean rent(Player player, FieldSign s)
@@ -2992,11 +2985,11 @@ public class Field extends AbstractVec implements Comparable<Field>
 
                 if (entry.getFieldName().isEmpty())
                 {
-                    ChatBlock.send(player, "fieldSignItemPaymentReceivedNoName", entry.getAmount(), entry.getItem().getFriendly(), entry.getPlayer());
+                    ChatBlock.send(player, "fieldSignItemPaymentReceivedNoName", entry.getAmount(), entry.getItem(), entry.getPlayer());
                 }
                 else
                 {
-                    ChatBlock.send(player, "fieldSignItemPaymentReceived", entry.getAmount(), entry.getItem().getFriendly(), entry.getPlayer(), entry.getFieldName());
+                    ChatBlock.send(player, "fieldSignItemPaymentReceived", entry.getAmount(), entry.getItem(), entry.getPlayer(), entry.getFieldName());
                 }
             }
             else
@@ -3017,8 +3010,7 @@ public class Field extends AbstractVec implements Comparable<Field>
         PreciousStones.getInstance().getCommunicationManager().logPaymentCollect(getOwner(), player.getName(), getAttachedFieldSign());
 
         payment.clear();
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("takePayment");
     }
 
     public void completePurchase(Player player)
@@ -3032,11 +3024,11 @@ public class Field extends AbstractVec implements Comparable<Field>
 
             if (purchase.getFieldName().isEmpty())
             {
-                ChatBlock.send(player, "fieldSignItemPaymentReceivedNoName", purchase.getAmount(), purchase.getItem().getFriendly(), purchase.getPlayer());
+                ChatBlock.send(player, "fieldSignItemPaymentReceivedNoName", purchase.getAmount(), purchase.getItem(), purchase.getPlayer());
             }
             else
             {
-                ChatBlock.send(player, "fieldSignItemPaymentReceived", purchase.getAmount(), purchase.getItem().getFriendly(), purchase.getPlayer(), purchase.getFieldName());
+                ChatBlock.send(player, "fieldSignItemPaymentReceived", purchase.getAmount(), purchase.getItem(), purchase.getPlayer(), purchase.getFieldName());
             }
         }
         else
@@ -3056,8 +3048,7 @@ public class Field extends AbstractVec implements Comparable<Field>
         PreciousStones.getInstance().getCommunicationManager().logPurchaseCollect(getOwner(), player.getName(), getAttachedFieldSign());
 
         purchase = null;
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("completePurchase");
     }
 
     public int getLimitSeconds()
@@ -3069,8 +3060,7 @@ public class Field extends AbstractVec implements Comparable<Field>
     {
         this.limitSeconds = limitSeconds;
 
-        dirtyFlags();
-        PreciousStones.getInstance().getStorageManager().offerField(this);
+        dirtyFlags("setLimitSeconds");
     }
 
     private class Update implements Runnable
@@ -3120,8 +3110,7 @@ public class Field extends AbstractVec implements Comparable<Field>
                     renters.remove(entry.getPlayerName().toLowerCase());
                     iter.remove();
 
-                    dirtyFlags();
-                    PreciousStones.getInstance().getStorageManager().offerField(self);
+                    dirtyFlags("RentUpdateRunnable");
 
                     if (getName().isEmpty())
                     {
