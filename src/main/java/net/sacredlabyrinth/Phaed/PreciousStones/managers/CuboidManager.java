@@ -1,12 +1,12 @@
 package net.sacredlabyrinth.Phaed.PreciousStones.managers;
 
-import net.sacredlabyrinth.Phaed.PreciousStones.ChatBlock;
-import net.sacredlabyrinth.Phaed.PreciousStones.FieldFlag;
-import net.sacredlabyrinth.Phaed.PreciousStones.Helper;
 import net.sacredlabyrinth.Phaed.PreciousStones.PreciousStones;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.BlockEntry;
 import net.sacredlabyrinth.Phaed.PreciousStones.entries.CuboidEntry;
-import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
+import net.sacredlabyrinth.Phaed.PreciousStones.helpers.ChatHelper;
+import net.sacredlabyrinth.Phaed.PreciousStones.helpers.Helper;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -16,16 +16,14 @@ import org.bukkit.util.Vector;
 import java.util.HashMap;
 import java.util.List;
 
-public class CuboidManager
-{
+public class CuboidManager {
     private PreciousStones plugin;
     private HashMap<String, CuboidEntry> openCuboids = new HashMap<String, CuboidEntry>();
 
     /**
      *
      */
-    public CuboidManager()
-    {
+    public CuboidManager() {
         plugin = PreciousStones.getInstance();
     }
 
@@ -35,8 +33,7 @@ public class CuboidManager
      * @param player
      * @return
      */
-    public boolean hasOpenCuboid(Player player)
-    {
+    public boolean hasOpenCuboid(Player player) {
         return openCuboids.containsKey(player.getName());
     }
 
@@ -47,8 +44,7 @@ public class CuboidManager
      * @param block
      * @return
      */
-    public boolean isOpenCuboid(Player player, Block block)
-    {
+    public boolean isOpenCuboid(Player player, Block block) {
         return isOpenCuboidField(player, block) || isOpenCuboidChild(player, block);
     }
 
@@ -59,23 +55,18 @@ public class CuboidManager
      * @param block
      * @return
      */
-    public boolean isOpenCuboidField(Player player, Block block)
-    {
-        if (block == null)
-        {
+    public boolean isOpenCuboidField(Player player, Block block) {
+        if (block == null) {
             return false;
         }
 
         CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
+        if (ce != null) {
             Field field = ce.getField();
 
-            if (field != null)
-            {
-                if (Helper.isSameBlock(field.getLocation(), block.getLocation()))
-                {
+            if (field != null) {
+                if (Helper.isSameBlock(field.getLocation(), block.getLocation())) {
                     return true;
                 }
             }
@@ -91,18 +82,14 @@ public class CuboidManager
      * @param block
      * @return
      */
-    public boolean isOpenCuboidChild(Player player, Block block)
-    {
+    public boolean isOpenCuboidChild(Player player, Block block) {
         CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
+        if (ce != null) {
             Field field = ce.getField();
 
-            for (Field child : field.getChildren())
-            {
-                if (Helper.isSameBlock(child.getLocation(), block.getLocation()))
-                {
+            for (Field child : field.getChildren()) {
+                if (Helper.isSameBlock(child.getLocation(), block.getLocation())) {
                     return true;
                 }
             }
@@ -117,8 +104,7 @@ public class CuboidManager
      * @param player
      * @return
      */
-    public CuboidEntry getOpenCuboid(Player player)
-    {
+    public CuboidEntry getOpenCuboid(Player player) {
         return openCuboids.get(player.getName());
     }
 
@@ -128,37 +114,28 @@ public class CuboidManager
      * @param player
      * @param block
      */
-    public boolean processSelectedBlock(Player player, Block block)
-    {
+    public boolean processSelectedBlock(Player player, Block block) {
         CuboidEntry openCuboid = getOpenCuboid(player);
 
-        if (!plugin.getVisualizationManager().isOutlineBlock(player, block))
-        {
-            if (openCuboid.testOverflow(block.getLocation()) || plugin.getPermissionsManager().has(player, "preciousstones.bypass.cuboid"))
-            {
-                if (plugin.getWorldGuardManager().canBuild(player, block.getLocation()))
-                {
-                    if (openCuboids.containsKey(player.getName()))
-                    {
+        if (!plugin.getVisualizationManager().isOutlineBlock(player, block)) {
+            if (openCuboid.testOverflow(block.getLocation()) || plugin.getPermissionsManager().has(player, "preciousstones.bypass.cuboid")) {
+                if (plugin.getWorldGuardManager().canBuild(player, block.getLocation())) {
+                    if (openCuboids.containsKey(player.getName())) {
                         CuboidEntry ce = openCuboids.get(player.getName());
 
                         int oldVolume = ce.getAvailableVolume();
 
-                        if (ce.isSelected(block))
-                        {
+                        if (ce.isSelected(block)) {
                             ce.removeSelected(block);
                             plugin.getVisualizationManager().displaySingle(player, block.getType(), block);
-                        }
-                        else
-                        {
+                        } else {
                             // find conflicts
 
                             CuboidEntry clone = ce.Clone();
                             clone.addSelected(block);
 
-                            if (plugin.getForceFieldManager().existsConflict(clone.getMockField(), player))
-                            {
-                                ChatBlock.send(player, "cuboidSelectionConflicts");
+                            if (plugin.getForceFieldManager().existsConflict(clone.getMockField(), player)) {
+                                ChatHelper.send(player, "cuboidSelectionConflicts");
                                 return false;
                             }
 
@@ -170,35 +147,25 @@ public class CuboidManager
 
                         int newVolume = ce.getAvailableVolume();
 
-                        if (newVolume != oldVolume)
-                        {
+                        if (newVolume != oldVolume) {
                             plugin.getVisualizationManager().displayFieldOutline(player, ce);
 
-                            if (newVolume >= 0)
-                            {
-                                ChatBlock.send(player, "cuboidAvailableProtection", newVolume);
-                            }
-                            else
-                            {
-                                ChatBlock.send(player, "cuboidAvailableProtectionBypass", newVolume);
+                            if (newVolume >= 0) {
+                                ChatHelper.send(player, "cuboidAvailableProtection", newVolume);
+                            } else {
+                                ChatHelper.send(player, "cuboidAvailableProtectionBypass", newVolume);
                             }
                         }
                     }
                     return true;
+                } else {
+                    ChatHelper.send(player, "cuboidCannotExtendWG");
                 }
-                else
-                {
-                    ChatBlock.send(player, "cuboidCannotExtendWG");
-                }
+            } else {
+                ChatHelper.send(player, "cuboidExceeds");
             }
-            else
-            {
-                ChatBlock.send(player, "cuboidExceeds");
-            }
-        }
-        else
-        {
-            ChatBlock.send(player, "cuboidOutline");
+        } else {
+            ChatHelper.send(player, "cuboidOutline");
         }
 
         return false;
@@ -211,29 +178,25 @@ public class CuboidManager
      * @param player
      * @param field
      */
-    public void openCuboid(final Player player, final Field field)
-    {
+    public void openCuboid(final Player player, final Field field) {
         final CuboidEntry ce = new CuboidEntry(field);
         openCuboids.put(player.getName(), ce);
 
         field.setOpen(true);
         plugin.getVisualizationManager().revert(player);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-        {
-            public void run()
-            {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            public void run() {
                 ce.addSelected(field.getBlock());
 
-                for (Field child : field.getChildren())
-                {
+                for (Field child : field.getChildren()) {
                     ce.addSelected(child.getBlock());
                 }
 
                 plugin.getVisualizationManager().displayFieldOutline(player, ce);
 
-                ChatBlock.send(player, "cuboidDrawingMode");
-                ChatBlock.send(player, "cuboidAvailableProtection", ce.getAvailableVolume());
+                ChatHelper.send(player, "cuboidDrawingMode");
+                ChatHelper.send(player, "cuboidAvailableProtection", ce.getAvailableVolume());
             }
         }, 1L);
     }
@@ -244,19 +207,15 @@ public class CuboidManager
      * @param player
      * @param field
      */
-    public void openChild(final Player player, final Field field)
-    {
+    public void openChild(final Player player, final Field field) {
         final CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-            {
-                public void run()
-                {
+        if (ce != null) {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
                     ce.addSelected(field.getBlock());
                     PreciousStones.getInstance().getForceFieldManager().addSourceField(field);
-                    ChatBlock.send(player, "cuboidAvailableProtection", ce.getAvailableVolume());
+                    ChatHelper.send(player, "cuboidAvailableProtection", ce.getAvailableVolume());
                 }
             }, 1L);
         }
@@ -268,19 +227,15 @@ public class CuboidManager
      * @param player
      * @return
      */
-    public boolean closeCuboid(final Player player)
-    {
+    public boolean closeCuboid(final Player player) {
         CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
+        if (ce != null) {
             final Field field = ce.getField();
 
-            if (ce.isExceeded())
-            {
-                if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.cuboid"))
-                {
-                    ChatBlock.send(player, "cuboidExceedsMax");
+            if (ce.isExceeded()) {
+                if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.cuboid")) {
+                    ChatHelper.send(player, "cuboidExceedsMax");
                     cancelOpenCuboid(player);
                     return false;
                 }
@@ -294,8 +249,7 @@ public class CuboidManager
             }
 
 
-            if (plugin.getForceFieldManager().fieldConflicts(ce, player) != null)
-            {
+            if (plugin.getForceFieldManager().fieldConflicts(ce, player) != null) {
                 ChatBlock.send(player, "cuboidConflicts");
                 cancelOpenCuboid(player);
                 return false;
@@ -304,26 +258,21 @@ public class CuboidManager
             List<Vector> corners = field.getCorners();
             corners.add(field.getLocation().toVector());
 
-            for (Vector corner : corners)
-            {
+            for (Vector corner : corners) {
                 Location location = corner.toLocation(player.getWorld());
 
-                if (!plugin.getWorldGuardManager().canBuild(player, location))
-                {
-                    ChatBlock.send(player, "cuboidConflictsWG");
+                if (!plugin.getWorldGuardManager().canBuild(player, location)) {
+                    ChatHelper.send(player, "cuboidConflictsWG");
                     cancelOpenCuboid(player);
                     return false;
                 }
             }
 
-            if (field.hasFlag(FieldFlag.PREVENT_UNPROTECTABLE))
-            {
+            if (field.hasFlag(FieldFlag.PREVENT_UNPROTECTABLE)) {
                 Block foundBlock = plugin.getUnprotectableManager().existsUnprotectableBlock(field);
 
-                if (foundBlock != null)
-                {
-                    if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.unprotectable"))
-                    {
+                if (foundBlock != null) {
+                    if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.unprotectable")) {
                         plugin.getCommunicationManager().warnPlaceFieldInUnprotectable(player, foundBlock, field.getBlock());
                         cancelOpenCuboid(player);
                         return false;
@@ -357,13 +306,11 @@ public class CuboidManager
      * @param player
      * @param block
      */
-    public void removeChild(Player player, Block block)
-    {
+    public void removeChild(Player player, Block block) {
         CuboidEntry ce = openCuboids.get(player.getName());
         Field child = plugin.getForceFieldManager().getField(block);
 
-        if (ce != null && child != null)
-        {
+        if (ce != null && child != null) {
             ce.getField().getChildren().remove(child);
         }
     }
@@ -373,23 +320,18 @@ public class CuboidManager
      *
      * @param block the block that is being broken
      */
-    public void cancelOpenCuboid(Player player, Block block)
-    {
+    public void cancelOpenCuboid(Player player, Block block) {
         CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
+        if (ce != null) {
             Field field = ce.getField();
 
-            if (Helper.isSameBlock(field.getLocation(), block.getLocation()))
-            {
+            if (Helper.isSameBlock(field.getLocation(), block.getLocation())) {
                 cancelOpenCuboid(player);
             }
 
-            for (Field child : field.getChildren())
-            {
-                if (Helper.isSameBlock(child.getLocation(), block.getLocation()))
-                {
+            for (Field child : field.getChildren()) {
+                if (Helper.isSameBlock(child.getLocation(), block.getLocation())) {
                     cancelOpenCuboid(player);
                 }
             }
@@ -401,15 +343,13 @@ public class CuboidManager
      *
      * @param player
      */
-    public void cancelOpenCuboid(Player player)
-    {
+    public void cancelOpenCuboid(Player player) {
         plugin.getVisualizationManager().revert(player);
         plugin.getVisualizationManager().revertOutline(player);
 
-        if (openCuboids.containsKey(player.getName()))
-        {
+        if (openCuboids.containsKey(player.getName())) {
             openCuboids.remove(player.getName());
-            ChatBlock.send(player, "cuboidCancelled");
+            ChatHelper.send(player, "cuboidCancelled");
         }
     }
 
@@ -418,20 +358,17 @@ public class CuboidManager
      *
      * @param player
      */
-    public void revertLastSelection(Player player)
-    {
+    public void revertLastSelection(Player player) {
         CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
+        if (ce != null) {
             BlockEntry selected = ce.getLastSelected();
 
-            if (selected != null)
-            {
+            if (selected != null) {
                 ce.revertLastSelected();
                 plugin.getVisualizationManager().revertSingle(player, selected.getBlock());
                 plugin.getVisualizationManager().displayFieldOutline(player, ce);
-                ChatBlock.send(player, "cuboidReverted");
+                ChatHelper.send(player, "cuboidReverted");
             }
         }
     }
@@ -441,18 +378,14 @@ public class CuboidManager
      *
      * @param player
      */
-    public void expandDirection(Player player)
-    {
+    public void expandDirection(Player player) {
         CuboidEntry ce = openCuboids.get(player.getName());
 
-        if (ce != null)
-        {
+        if (ce != null) {
             Block block = ce.getExpandedBlock(player);
 
-            if (block != null)
-            {
-                if (!processSelectedBlock(player, block))
-                {
+            if (block != null) {
+                if (!processSelectedBlock(player, block)) {
                     return;
                 }
             }

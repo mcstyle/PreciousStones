@@ -1,8 +1,7 @@
 package net.sacredlabyrinth.Phaed.PreciousStones;
 
-import net.sacredlabyrinth.Phaed.PreciousStones.vectors.Field;
+import net.sacredlabyrinth.Phaed.PreciousStones.field.Field;
 
-public interface ResultsFilter
-{
+public interface ResultsFilter {
     boolean Filter(Field field);
 }
