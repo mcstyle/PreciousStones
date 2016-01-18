@@ -516,18 +516,22 @@ public class PSPlayerListener implements Listener {
 
 
         if (block != null) {
-            if (is.getType().equals(Material.ARMOR_STAND)) {
-                if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take")) {
-                    Field field = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
+            try {
+                if (Material.valueOf("ARMOR_STAND").equals(is.getType())) {
+                    if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take")) {
+                        Field field = plugin.getForceFieldManager().getEnabledSourceField(block.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
 
-                    if (field != null) {
-                        if (FieldFlag.PROTECT_ARMOR_STANDS.applies(field, player)) {
-                            event.setCancelled(true);
-                            plugin.getCommunicationManager().warnPlaceItem(player, is, block.getLocation(), field);
-                            return;
+                        if (field != null) {
+                            if (FieldFlag.PROTECT_ARMOR_STANDS.applies(field, player)) {
+                                event.setCancelled(true);
+                                plugin.getCommunicationManager().warnPlaceItem(player, is, block.getLocation(), field);
+                                return;
+                            }
                         }
                     }
                 }
+            } catch (IllegalArgumentException ex) {
+                // ARMOR_STAND not supported (<1.8), ignoring
             }
         }
 
@@ -757,20 +761,23 @@ public class PSPlayerListener implements Listener {
                     }
 
                     // close the cuboid if the player shift clicks any block
-
                     if (player.isSneaking()) {
                         event.setCancelled(true);
-                        plugin.getCuboidManager().closeCuboid(player);
+                        if (!plugin.getCuboidManager().isOpenCuboid(player, target)) {
+                            plugin.getCuboidManager().closeCuboid(player);
+                        }
                         return;
                     }
 
                     // close the cuboid when clicking back to the origin block
-
                     if (plugin.getCuboidManager().isOpenCuboid(player, target)) {
                         event.setCancelled(true);
-                        plugin.getCuboidManager().closeCuboid(player);
+                        if (!player.isSneaking()) {
+                            plugin.getCuboidManager().closeCuboid(player);
+                        }
                         return;
                     }
+
 
                     // do not select field blocks
 

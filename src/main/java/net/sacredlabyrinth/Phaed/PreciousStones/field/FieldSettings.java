@@ -46,6 +46,10 @@ public class FieldSettings {
     protected int cannonHeight = 0;
     protected int customHeight = 0;
     protected int customVolume = 0;
+    protected int autoMaxY = 0;
+    protected int autoMinY = 0;
+    protected int maxDistance = 0;
+    protected boolean noCalcY = false;
     protected int mineDelaySeconds = 0;
     protected int lightningDelaySeconds = 0;
     protected int lightningReplaceBlock = 0;
@@ -91,6 +95,7 @@ public class FieldSettings {
     protected List<BlockTypeEntry> preventPlaceBlacklist = new ArrayList<BlockTypeEntry>();
     protected List<BlockTypeEntry> preventDestroyBlacklist = new ArrayList<BlockTypeEntry>();
     protected List<BlockTypeEntry> preventUse = new ArrayList<BlockTypeEntry>();
+    protected Boolean preventUseAll = false;
     protected List<BlockTypeEntry> confiscatedItems = new ArrayList<BlockTypeEntry>();
     protected List<String> allowedWorlds = new ArrayList<String>();
     protected List<String> allowedOnlyInside = new ArrayList<String>();
@@ -210,7 +215,6 @@ public class FieldSettings {
         loadBoolean("no-resize");
         loadBoolean("prevent-fire");
         loadBoolean("prevent-fire-spread");
-        loadBoolean("prevent-use-all");
         loadBoolean("enable-with-redstone");
         loadBoolean("allow-place");
         loadBoolean("allow-destroy");
@@ -348,6 +352,11 @@ public class FieldSettings {
         shrubDensity = loadInt("shrub-density");
         groundBlock = loadTypeEntry("ground-block");
         preventUse = loadTypeEntries("prevent-use");
+        preventUseAll = loadBoolean("prevent-use-all");
+        autoMaxY = loadInt("auto-max-y");
+        autoMinY = loadInt("auto-min-y");
+        maxDistance = loadInt("max-distance");
+        noCalcY = loadBoolean("no-calc-y");
         confiscatedItems = loadTypeEntries("confiscate-items");
         allowedPlayers = loadStringList("always-allow-players");
         deniedPlayers = loadStringList("always-deny-players");
@@ -722,6 +731,40 @@ public class FieldSettings {
     public int getCustomHeight() {
         return this.customHeight;
     }
+
+    /**
+     * @return int
+     */
+    public int getAutoMaxY()
+    {
+        return this.autoMaxY;
+    }
+
+    /**
+     * @return int
+     */
+    public int getAutoMinY()
+    {
+        return this.autoMinY;
+    }
+
+    /**
+     * @return int
+     */
+    public boolean getNoCalcY()
+    {
+        return this.noCalcY;
+    }
+
+    /**
+     * @return int
+     */
+    public int getMaxDisatance()
+    {
+        return this.maxDistance;
+    }
+
+
 
     /**
      * Whether the block can be translocated or not based on the blacklist

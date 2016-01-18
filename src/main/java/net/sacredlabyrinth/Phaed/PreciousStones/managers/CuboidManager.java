@@ -241,16 +241,21 @@ public class CuboidManager {
                 }
             }
 
-            int customHeight = field.getSettings().getCustomHeight();
+            int autoMaxY = field.getSettings().getAutoMaxY();
+            int autoMinY = field.getSettings().getAutoMinY();
 
-            if (customHeight > 0) {
-                ce.setMaxy(customHeight);
+            if (autoMaxY > 0 || autoMinY > 0) {
+                if (autoMaxY > 0) {
+                    ce.setMaxy(autoMaxY);
+                }
+                if (autoMinY > 0) {
+                    ce.setMinY(autoMinY);
+                }
                 plugin.getVisualizationManager().displayFieldOutline(player, ce);
             }
 
-
             if (plugin.getForceFieldManager().fieldConflicts(ce, player) != null) {
-                ChatBlock.send(player, "cuboidConflicts");
+                ChatHelper.send(player, "cuboidConflicts");
                 cancelOpenCuboid(player);
                 return false;
             }

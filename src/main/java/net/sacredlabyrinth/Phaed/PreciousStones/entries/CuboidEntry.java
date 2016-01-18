@@ -389,7 +389,23 @@ public class CuboidEntry {
      * @return
      */
     public int getVolume() {
+
+        if (field.getSettings().getNoCalcY()) {
+            int widthX = Helper.getWidthFromCoords(maxx, minx);
+            int widthZ = Helper.getWidthFromCoords(maxz, minz);
+            return (widthX * widthZ);
+        }
+
         return Helper.getWidthFromCoords(maxy, miny) * Helper.getWidthFromCoords(maxx, minx) * Helper.getWidthFromCoords(maxz, minz);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getMaxDistance()
+    {
+        return field.getSettings().getMaxDisatance();
     }
 
     /**
@@ -438,6 +454,21 @@ public class CuboidEntry {
      * @return
      */
     public boolean isExceeded() {
+        int maxDistance = getMaxDistance();
+        int widthX = Helper.getWidthFromCoords(maxx, minx);
+        int widthZ = Helper.getWidthFromCoords(maxz, minz);
+
+        PreciousStones.debug("maxDistance %d", maxDistance);
+        PreciousStones.debug("widthX %d", widthX);
+        PreciousStones.debug("widthZ %d", widthZ);
+
+        if (maxDistance > 0) {
+            if (widthX > maxDistance || widthZ > maxDistance) {
+                PreciousStones.debug("maxDistance Exceeded!");
+                return true;
+            }
+        }
+
         return getVolume() > getMaxVolume();
     }
 
@@ -447,6 +478,11 @@ public class CuboidEntry {
         }
 
         return minx;
+    }
+
+    public void setMinY(int y)
+    {
+        miny = y;
     }
 
     public int getMiny() {
