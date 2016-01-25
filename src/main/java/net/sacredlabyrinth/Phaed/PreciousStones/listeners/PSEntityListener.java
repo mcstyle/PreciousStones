@@ -26,7 +26,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
@@ -469,7 +469,7 @@ public class PSEntityListener implements Listener {
             }
         }
 
-        if (event.getEntity().getType().equals(EntityType.ARMOR_STAND)) {
+        if (Helper.typeEquals(event.getEntity().getType(), "ARMOR_STAND")) {
             Player player = Helper.getDamagingPlayer(event);
 
             if (player != null && !plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take")) {
@@ -724,7 +724,7 @@ public class PSEntityListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) {
+    public void PlayerInteractEntityEvent(PlayerInteractEntityEvent event) {
 
         if (event.isCancelled()) {
             return;
@@ -737,7 +737,7 @@ public class PSEntityListener implements Listener {
             return;
         }
 
-        if (entity.getType().equals(EntityType.ARMOR_STAND)) {
+        if (Helper.typeEquals(entity.getType(), "ARMOR_STAND")) {
             if (player != null && !plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take")) {
                 Field field = plugin.getForceFieldManager().getEnabledSourceField(entity.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
 

@@ -475,17 +475,22 @@ public class PSPlayerListener implements Listener {
             }
         }
 
-        if (entity.getType().equals(EntityType.ARMOR_STAND)) {
-            if (player != null && !plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take")) {
-                Field field = plugin.getForceFieldManager().getEnabledSourceField(entity.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
+        try {
+            if (Material.valueOf("ARMOR_STAND").equals(entity.getType())) {
+                if (player != null && !plugin.getPermissionsManager().has(player, "preciousstones.bypass.armor-stand-take")) {
+                    Field field = plugin.getForceFieldManager().getEnabledSourceField(entity.getLocation(), FieldFlag.PROTECT_ARMOR_STANDS);
 
-                if (field != null) {
-                    if (FieldFlag.PROTECT_ARMOR_STANDS.applies(field, player)) {
-                        event.setCancelled(true);
+                    if (field != null) {
+                        if (FieldFlag.PROTECT_ARMOR_STANDS.applies(field, player)) {
+                            event.setCancelled(true);
+                        }
                     }
                 }
             }
+        } catch (IllegalArgumentException ex) {
+            // ARMOR_STAND not supported (<1.8), ignoring
         }
+
 
         if (!plugin.getPermissionsManager().has(player, "preciousstones.bypass.entity-interact")) {
             Field field = plugin.getForceFieldManager().getEnabledSourceField(entity.getLocation(), FieldFlag.PREVENT_ENTITY_INTERACT);
@@ -546,7 +551,6 @@ public class PSPlayerListener implements Listener {
                         plugin.getCommunicationManager().warnUse(player, block, useAllField);
                         event.setCancelled(true);
                         return;
-
                     }
                 }
 

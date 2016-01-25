@@ -29,6 +29,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -1354,7 +1355,10 @@ public class PSBlockListener implements Listener {
 
         // prevent piston from moving a field or unbreakable block
 
-        List<Block> blocks = event.getBlocks();
+        //List<Block> blocks = event.getBlocks();
+        List<Block> blocks = new ArrayList();
+
+        blocks.add(event.getBlock());
 
         for (Block block : blocks) {
             if (SignHelper.cannotBreakFieldSign(block, null)) {

@@ -7,6 +7,7 @@ import net.sacredlabyrinth.Phaed.PreciousStones.field.FieldFlag;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -808,5 +809,50 @@ public class Helper {
         //System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
         // return ste[ste.length - depth].getMethodName();  //Wrong, fails for depth = 0
         return ste[ste.length - 1 - depth].getMethodName(); //Thank you Tom Tresansky
+    }
+
+    /**
+     *
+     * @param itemStack
+     * @param b
+     * @return
+     */
+    public static Boolean materialEquals(ItemStack itemStack, String b)
+    {
+        return materialEquals(itemStack.getType(), b);
+    }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Boolean materialEquals(Material a, String b)
+    {
+        try {
+            return a.equals(Material.valueOf(b));
+        } catch (IllegalArgumentException ex) {
+            // ARMOR_STAND not supported (<1.8), ignoring
+        }
+
+        return false;
+    }
+
+    /**
+     *
+     * @param a
+     * @param b
+     * @return
+     */
+    public static Boolean typeEquals(EntityType a, String b)
+    {
+        try {
+            return a.equals(EntityType.valueOf(b));
+        } catch (IllegalArgumentException ex) {
+            // ARMOR_STAND not supported (<1.8), ignoring
+        }
+
+        return false;
     }
 }

@@ -5,776 +5,776 @@ import org.bukkit.Material;
 public class MaterialName {
 
     public static String getIDName(Material mate) {
-        switch (mate) {
-            case AIR:
+        switch (mate.toString()) {
+            case "AIR":
                 return "air";
-            case STONE:
+            case "STONE":
                 return "stone";
-            case GRASS:
+            case "GRASS":
                 return "grass";
-            case DIRT:
+            case "DIRT":
                 return "dirt";
-            case COBBLESTONE:
+            case "COBBLESTONE":
                 return "cobblestone";
-            case WOOD:
+            case "WOOD":
                 return "planks";
-            case SAPLING:
+            case "SAPLING":
                 return "sapling";
-            case BEDROCK:
+            case "BEDROCK":
                 return "bedrock";
-            case WATER:
+            case "WATER":
                 return "flowing_water";
-            case STATIONARY_WATER:
+            case "STATIONARY_WATER":
                 return "water";
-            case LAVA:
+            case "LAVA":
                 return "flowing_lava";
-            case STATIONARY_LAVA:
+            case "STATIONARY_LAVA":
                 return "lava";
-            case SAND:
+            case "SAND":
                 return "sand";
-            case GRAVEL:
+            case "GRAVEL":
                 return "gravel";
-            case GOLD_ORE:
+            case "GOLD_ORE":
                 return "gold_ore";
-            case IRON_ORE:
+            case "IRON_ORE":
                 return "iron_ore";
-            case COAL_ORE:
+            case "COAL_ORE":
                 return "coal_ore";
-            case LOG:
+            case "LOG":
                 return "log";
-            case LEAVES:
+            case "LEAVES":
                 return "leaves";
-            case SPONGE:
+            case "SPONGE":
                 return "sponge";
-            case GLASS:
+            case "GLASS":
                 return "glass";
-            case LAPIS_ORE:
+            case "LAPIS_ORE":
                 return "lapis_ore";
-            case LAPIS_BLOCK:
+            case "LAPIS_BLOCK":
                 return "lapis_block";
-            case DISPENSER:
+            case "DISPENSER":
                 return "dispenser";
-            case SANDSTONE:
+            case "SANDSTONE":
                 return "sandstone";
-            case NOTE_BLOCK:
+            case "NOTE_BLOCK":
                 return "noteblock";
-            case BED_BLOCK:
+            case "BED_BLOCK":
                 return "bed";
-            case POWERED_RAIL:
+            case "POWERED_RAIL":
                 return "golden_rail";
-            case DETECTOR_RAIL:
+            case "DETECTOR_RAIL":
                 return "detector_rail";
-            case PISTON_STICKY_BASE:
+            case "PISTON_STICKY_BASE":
                 return "sticky_piston";
-            case WEB:
+            case "WEB":
                 return "web";
-            case LONG_GRASS:
+            case "LONG_GRASS":
                 return "tallgrass";
-            case DEAD_BUSH:
+            case "DEAD_BUSH":
                 return "deadbush";
-            case PISTON_BASE:
+            case "PISTON_BASE":
                 return "piston";
-            case PISTON_EXTENSION:
+            case "PISTON_EXTENSION":
                 return "piston_head";
-            case WOOL:
+            case "WOOL":
                 return "wool";
-            case PISTON_MOVING_PIECE:
+            case "PISTON_MOVING_PIECE":
                 return "piston_extension";
-            case YELLOW_FLOWER:
+            case "YELLOW_FLOWER":
                 return "yellow_flower";
-            case RED_ROSE:
+            case "RED_ROSE":
                 return "red_flower";
-            case BROWN_MUSHROOM:
+            case "BROWN_MUSHROOM":
                 return "brown_mushroom";
-            case RED_MUSHROOM:
+            case "RED_MUSHROOM":
                 return "red_mushroom";
-            case GOLD_BLOCK:
+            case "GOLD_BLOCK":
                 return "gold_block";
-            case IRON_BLOCK:
+            case "IRON_BLOCK":
                 return "iron_block";
-            case DOUBLE_STEP:
+            case "DOUBLE_STEP":
                 return "double_stone_slab";
-            case STEP:
+            case "STEP":
                 return "stone_slab";
-            case BRICK:
+            case "BRICK":
                 return "brick_block";
-            case TNT:
+            case "TNT":
                 return "tnt";
-            case BOOKSHELF:
+            case "BOOKSHELF":
                 return "bookshelf";
-            case MOSSY_COBBLESTONE:
+            case "MOSSY_COBBLESTONE":
                 return "mossy_cobblestone";
-            case OBSIDIAN:
+            case "OBSIDIAN":
                 return "obsidian";
-            case TORCH:
+            case "TORCH":
                 return "torch";
-            case FIRE:
+            case "FIRE":
                 return "fire";
-            case MOB_SPAWNER:
+            case "MOB_SPAWNER":
                 return "mob_spawner";
-            case WOOD_STAIRS:
+            case "WOOD_STAIRS":
                 return "oak_stairs";
-            case CHEST:
+            case "CHEST":
                 return "chest";
-            case REDSTONE_WIRE:
+            case "REDSTONE_WIRE":
                 return "redstone_wire";
-            case DIAMOND_ORE:
+            case "DIAMOND_ORE":
                 return "diamond_ore";
-            case DIAMOND_BLOCK:
+            case "DIAMOND_BLOCK":
                 return "diamond_block";
-            case WORKBENCH:
+            case "WORKBENCH":
                 return "crafting_table";
-            case CROPS:
+            case "CROPS":
                 return "wheat";
-            case SOIL:
+            case "SOIL":
                 return "farmland";
-            case FURNACE:
+            case "FURNACE":
                 return "furnace";
-            case BURNING_FURNACE:
+            case "BURNING_FURNACE":
                 return "lit_furnace";
-            case SIGN_POST:
+            case "SIGN_POST":
                 return "standing_sign";
-            case WOODEN_DOOR:
+            case "WOODEN_DOOR":
                 return "wooden_door";
-            case LADDER:
+            case "LADDER":
                 return "ladder";
-            case RAILS:
+            case "RAILS":
                 return "rail";
-            case COBBLESTONE_STAIRS:
+            case "COBBLESTONE_STAIRS":
                 return "stone_stairs";
-            case WALL_SIGN:
+            case "WALL_SIGN":
                 return "wall_sign";
-            case LEVER:
+            case "LEVER":
                 return "lever";
-            case STONE_PLATE:
+            case "STONE_PLATE":
                 return "stone_pressure_plate";
-            case IRON_DOOR_BLOCK:
+            case "IRON_DOOR_BLOCK":
                 return "iron_door";
-            case WOOD_PLATE:
+            case "WOOD_PLATE":
                 return "wooden_pressure_plate";
-            case REDSTONE_ORE:
+            case "REDSTONE_ORE":
                 return "redstone_ore";
-            case GLOWING_REDSTONE_ORE:
+            case "GLOWING_REDSTONE_ORE":
                 return "lit_redstone_ore";
-            case REDSTONE_TORCH_OFF:
+            case "REDSTONE_TORCH_OFF":
                 return "unlit_redstone_torch";
-            case REDSTONE_TORCH_ON:
+            case "REDSTONE_TORCH_ON":
                 return "redstone_torch";
-            case STONE_BUTTON:
+            case "STONE_BUTTON":
                 return "stone_button";
-            case SNOW:
+            case "SNOW":
                 return "snow_layer";
-            case ICE:
+            case "ICE":
                 return "ice";
-            case SNOW_BLOCK:
+            case "SNOW_BLOCK":
                 return "snow";
-            case CACTUS:
+            case "CACTUS":
                 return "cactus";
-            case CLAY:
+            case "CLAY":
                 return "clay";
-            case SUGAR_CANE_BLOCK:
+            case "SUGAR_CANE_BLOCK":
                 return "reeds";
-            case JUKEBOX:
+            case "JUKEBOX":
                 return "jukebox";
-            case FENCE:
+            case "FENCE":
                 return "fence";
-            case PUMPKIN:
+            case "PUMPKIN":
                 return "pumpkin";
-            case NETHERRACK:
+            case "NETHERRACK":
                 return "netherrack";
-            case SOUL_SAND:
+            case "SOUL_SAND":
                 return "soul_sand";
-            case GLOWSTONE:
+            case "GLOWSTONE":
                 return "glowstone";
-            case PORTAL:
+            case "PORTAL":
                 return "portal";
-            case JACK_O_LANTERN:
+            case "JACK_O_LANTERN":
                 return "lit_pumpkin";
-            case CAKE_BLOCK:
+            case "CAKE_BLOCK":
                 return "cake";
-            case DIODE_BLOCK_OFF:
+            case "DIODE_BLOCK_OFF":
                 return "unpowered_repeater";
-            case DIODE_BLOCK_ON:
+            case "DIODE_BLOCK_ON":
                 return "powered_repeater";
-            case STAINED_GLASS:
+            case "STAINED_GLASS":
                 return "stained_glass";
-            case TRAP_DOOR:
+            case "TRAP_DOOR":
                 return "trapdoor";
-            case MONSTER_EGGS:
+            case "MONSTER_EGGS":
                 return "monster_egg";
-            case SMOOTH_BRICK:
+            case "SMOOTH_BRICK":
                 return "stonebrick";
-            case HUGE_MUSHROOM_1:
+            case "HUGE_MUSHROOM_1":
                 return "brown_mushroom_block";
-            case HUGE_MUSHROOM_2:
+            case "HUGE_MUSHROOM_2":
                 return "red_mushroom_block";
-            case IRON_FENCE:
+            case "IRON_FENCE":
                 return "iron_bars";
-            case THIN_GLASS:
+            case "THIN_GLASS":
                 return "glass_pane";
-            case MELON_BLOCK:
+            case "MELON_BLOCK":
                 return "melon_block";
-            case PUMPKIN_STEM:
+            case "PUMPKIN_STEM":
                 return "pumpkin_stem";
-            case MELON_STEM:
+            case "MELON_STEM":
                 return "melon_stem";
-            case VINE:
+            case "VINE":
                 return "vine";
-            case FENCE_GATE:
+            case "FENCE_GATE":
                 return "fence_gate";
-            case BRICK_STAIRS:
+            case "BRICK_STAIRS":
                 return "brick_stairs";
-            case SMOOTH_STAIRS:
+            case "SMOOTH_STAIRS":
                 return "stone_brick_stairs";
-            case MYCEL:
+            case "MYCEL":
                 return "mycelium";
-            case WATER_LILY:
+            case "WATER_LILY":
                 return "waterlily";
-            case NETHER_BRICK:
+            case "NETHER_BRICK":
                 return "nether_brick";
-            case NETHER_FENCE:
+            case "NETHER_FENCE":
                 return "nether_brick_fence";
-            case NETHER_BRICK_STAIRS:
+            case "NETHER_BRICK_STAIRS":
                 return "nether_brick_stairs";
-            case NETHER_WARTS:
+            case "NETHER_WARTS":
                 return "nether_wart";
-            case ENCHANTMENT_TABLE:
+            case "ENCHANTMENT_TABLE":
                 return "enchanting_table";
-            case BREWING_STAND:
+            case "BREWING_STAND":
                 return "brewing_stand";
-            case CAULDRON:
+            case "CAULDRON":
                 return "cauldron";
-            case ENDER_PORTAL:
+            case "ENDER_PORTAL":
                 return "end_portal";
-            case ENDER_PORTAL_FRAME:
+            case "ENDER_PORTAL_FRAME":
                 return "end_portal_frame";
-            case ENDER_STONE:
+            case "ENDER_STONE":
                 return "end_stone";
-            case DRAGON_EGG:
+            case "DRAGON_EGG":
                 return "dragon_egg";
-            case REDSTONE_LAMP_OFF:
+            case "REDSTONE_LAMP_OFF":
                 return "redstone_lamp";
-            case REDSTONE_LAMP_ON:
+            case "REDSTONE_LAMP_ON":
                 return "lit_redstone_lamp";
-            case WOOD_DOUBLE_STEP:
+            case "WOOD_DOUBLE_STEP":
                 return "double_wooden_slab";
-            case WOOD_STEP:
+            case "WOOD_STEP":
                 return "wooden_slab";
-            case COCOA:
+            case "COCOA":
                 return "cocoa";
-            case SANDSTONE_STAIRS:
+            case "SANDSTONE_STAIRS":
                 return "sandstone_stairs";
-            case EMERALD_ORE:
+            case "EMERALD_ORE":
                 return "emerald_ore";
-            case ENDER_CHEST:
+            case "ENDER_CHEST":
                 return "ender_chest";
-            case TRIPWIRE_HOOK:
+            case "TRIPWIRE_HOOK":
                 return "tripwire_hook";
-            case TRIPWIRE:
+            case "TRIPWIRE":
                 return "tripwire";
-            case EMERALD_BLOCK:
+            case "EMERALD_BLOCK":
                 return "emerald_block";
-            case SPRUCE_WOOD_STAIRS:
+            case "SPRUCE_WOOD_STAIRS":
                 return "spruce_stairs";
-            case BIRCH_WOOD_STAIRS:
+            case "BIRCH_WOOD_STAIRS":
                 return "birch_stairs";
-            case JUNGLE_WOOD_STAIRS:
+            case "JUNGLE_WOOD_STAIRS":
                 return "jungle_stairs";
-            case COMMAND:
+            case "COMMAND":
                 return "command_block";
-            case BEACON:
+            case "BEACON":
                 return "beacon";
-            case COBBLE_WALL:
+            case "COBBLE_WALL":
                 return "cobblestone_wall";
-            case FLOWER_POT:
+            case "FLOWER_POT":
                 return "flower_pot";
-            case CARROT:
+            case "CARROT":
                 return "carrots";
-            case POTATO:
+            case "POTATO":
                 return "potatoes";
-            case WOOD_BUTTON:
+            case "WOOD_BUTTON":
                 return "wooden_button";
-            case SKULL:
+            case "SKULL":
                 return "skull";
-            case ANVIL:
+            case "ANVIL":
                 return "anvil";
-            case TRAPPED_CHEST:
+            case "TRAPPED_CHEST":
                 return "trapped_chest";
-            case GOLD_PLATE:
+            case "GOLD_PLATE":
                 return "light_weighted_pressure_plate";
-            case IRON_PLATE:
+            case "IRON_PLATE":
                 return "heavy_weighted_pressure_plate";
-            case REDSTONE_COMPARATOR_OFF:
+            case "REDSTONE_COMPARATOR_OFF":
                 return "unpowered_comparator";
-            case REDSTONE_COMPARATOR_ON:
+            case "REDSTONE_COMPARATOR_ON":
                 return "powered_comparator";
-            case DAYLIGHT_DETECTOR:
+            case "DAYLIGHT_DETECTOR":
                 return "daylight_detector";
-            case REDSTONE_BLOCK:
+            case "REDSTONE_BLOCK":
                 return "redstone_block";
-            case QUARTZ_ORE:
+            case "QUARTZ_ORE":
                 return "quartz_ore";
-            case HOPPER:
+            case "HOPPER":
                 return "hopper";
-            case QUARTZ_BLOCK:
+            case "QUARTZ_BLOCK":
                 return "quartz_block";
-            case QUARTZ_STAIRS:
+            case "QUARTZ_STAIRS":
                 return "quartz_stairs";
-            case ACTIVATOR_RAIL:
+            case "ACTIVATOR_RAIL":
                 return "activator_rail";
-            case DROPPER:
+            case "DROPPER":
                 return "dropper";
-            case STAINED_CLAY:
+            case "STAINED_CLAY":
                 return "stained_hardened_clay";
-            case STAINED_GLASS_PANE:
+            case "STAINED_GLASS_PANE":
                 return "stained_glass_pane";
-            case LEAVES_2:
+            case "LEAVES_2":
                 return "leaves2";
-            case LOG_2:
+            case "LOG_2":
                 return "log2";
-            case ACACIA_STAIRS:
+            case "ACACIA_STAIRS":
                 return "acacia_stairs";
-            case DARK_OAK_STAIRS:
+            case "DARK_OAK_STAIRS":
                 return "dark_oak_stairs";
-            case SLIME_BLOCK:
+            case "SLIME_BLOCK":
                 return "slime";
-            case BARRIER:
+            case "BARRIER":
                 return "barrier";
-            case IRON_TRAPDOOR:
+            case "IRON_TRAPDOOR":
                 return "iron_trapdoor";
-            case PRISMARINE:
+            case "PRISMARINE":
                 return "prismarine";
-            case SEA_LANTERN:
+            case "SEA_LANTERN":
                 return "sea_lantern";
-            case HAY_BLOCK:
+            case "HAY_BLOCK":
                 return "hay_block";
-            case CARPET:
+            case "CARPET":
                 return "carpet";
-            case HARD_CLAY:
+            case "HARD_CLAY":
                 return "hardened_clay";
-            case COAL_BLOCK:
+            case "COAL_BLOCK":
                 return "coal_block";
-            case PACKED_ICE:
+            case "PACKED_ICE":
                 return "packed_ice";
-            case DOUBLE_PLANT:
+            case "DOUBLE_PLANT":
                 return "double_plant";
-            case STANDING_BANNER:
+            case "STANDING_BANNER":
                 return "standing_banner";
-            case WALL_BANNER:
+            case "WALL_BANNER":
                 return "wall_banner";
-            case DAYLIGHT_DETECTOR_INVERTED:
+            case "DAYLIGHT_DETECTOR_INVERTED":
                 return "daylight_detector_inverted";
-            case RED_SANDSTONE:
+            case "RED_SANDSTONE":
                 return "red_sandstone";
-            case RED_SANDSTONE_STAIRS:
+            case "RED_SANDSTONE_STAIRS":
                 return "red_sandstone_stairs";
-            case DOUBLE_STONE_SLAB2:
+            case "DOUBLE_STONE_SLAB2":
                 return "double_stone_slab2";
-            case STONE_SLAB2:
+            case "STONE_SLAB2":
                 return "stone_slab2";
-            case SPRUCE_FENCE_GATE:
+            case "SPRUCE_FENCE_GATE":
                 return "spruce_fence_gate";
-            case BIRCH_FENCE_GATE:
+            case "BIRCH_FENCE_GATE":
                 return "birch_fence_gate";
-            case JUNGLE_FENCE_GATE:
+            case "JUNGLE_FENCE_GATE":
                 return "jungle_fence_gate";
-            case DARK_OAK_FENCE_GATE:
+            case "DARK_OAK_FENCE_GATE":
                 return "dark_oak_fence_gate";
-            case ACACIA_FENCE_GATE:
+            case "ACACIA_FENCE_GATE":
                 return "acacia_fence_gate";
-            case SPRUCE_FENCE:
+            case "SPRUCE_FENCE":
                 return "spruce_fence";
-            case BIRCH_FENCE:
+            case "BIRCH_FENCE":
                 return "birch_fence";
-            case JUNGLE_FENCE:
+            case "JUNGLE_FENCE":
                 return "jungle_fence";
-            case DARK_OAK_FENCE:
+            case "DARK_OAK_FENCE":
                 return "dark_oak_fence";
-            case ACACIA_FENCE:
+            case "ACACIA_FENCE":
                 return "acacia_fence";
-            case SPRUCE_DOOR:
+            case "SPRUCE_DOOR":
                 return "spruce_door";
-            case BIRCH_DOOR:
+            case "BIRCH_DOOR":
                 return "birch_door";
-            case JUNGLE_DOOR:
+            case "JUNGLE_DOOR":
                 return "jungle_door";
-            case ACACIA_DOOR:
+            case "ACACIA_DOOR":
                 return "acacia_door";
-            case DARK_OAK_DOOR:
+            case "DARK_OAK_DOOR":
                 return "dark_oak_door";
-            case IRON_SPADE:
+            case "IRON_SPADE":
                 return "iron_shovel";
-            case IRON_PICKAXE:
+            case "IRON_PICKAXE":
                 return "iron_pickaxe";
-            case IRON_AXE:
+            case "IRON_AXE":
                 return "iron_axe";
-            case FLINT_AND_STEEL:
+            case "FLINT_AND_STEEL":
                 return "flint_and_steel";
-            case APPLE:
+            case "APPLE":
                 return "apple";
-            case BOW:
+            case "BOW":
                 return "bow";
-            case ARROW:
+            case "ARROW":
                 return "arrow";
-            case COAL:
+            case "COAL":
                 return "coal";
-            case DIAMOND:
+            case "DIAMOND":
                 return "diamond";
-            case IRON_INGOT:
+            case "IRON_INGOT":
                 return "iron_ingot";
-            case GOLD_INGOT:
+            case "GOLD_INGOT":
                 return "gold_ingot";
-            case IRON_SWORD:
+            case "IRON_SWORD":
                 return "iron_sword";
-            case WOOD_SWORD:
+            case "WOOD_SWORD":
                 return "wooden_sword";
-            case WOOD_SPADE:
+            case "WOOD_SPADE":
                 return "wooden_shovel";
-            case WOOD_PICKAXE:
+            case "WOOD_PICKAXE":
                 return "wooden_pickaxe";
-            case WOOD_AXE:
+            case "WOOD_AXE":
                 return "wooden_axe";
-            case STONE_SWORD:
+            case "STONE_SWORD":
                 return "stone_sword";
-            case STONE_SPADE:
+            case "STONE_SPADE":
                 return "stone_shovel";
-            case STONE_PICKAXE:
+            case "STONE_PICKAXE":
                 return "stone_pickaxe";
-            case STONE_AXE:
+            case "STONE_AXE":
                 return "stone_axe";
-            case DIAMOND_SWORD:
+            case "DIAMOND_SWORD":
                 return "diamond_sword";
-            case DIAMOND_SPADE:
+            case "DIAMOND_SPADE":
                 return "diamond_shovel";
-            case DIAMOND_PICKAXE:
+            case "DIAMOND_PICKAXE":
                 return "diamond_pickaxe";
-            case DIAMOND_AXE:
+            case "DIAMOND_AXE":
                 return "diamond_axe";
-            case STICK:
+            case "STICK":
                 return "stick";
-            case BOWL:
+            case "BOWL":
                 return "bowl";
-            case MUSHROOM_SOUP:
+            case "MUSHROOM_SOUP":
                 return "mushroom_stew";
-            case GOLD_SWORD:
+            case "GOLD_SWORD":
                 return "golden_sword";
-            case GOLD_SPADE:
+            case "GOLD_SPADE":
                 return "golden_shovel";
-            case GOLD_PICKAXE:
+            case "GOLD_PICKAXE":
                 return "golden_pickaxe";
-            case GOLD_AXE:
+            case "GOLD_AXE":
                 return "golden_axe";
-            case STRING:
+            case "STRING":
                 return "string";
-            case FEATHER:
+            case "FEATHER":
                 return "feather";
-            case SULPHUR:
+            case "SULPHUR":
                 return "gunpowder";
-            case WOOD_HOE:
+            case "WOOD_HOE":
                 return "wooden_hoe";
-            case STONE_HOE:
+            case "STONE_HOE":
                 return "stone_hoe";
-            case IRON_HOE:
+            case "IRON_HOE":
                 return "iron_hoe";
-            case DIAMOND_HOE:
+            case "DIAMOND_HOE":
                 return "diamond_hoe";
-            case GOLD_HOE:
+            case "GOLD_HOE":
                 return "golden_hoe";
-            case SEEDS:
+            case "SEEDS":
                 return "wheat_seeds";
-            case WHEAT:
+            case "WHEAT":
                 return "wheat";
-            case BREAD:
+            case "BREAD":
                 return "bread";
-            case LEATHER_HELMET:
+            case "LEATHER_HELMET":
                 return "leather_helmet";
-            case LEATHER_CHESTPLATE:
+            case "LEATHER_CHESTPLATE":
                 return "leather_chestplate";
-            case LEATHER_LEGGINGS:
+            case "LEATHER_LEGGINGS":
                 return "leather_leggings";
-            case LEATHER_BOOTS:
+            case "LEATHER_BOOTS":
                 return "leather_boots";
-            case CHAINMAIL_HELMET:
+            case "CHAINMAIL_HELMET":
                 return "chainmail_helmet";
-            case CHAINMAIL_CHESTPLATE:
+            case "CHAINMAIL_CHESTPLATE":
                 return "chainmail_chestplate";
-            case CHAINMAIL_LEGGINGS:
+            case "CHAINMAIL_LEGGINGS":
                 return "chainmail_leggings";
-            case CHAINMAIL_BOOTS:
+            case "CHAINMAIL_BOOTS":
                 return "chainmail_boots";
-            case IRON_HELMET:
+            case "IRON_HELMET":
                 return "iron_helmet";
-            case IRON_CHESTPLATE:
+            case "IRON_CHESTPLATE":
                 return "iron_chestplate";
-            case IRON_LEGGINGS:
+            case "IRON_LEGGINGS":
                 return "iron_leggings";
-            case IRON_BOOTS:
+            case "IRON_BOOTS":
                 return "iron_boots";
-            case DIAMOND_HELMET:
+            case "DIAMOND_HELMET":
                 return "diamond_helmet";
-            case DIAMOND_CHESTPLATE:
+            case "DIAMOND_CHESTPLATE":
                 return "diamond_chestplate";
-            case DIAMOND_LEGGINGS:
+            case "DIAMOND_LEGGINGS":
                 return "diamond_leggings";
-            case DIAMOND_BOOTS:
+            case "DIAMOND_BOOTS":
                 return "diamond_boots";
-            case GOLD_HELMET:
+            case "GOLD_HELMET":
                 return "golden_helmet";
-            case GOLD_CHESTPLATE:
+            case "GOLD_CHESTPLATE":
                 return "golden_chestplate";
-            case GOLD_LEGGINGS:
+            case "GOLD_LEGGINGS":
                 return "golden_leggings";
-            case GOLD_BOOTS:
+            case "GOLD_BOOTS":
                 return "golden_boots";
-            case FLINT:
+            case "FLINT":
                 return "flint";
-            case PORK:
+            case "PORK":
                 return "porkchop";
-            case GRILLED_PORK:
+            case "GRILLED_PORK":
                 return "cooked_porkchop";
-            case PAINTING:
+            case "PAINTING":
                 return "painting";
-            case GOLDEN_APPLE:
+            case "GOLDEN_APPLE":
                 return "golden_apple";
-            case SIGN:
+            case "SIGN":
                 return "sign";
-            case WOOD_DOOR:
+            case "WOOD_DOOR":
                 return "wooden_door";
-            case BUCKET:
+            case "BUCKET":
                 return "bucket";
-            case WATER_BUCKET:
+            case "WATER_BUCKET":
                 return "water_bucket";
-            case LAVA_BUCKET:
+            case "LAVA_BUCKET":
                 return "lava_bucket";
-            case MINECART:
+            case "MINECART":
                 return "minecart";
-            case SADDLE:
+            case "SADDLE":
                 return "saddle";
-            case IRON_DOOR:
+            case "IRON_DOOR":
                 return "iron_door";
-            case REDSTONE:
+            case "REDSTONE":
                 return "redstone";
-            case SNOW_BALL:
+            case "SNOW_BALL":
                 return "snowball";
-            case BOAT:
+            case "BOAT":
                 return "boat";
-            case LEATHER:
+            case "LEATHER":
                 return "leather";
-            case MILK_BUCKET:
+            case "MILK_BUCKET":
                 return "milk_bucket";
-            case CLAY_BRICK:
+            case "CLAY_BRICK":
                 return "brick";
-            case CLAY_BALL:
+            case "CLAY_BALL":
                 return "clay_ball";
-            case SUGAR_CANE:
+            case "SUGAR_CANE":
                 return "reeds";
-            case PAPER:
+            case "PAPER":
                 return "paper";
-            case BOOK:
+            case "BOOK":
                 return "book";
-            case SLIME_BALL:
+            case "SLIME_BALL":
                 return "slime_ball";
-            case STORAGE_MINECART:
+            case "STORAGE_MINECART":
                 return "chest_minecart";
-            case POWERED_MINECART:
+            case "POWERED_MINECART":
                 return "furnace_minecart";
-            case EGG:
+            case "EGG":
                 return "egg";
-            case COMPASS:
+            case "COMPASS":
                 return "compass";
-            case FISHING_ROD:
+            case "FISHING_ROD":
                 return "fishing_rod";
-            case WATCH:
+            case "WATCH":
                 return "clock";
-            case GLOWSTONE_DUST:
+            case "GLOWSTONE_DUST":
                 return "glowstone_dust";
-            case RAW_FISH:
+            case "RAW_FISH":
                 return "fish";
-            case COOKED_FISH:
+            case "COOKED_FISH":
                 return "cooked_fish";
-            case INK_SACK:
+            case "INK_SACK":
                 return "dye";
-            case BONE:
+            case "BONE":
                 return "bone";
-            case SUGAR:
+            case "SUGAR":
                 return "sugar";
-            case CAKE:
+            case "CAKE":
                 return "cake";
-            case BED:
+            case "BED":
                 return "bed";
-            case DIODE:
+            case "DIODE":
                 return "repeater";
-            case COOKIE:
+            case "COOKIE":
                 return "cookie";
-            case MAP:
+            case "MAP":
                 return "filled_map";
-            case SHEARS:
+            case "SHEARS":
                 return "shears";
-            case MELON:
+            case "MELON":
                 return "melon";
-            case PUMPKIN_SEEDS:
+            case "PUMPKIN_SEEDS":
                 return "pumpkin_seeds";
-            case MELON_SEEDS:
+            case "MELON_SEEDS":
                 return "melon_seeds";
-            case RAW_BEEF:
+            case "RAW_BEEF":
                 return "beef";
-            case COOKED_BEEF:
+            case "COOKED_BEEF":
                 return "cooked_beef";
-            case RAW_CHICKEN:
+            case "RAW_CHICKEN":
                 return "chicken";
-            case COOKED_CHICKEN:
+            case "COOKED_CHICKEN":
                 return "cooked_chicken";
-            case ROTTEN_FLESH:
+            case "ROTTEN_FLESH":
                 return "rotten_flesh";
-            case ENDER_PEARL:
+            case "ENDER_PEARL":
                 return "ender_pearl";
-            case BLAZE_ROD:
+            case "BLAZE_ROD":
                 return "blaze_rod";
-            case GHAST_TEAR:
+            case "GHAST_TEAR":
                 return "ghast_tear";
-            case GOLD_NUGGET:
+            case "GOLD_NUGGET":
                 return "gold_nugget";
-            case NETHER_STALK:
+            case "NETHER_STALK":
                 return "nether_wart";
-            case POTION:
+            case "POTION":
                 return "potion";
-            case GLASS_BOTTLE:
+            case "GLASS_BOTTLE":
                 return "glass_bottle";
-            case SPIDER_EYE:
+            case "SPIDER_EYE":
                 return "spider_eye";
-            case FERMENTED_SPIDER_EYE:
+            case "FERMENTED_SPIDER_EYE":
                 return "fermented_spider_eye";
-            case BLAZE_POWDER:
+            case "BLAZE_POWDER":
                 return "blaze_powder";
-            case MAGMA_CREAM:
+            case "MAGMA_CREAM":
                 return "magma_cream";
-            case BREWING_STAND_ITEM:
+            case "BREWING_STAND_ITEM":
                 return "brewing_stand";
-            case CAULDRON_ITEM:
+            case "CAULDRON_ITEM":
                 return "cauldron";
-            case EYE_OF_ENDER:
+            case "EYE_OF_ENDER":
                 return "ender_eye";
-            case SPECKLED_MELON:
+            case "SPECKLED_MELON":
                 return "speckled_melon";
-            case MONSTER_EGG:
+            case "MONSTER_EGG":
                 return "spawn_egg";
-            case EXP_BOTTLE:
+            case "EXP_BOTTLE":
                 return "experience_bottle";
-            case FIREBALL:
+            case "FIREBALL":
                 return "fire_charge";
-            case BOOK_AND_QUILL:
+            case "BOOK_AND_QUILL":
                 return "writable_book";
-            case WRITTEN_BOOK:
+            case "WRITTEN_BOOK":
                 return "written_book";
-            case EMERALD:
+            case "EMERALD":
                 return "emerald";
-            case ITEM_FRAME:
+            case "ITEM_FRAME":
                 return "item_frame";
-            case FLOWER_POT_ITEM:
+            case "FLOWER_POT_ITEM":
                 return "flower_pot";
-            case CARROT_ITEM:
+            case "CARROT_ITEM":
                 return "carrot";
-            case POTATO_ITEM:
+            case "POTATO_ITEM":
                 return "potato";
-            case BAKED_POTATO:
+            case "BAKED_POTATO":
                 return "baked_potato";
-            case POISONOUS_POTATO:
+            case "POISONOUS_POTATO":
                 return "poisonous_potato";
-            case EMPTY_MAP:
+            case "EMPTY_MAP":
                 return "map";
-            case GOLDEN_CARROT:
+            case "GOLDEN_CARROT":
                 return "golden_carrot";
-            case SKULL_ITEM:
+            case "SKULL_ITEM":
                 return "skull";
-            case CARROT_STICK:
+            case "CARROT_STICK":
                 return "carrot_on_a_stick";
-            case NETHER_STAR:
+            case "NETHER_STAR":
                 return "nether_star";
-            case PUMPKIN_PIE:
+            case "PUMPKIN_PIE":
                 return "pumpkin_pie";
-            case FIREWORK:
+            case "FIREWORK":
                 return "fireworks";
-            case FIREWORK_CHARGE:
+            case "FIREWORK_CHARGE":
                 return "firework_charge";
-            case ENCHANTED_BOOK:
+            case "ENCHANTED_BOOK":
                 return "enchanted_book";
-            case REDSTONE_COMPARATOR:
+            case "REDSTONE_COMPARATOR":
                 return "comparator";
-            case NETHER_BRICK_ITEM:
+            case "NETHER_BRICK_ITEM":
                 return "netherbrick";
-            case QUARTZ:
+            case "QUARTZ":
                 return "quartz";
-            case EXPLOSIVE_MINECART:
+            case "EXPLOSIVE_MINECART":
                 return "tnt_minecart";
-            case HOPPER_MINECART:
+            case "HOPPER_MINECART":
                 return "hopper_minecart";
-            case PRISMARINE_SHARD:
+            case "PRISMARINE_SHARD":
                 return "prismarine_shard";
-            case PRISMARINE_CRYSTALS:
+            case "PRISMARINE_CRYSTALS":
                 return "prismarine_crystals";
-            case RABBIT:
+            case "RABBIT":
                 return "rabbit";
-            case COOKED_RABBIT:
+            case "COOKED_RABBIT":
                 return "cooked_rabbit";
-            case RABBIT_STEW:
+            case "RABBIT_STEW":
                 return "rabbit_stew";
-            case RABBIT_FOOT:
+            case "RABBIT_FOOT":
                 return "rabbit_foot";
-            case RABBIT_HIDE:
+            case "RABBIT_HIDE":
                 return "rabbit_hide";
-            case ARMOR_STAND:
+            case "ARMOR_STAND":
                 return "armor_stand";
-            case IRON_BARDING:
+            case "IRON_BARDING":
                 return "iron_horse_armor";
-            case GOLD_BARDING:
+            case "GOLD_BARDING":
                 return "golden_horse_armor";
-            case DIAMOND_BARDING:
+            case "DIAMOND_BARDING":
                 return "diamond_horse_armor";
-            case LEASH:
+            case "LEASH":
                 return "lead";
-            case NAME_TAG:
+            case "NAME_TAG":
                 return "name_tag";
-            case COMMAND_MINECART:
+            case "COMMAND_MINECART":
                 return "command_block_minecart";
-            case MUTTON:
+            case "MUTTON":
                 return "mutton";
-            case COOKED_MUTTON:
+            case "COOKED_MUTTON":
                 return "cooked_mutton";
-            case BANNER:
+            case "BANNER":
                 return "banner";
-            case SPRUCE_DOOR_ITEM:
+            case "SPRUCE_DOOR_ITEM":
                 return "spruce_door";
-            case BIRCH_DOOR_ITEM:
+            case "BIRCH_DOOR_ITEM":
                 return "birch_door";
-            case JUNGLE_DOOR_ITEM:
+            case "JUNGLE_DOOR_ITEM":
                 return "jungle_door";
-            case ACACIA_DOOR_ITEM:
+            case "ACACIA_DOOR_ITEM":
                 return "acacia_door";
-            case DARK_OAK_DOOR_ITEM:
+            case "DARK_OAK_DOOR_ITEM":
                 return "dark_oak_door";
-            case GOLD_RECORD:
+            case "GOLD_RECORD":
                 return "record_13";
-            case GREEN_RECORD:
+            case "GREEN_RECORD":
                 return "record_cat";
-            case RECORD_3:
+            case "RECORD_3":
                 return "record_blocks";
-            case RECORD_4:
+            case "RECORD_4":
                 return "record_chirp";
-            case RECORD_5:
+            case "RECORD_5":
                 return "record_far";
-            case RECORD_6:
+            case "RECORD_6":
                 return "record_mall";
-            case RECORD_7:
+            case "RECORD_7":
                 return "record_mellohi";
-            case RECORD_8:
+            case "RECORD_8":
                 return "record_stal";
-            case RECORD_9:
+            case "RECORD_9":
                 return "record_strad";
-            case RECORD_10:
+            case "RECORD_10":
                 return "record_ward";
-            case RECORD_11:
+            case "RECORD_11":
                 return "record_11";
-            case RECORD_12:
+            case "RECORD_12":
                 return "record_wait";
             default:
                 return "";
@@ -782,1153 +782,1169 @@ public class MaterialName {
     }
 
     public static Material getBlockMaterial(String IDName) {
-        if (IDName.startsWith("minecraft:")) IDName = IDName.substring(10);
-        switch (IDName) {
-            case "air":
-                return Material.AIR;
-            case "stone":
-                return Material.STONE;
-            case "grass":
-                return Material.GRASS;
-            case "dirt":
-                return Material.DIRT;
-            case "cobblestone":
-                return Material.COBBLESTONE;
-            case "planks":
-                return Material.WOOD;
-            case "sapling":
-                return Material.SAPLING;
-            case "bedrock":
-                return Material.BEDROCK;
-            case "flowing_water":
-                return Material.WATER;
-            case "water":
-                return Material.STATIONARY_WATER;
-            case "flowing_lava":
-                return Material.LAVA;
-            case "lava":
-                return Material.STATIONARY_LAVA;
-            case "sand":
-                return Material.SAND;
-            case "gravel":
-                return Material.GRAVEL;
-            case "gold_ore":
-                return Material.GOLD_ORE;
-            case "iron_ore":
-                return Material.IRON_ORE;
-            case "coal_ore":
-                return Material.COAL_ORE;
-            case "log":
-                return Material.LOG;
-            case "leaves":
-                return Material.LEAVES;
-            case "sponge":
-                return Material.SPONGE;
-            case "glass":
-                return Material.GLASS;
-            case "lapis_ore":
-                return Material.LAPIS_ORE;
-            case "lapis_block":
-                return Material.LAPIS_BLOCK;
-            case "dispenser":
-                return Material.DISPENSER;
-            case "sandstone":
-                return Material.SANDSTONE;
-            case "noteblock":
-                return Material.NOTE_BLOCK;
-            case "bed":
-                return Material.BED_BLOCK;
-            case "golden_rail":
-                return Material.POWERED_RAIL;
-            case "detector_rail":
-                return Material.DETECTOR_RAIL;
-            case "sticky_piston":
-                return Material.PISTON_STICKY_BASE;
-            case "web":
-                return Material.WEB;
-            case "tallgrass":
-                return Material.LONG_GRASS;
-            case "deadbush":
-                return Material.DEAD_BUSH;
-            case "piston":
-                return Material.PISTON_BASE;
-            case "piston_head":
-                return Material.PISTON_EXTENSION;
-            case "wool":
-                return Material.WOOL;
-            case "piston_extension":
-                return Material.PISTON_MOVING_PIECE;
-            case "yellow_flower":
-                return Material.YELLOW_FLOWER;
-            case "red_flower":
-                return Material.RED_ROSE;
-            case "brown_mushroom":
-                return Material.BROWN_MUSHROOM;
-            case "red_mushroom":
-                return Material.RED_MUSHROOM;
-            case "gold_block":
-                return Material.GOLD_BLOCK;
-            case "iron_block":
-                return Material.IRON_BLOCK;
-            case "double_stone_slab":
-                return Material.DOUBLE_STEP;
-            case "stone_slab":
-                return Material.STEP;
-            case "brick_block":
-                return Material.BRICK;
-            case "tnt":
-                return Material.TNT;
-            case "bookshelf":
-                return Material.BOOKSHELF;
-            case "mossy_cobblestone":
-                return Material.MOSSY_COBBLESTONE;
-            case "obsidian":
-                return Material.OBSIDIAN;
-            case "torch":
-                return Material.TORCH;
-            case "fire":
-                return Material.FIRE;
-            case "mob_spawner":
-                return Material.MOB_SPAWNER;
-            case "oak_stairs":
-                return Material.WOOD_STAIRS;
-            case "chest":
-                return Material.CHEST;
-            case "redstone_wire":
-                return Material.REDSTONE_WIRE;
-            case "diamond_ore":
-                return Material.DIAMOND_ORE;
-            case "diamond_block":
-                return Material.DIAMOND_BLOCK;
-            case "crafting_table":
-                return Material.WORKBENCH;
-            case "wheat":
-                return Material.CROPS;
-            case "farmland":
-                return Material.SOIL;
-            case "furnace":
-                return Material.FURNACE;
-            case "lit_furnace":
-                return Material.BURNING_FURNACE;
-            case "standing_sign":
-                return Material.SIGN_POST;
-            case "wooden_door":
-                return Material.WOODEN_DOOR;
-            case "ladder":
-                return Material.LADDER;
-            case "rail":
-                return Material.RAILS;
-            case "stone_stairs":
-                return Material.COBBLESTONE_STAIRS;
-            case "wall_sign":
-                return Material.WALL_SIGN;
-            case "lever":
-                return Material.LEVER;
-            case "stone_pressure_plate":
-                return Material.STONE_PLATE;
-            case "iron_door":
-                return Material.IRON_DOOR_BLOCK;
-            case "wooden_pressure_plate":
-                return Material.WOOD_PLATE;
-            case "redstone_ore":
-                return Material.REDSTONE_ORE;
-            case "lit_redstone_ore":
-                return Material.GLOWING_REDSTONE_ORE;
-            case "unlit_redstone_torch":
-                return Material.REDSTONE_TORCH_OFF;
-            case "redstone_torch":
-                return Material.REDSTONE_TORCH_ON;
-            case "stone_button":
-                return Material.STONE_BUTTON;
-            case "snow_layer":
-                return Material.SNOW;
-            case "ice":
-                return Material.ICE;
-            case "snow":
-                return Material.SNOW_BLOCK;
-            case "cactus":
-                return Material.CACTUS;
-            case "clay":
-                return Material.CLAY;
-            case "reeds":
-                return Material.SUGAR_CANE_BLOCK;
-            case "jukebox":
-                return Material.JUKEBOX;
-            case "fence":
-                return Material.FENCE;
-            case "pumpkin":
-                return Material.PUMPKIN;
-            case "netherrack":
-                return Material.NETHERRACK;
-            case "soul_sand":
-                return Material.SOUL_SAND;
-            case "glowstone":
-                return Material.GLOWSTONE;
-            case "portal":
-                return Material.PORTAL;
-            case "lit_pumpkin":
-                return Material.JACK_O_LANTERN;
-            case "cake":
-                return Material.CAKE_BLOCK;
-            case "unpowered_repeater":
-                return Material.DIODE_BLOCK_OFF;
-            case "powered_repeater":
-                return Material.DIODE_BLOCK_ON;
-            //case "": return Material.LOCKED_CHEST;
-            case "stained_glass":
-                return Material.STAINED_GLASS;
-            case "trapdoor":
-                return Material.TRAP_DOOR;
-            case "monster_egg":
-                return Material.MONSTER_EGGS;
-            case "stonebrick":
-                return Material.SMOOTH_BRICK;
-            case "brown_mushroom_block":
-                return Material.HUGE_MUSHROOM_1;
-            case "red_mushroom_block":
-                return Material.HUGE_MUSHROOM_2;
-            case "iron_bars":
-                return Material.IRON_FENCE;
-            case "glass_pane":
-                return Material.THIN_GLASS;
-            case "melon_block":
-                return Material.MELON_BLOCK;
-            case "pumpkin_stem":
-                return Material.PUMPKIN_STEM;
-            case "melon_stem":
-                return Material.MELON_STEM;
-            case "vine":
-                return Material.VINE;
-            case "fence_gate":
-                return Material.FENCE_GATE;
-            case "brick_stairs":
-                return Material.BRICK_STAIRS;
-            case "stone_brick_stairs":
-                return Material.SMOOTH_STAIRS;
-            case "mycelium":
-                return Material.MYCEL;
-            case "waterlily":
-                return Material.WATER_LILY;
-            case "nether_brick":
-                return Material.NETHER_BRICK;
-            case "nether_brick_fence":
-                return Material.NETHER_FENCE;
-            case "nether_brick_stairs":
-                return Material.NETHER_BRICK_STAIRS;
-            case "nether_wart":
-                return Material.NETHER_WARTS;
-            case "enchanting_table":
-                return Material.ENCHANTMENT_TABLE;
-            case "brewing_stand":
-                return Material.BREWING_STAND;
-            case "cauldron":
-                return Material.CAULDRON;
-            case "end_portal":
-                return Material.ENDER_PORTAL;
-            case "end_portal_frame":
-                return Material.ENDER_PORTAL_FRAME;
-            case "end_stone":
-                return Material.ENDER_STONE;
-            case "dragon_egg":
-                return Material.DRAGON_EGG;
-            case "redstone_lamp":
-                return Material.REDSTONE_LAMP_OFF;
-            case "lit_redstone_lamp":
-                return Material.REDSTONE_LAMP_ON;
-            case "double_wooden_slab":
-                return Material.WOOD_DOUBLE_STEP;
-            case "wooden_slab":
-                return Material.WOOD_STEP;
-            case "cocoa":
-                return Material.COCOA;
-            case "sandstone_stairs":
-                return Material.SANDSTONE_STAIRS;
-            case "emerald_ore":
-                return Material.EMERALD_ORE;
-            case "ender_chest":
-                return Material.ENDER_CHEST;
-            case "tripwire_hook":
-                return Material.TRIPWIRE_HOOK;
-            case "tripwire":
-                return Material.TRIPWIRE;
-            case "emerald_block":
-                return Material.EMERALD_BLOCK;
-            case "spruce_stairs":
-                return Material.SPRUCE_WOOD_STAIRS;
-            case "birch_stairs":
-                return Material.BIRCH_WOOD_STAIRS;
-            case "jungle_stairs":
-                return Material.JUNGLE_WOOD_STAIRS;
-            case "command_block":
-                return Material.COMMAND;
-            case "beacon":
-                return Material.BEACON;
-            case "cobblestone_wall":
-                return Material.COBBLE_WALL;
-            case "flower_pot":
-                return Material.FLOWER_POT;
-            case "carrots":
-                return Material.CARROT;
-            case "potatoes":
-                return Material.POTATO;
-            case "wooden_button":
-                return Material.WOOD_BUTTON;
-            case "skull":
-                return Material.SKULL;
-            case "anvil":
-                return Material.ANVIL;
-            case "trapped_chest":
-                return Material.TRAPPED_CHEST;
-            case "light_weighted_pressure_plate":
-                return Material.GOLD_PLATE;
-            case "heavy_weighted_pressure_plate":
-                return Material.IRON_PLATE;
-            case "unpowered_comparator":
-                return Material.REDSTONE_COMPARATOR_OFF;
-            case "powered_comparator":
-                return Material.REDSTONE_COMPARATOR_ON;
-            case "daylight_detector":
-                return Material.DAYLIGHT_DETECTOR;
-            case "redstone_block":
-                return Material.REDSTONE_BLOCK;
-            case "quartz_ore":
-                return Material.QUARTZ_ORE;
-            case "hopper":
-                return Material.HOPPER;
-            case "quartz_block":
-                return Material.QUARTZ_BLOCK;
-            case "quartz_stairs":
-                return Material.QUARTZ_STAIRS;
-            case "activator_rail":
-                return Material.ACTIVATOR_RAIL;
-            case "dropper":
-                return Material.DROPPER;
-            case "stained_hardened_clay":
-                return Material.STAINED_CLAY;
-            case "stained_glass_pane":
-                return Material.STAINED_GLASS_PANE;
-            case "leaves2":
-                return Material.LEAVES_2;
-            case "log2":
-                return Material.LOG_2;
-            case "acacia_stairs":
-                return Material.ACACIA_STAIRS;
-            case "dark_oak_stairs":
-                return Material.DARK_OAK_STAIRS;
-            case "slime":
-                return Material.SLIME_BLOCK;
-            case "barrier":
-                return Material.BARRIER;
-            case "iron_trapdoor":
-                return Material.IRON_TRAPDOOR;
-            case "prismarine":
-                return Material.PRISMARINE;
-            case "sea_lantern":
-                return Material.SEA_LANTERN;
-            case "hay_block":
-                return Material.HAY_BLOCK;
-            case "carpet":
-                return Material.CARPET;
-            case "hardened_clay":
-                return Material.HARD_CLAY;
-            case "coal_block":
-                return Material.COAL_BLOCK;
-            case "packed_ice":
-                return Material.PACKED_ICE;
-            case "double_plant":
-                return Material.DOUBLE_PLANT;
-            case "standing_banner":
-                return Material.STANDING_BANNER;
-            case "wall_banner":
-                return Material.WALL_BANNER;
-            case "daylight_detector_inverted":
-                return Material.DAYLIGHT_DETECTOR_INVERTED;
-            case "red_sandstone":
-                return Material.RED_SANDSTONE;
-            case "red_sandstone_stairs":
-                return Material.RED_SANDSTONE_STAIRS;
-            case "double_stone_slab2":
-                return Material.DOUBLE_STONE_SLAB2;
-            case "stone_slab2":
-                return Material.STONE_SLAB2;
-            case "spruce_fence_gate":
-                return Material.SPRUCE_FENCE_GATE;
-            case "birch_fence_gate":
-                return Material.BIRCH_FENCE_GATE;
-            case "jungle_fence_gate":
-                return Material.JUNGLE_FENCE_GATE;
-            case "dark_oak_fence_gate":
-                return Material.DARK_OAK_FENCE_GATE;
-            case "acacia_fence_gate":
-                return Material.ACACIA_FENCE_GATE;
-            case "spruce_fence":
-                return Material.SPRUCE_FENCE;
-            case "birch_fence":
-                return Material.BIRCH_FENCE;
-            case "jungle_fence":
-                return Material.JUNGLE_FENCE;
-            case "dark_oak_fence":
-                return Material.DARK_OAK_FENCE;
-            case "acacia_fence":
-                return Material.ACACIA_FENCE;
-            case "spruce_door":
-                return Material.SPRUCE_DOOR;
-            case "birch_door":
-                return Material.BIRCH_DOOR;
-            case "jungle_door":
-                return Material.JUNGLE_DOOR;
-            case "acacia_door":
-                return Material.ACACIA_DOOR;
-            case "dark_oak_door":
-                return Material.DARK_OAK_DOOR;
-            default:
-                return null;
+        if (IDName.startsWith("minecraft:")) {
+            IDName = IDName.substring(10);
         }
+        try {
+            switch (IDName) {
+                case "air":
+                    return Material.valueOf("AIR");
+                case "stone":
+                    return Material.valueOf("STONE");
+                case "grass":
+                    return Material.valueOf("GRASS");
+                case "dirt":
+                    return Material.valueOf("DIRT");
+                case "cobblestone":
+                    return Material.valueOf("COBBLESTONE");
+                case "planks":
+                    return Material.valueOf("WOOD");
+                case "sapling":
+                    return Material.valueOf("SAPLING");
+                case "bedrock":
+                    return Material.valueOf("BEDROCK");
+                case "flowing_water":
+                    return Material.valueOf("WATER");
+                case "water":
+                    return Material.valueOf("STATIONARY_WATER");
+                case "flowing_lava":
+                    return Material.valueOf("LAVA");
+                case "lava":
+                    return Material.valueOf("STATIONARY_LAVA");
+                case "sand":
+                    return Material.valueOf("SAND");
+                case "gravel":
+                    return Material.valueOf("GRAVEL");
+                case "gold_ore":
+                    return Material.valueOf("GOLD_ORE");
+                case "iron_ore":
+                    return Material.valueOf("IRON_ORE");
+                case "coal_ore":
+                    return Material.valueOf("COAL_ORE");
+                case "log":
+                    return Material.valueOf("LOG");
+                case "leaves":
+                    return Material.valueOf("LEAVES");
+                case "sponge":
+                    return Material.valueOf("SPONGE");
+                case "glass":
+                    return Material.valueOf("GLASS");
+                case "lapis_ore":
+                    return Material.valueOf("LAPIS_ORE");
+                case "lapis_block":
+                    return Material.valueOf("LAPIS_BLOCK");
+                case "dispenser":
+                    return Material.valueOf("DISPENSER");
+                case "sandstone":
+                    return Material.valueOf("SANDSTONE");
+                case "noteblock":
+                    return Material.valueOf("NOTE_BLOCK");
+                case "bed":
+                    return Material.valueOf("BED_BLOCK");
+                case "golden_rail":
+                    return Material.valueOf("POWERED_RAIL");
+                case "detector_rail":
+                    return Material.valueOf("DETECTOR_RAIL");
+                case "sticky_piston":
+                    return Material.valueOf("PISTON_STICKY_BASE");
+                case "web":
+                    return Material.valueOf("WEB");
+                case "tallgrass":
+                    return Material.valueOf("LONG_GRASS");
+                case "deadbush":
+                    return Material.valueOf("DEAD_BUSH");
+                case "piston":
+                    return Material.valueOf("PISTON_BASE");
+                case "piston_head":
+                    return Material.valueOf("PISTON_EXTENSION");
+                case "wool":
+                    return Material.valueOf("WOOL");
+                case "piston_extension":
+                    return Material.valueOf("PISTON_MOVING_PIECE");
+                case "yellow_flower":
+                    return Material.valueOf("YELLOW_FLOWER");
+                case "red_flower":
+                    return Material.valueOf("RED_ROSE");
+                case "brown_mushroom":
+                    return Material.valueOf("BROWN_MUSHROOM");
+                case "red_mushroom":
+                    return Material.valueOf("RED_MUSHROOM");
+                case "gold_block":
+                    return Material.valueOf("GOLD_BLOCK");
+                case "iron_block":
+                    return Material.valueOf("IRON_BLOCK");
+                case "double_stone_slab":
+                    return Material.valueOf("DOUBLE_STEP");
+                case "stone_slab":
+                    return Material.valueOf("STEP");
+                case "brick_block":
+                    return Material.valueOf("BRICK");
+                case "tnt":
+                    return Material.valueOf("TNT");
+                case "bookshelf":
+                    return Material.valueOf("BOOKSHELF");
+                case "mossy_cobblestone":
+                    return Material.valueOf("MOSSY_COBBLESTONE");
+                case "obsidian":
+                    return Material.valueOf("OBSIDIAN");
+                case "torch":
+                    return Material.valueOf("TORCH");
+                case "fire":
+                    return Material.valueOf("FIRE");
+                case "mob_spawner":
+                    return Material.valueOf("MOB_SPAWNER");
+                case "oak_stairs":
+                    return Material.valueOf("WOOD_STAIRS");
+                case "chest":
+                    return Material.valueOf("CHEST");
+                case "redstone_wire":
+                    return Material.valueOf("REDSTONE_WIRE");
+                case "diamond_ore":
+                    return Material.valueOf("DIAMOND_ORE");
+                case "diamond_block":
+                    return Material.valueOf("DIAMOND_BLOCK");
+                case "crafting_table":
+                    return Material.valueOf("WORKBENCH");
+                case "wheat":
+                    return Material.valueOf("CROPS");
+                case "farmland":
+                    return Material.valueOf("SOIL");
+                case "furnace":
+                    return Material.valueOf("FURNACE");
+                case "lit_furnace":
+                    return Material.valueOf("BURNING_FURNACE");
+                case "standing_sign":
+                    return Material.valueOf("SIGN_POST");
+                case "wooden_door":
+                    return Material.valueOf("WOODEN_DOOR");
+                case "ladder":
+                    return Material.valueOf("LADDER");
+                case "rail":
+                    return Material.valueOf("RAILS");
+                case "stone_stairs":
+                    return Material.valueOf("COBBLESTONE_STAIRS");
+                case "wall_sign":
+                    return Material.valueOf("WALL_SIGN");
+                case "lever":
+                    return Material.valueOf("LEVER");
+                case "stone_pressure_plate":
+                    return Material.valueOf("STONE_PLATE");
+                case "iron_door":
+                    return Material.valueOf("IRON_DOOR_BLOCK");
+                case "wooden_pressure_plate":
+                    return Material.valueOf("WOOD_PLATE");
+                case "redstone_ore":
+                    return Material.valueOf("REDSTONE_ORE");
+                case "lit_redstone_ore":
+                    return Material.valueOf("GLOWING_REDSTONE_ORE");
+                case "unlit_redstone_torch":
+                    return Material.valueOf("REDSTONE_TORCH_OFF");
+                case "redstone_torch":
+                    return Material.valueOf("REDSTONE_TORCH_ON");
+                case "stone_button":
+                    return Material.valueOf("STONE_BUTTON");
+                case "snow_layer":
+                    return Material.valueOf("SNOW");
+                case "ice":
+                    return Material.valueOf("ICE");
+                case "snow":
+                    return Material.valueOf("SNOW_BLOCK");
+                case "cactus":
+                    return Material.valueOf("CACTUS");
+                case "clay":
+                    return Material.valueOf("CLAY");
+                case "reeds":
+                    return Material.valueOf("SUGAR_CANE_BLOCK");
+                case "jukebox":
+                    return Material.valueOf("JUKEBOX");
+                case "fence":
+                    return Material.valueOf("FENCE");
+                case "pumpkin":
+                    return Material.valueOf("PUMPKIN");
+                case "netherrack":
+                    return Material.valueOf("NETHERRACK");
+                case "soul_sand":
+                    return Material.valueOf("SOUL_SAND");
+                case "glowstone":
+                    return Material.valueOf("GLOWSTONE");
+                case "portal":
+                    return Material.valueOf("PORTAL");
+                case "lit_pumpkin":
+                    return Material.valueOf("JACK_O_LANTERN");
+                case "cake":
+                    return Material.valueOf("CAKE_BLOCK");
+                case "unpowered_repeater":
+                    return Material.valueOf("DIODE_BLOCK_OFF");
+                case "powered_repeater":
+                    return Material.valueOf("DIODE_BLOCK_ON");
+                //case "": return Material.valueOf("LOCKED_CHEST");
+                case "stained_glass":
+                    return Material.valueOf("STAINED_GLASS");
+                case "trapdoor":
+                    return Material.valueOf("TRAP_DOOR");
+                case "monster_egg":
+                    return Material.valueOf("MONSTER_EGGS");
+                case "stonebrick":
+                    return Material.valueOf("SMOOTH_BRICK");
+                case "brown_mushroom_block":
+                    return Material.valueOf("HUGE_MUSHROOM_1");
+                case "red_mushroom_block":
+                    return Material.valueOf("HUGE_MUSHROOM_2");
+                case "iron_bars":
+                    return Material.valueOf("IRON_FENCE");
+                case "glass_pane":
+                    return Material.valueOf("THIN_GLASS");
+                case "melon_block":
+                    return Material.valueOf("MELON_BLOCK");
+                case "pumpkin_stem":
+                    return Material.valueOf("PUMPKIN_STEM");
+                case "melon_stem":
+                    return Material.valueOf("MELON_STEM");
+                case "vine":
+                    return Material.valueOf("VINE");
+                case "fence_gate":
+                    return Material.valueOf("FENCE_GATE");
+                case "brick_stairs":
+                    return Material.valueOf("BRICK_STAIRS");
+                case "stone_brick_stairs":
+                    return Material.valueOf("SMOOTH_STAIRS");
+                case "mycelium":
+                    return Material.valueOf("MYCEL");
+                case "waterlily":
+                    return Material.valueOf("WATER_LILY");
+                case "nether_brick":
+                    return Material.valueOf("NETHER_BRICK");
+                case "nether_brick_fence":
+                    return Material.valueOf("NETHER_FENCE");
+                case "nether_brick_stairs":
+                    return Material.valueOf("NETHER_BRICK_STAIRS");
+                case "nether_wart":
+                    return Material.valueOf("NETHER_WARTS");
+                case "enchanting_table":
+                    return Material.valueOf("ENCHANTMENT_TABLE");
+                case "brewing_stand":
+                    return Material.valueOf("BREWING_STAND");
+                case "cauldron":
+                    return Material.valueOf("CAULDRON");
+                case "end_portal":
+                    return Material.valueOf("ENDER_PORTAL");
+                case "end_portal_frame":
+                    return Material.valueOf("ENDER_PORTAL_FRAME");
+                case "end_stone":
+                    return Material.valueOf("ENDER_STONE");
+                case "dragon_egg":
+                    return Material.valueOf("DRAGON_EGG");
+                case "redstone_lamp":
+                    return Material.valueOf("REDSTONE_LAMP_OFF");
+                case "lit_redstone_lamp":
+                    return Material.valueOf("REDSTONE_LAMP_ON");
+                case "double_wooden_slab":
+                    return Material.valueOf("WOOD_DOUBLE_STEP");
+                case "wooden_slab":
+                    return Material.valueOf("WOOD_STEP");
+                case "cocoa":
+                    return Material.valueOf("COCOA");
+                case "sandstone_stairs":
+                    return Material.valueOf("SANDSTONE_STAIRS");
+                case "emerald_ore":
+                    return Material.valueOf("EMERALD_ORE");
+                case "ender_chest":
+                    return Material.valueOf("ENDER_CHEST");
+                case "tripwire_hook":
+                    return Material.valueOf("TRIPWIRE_HOOK");
+                case "tripwire":
+                    return Material.valueOf("TRIPWIRE");
+                case "emerald_block":
+                    return Material.valueOf("EMERALD_BLOCK");
+                case "spruce_stairs":
+                    return Material.valueOf("SPRUCE_WOOD_STAIRS");
+                case "birch_stairs":
+                    return Material.valueOf("BIRCH_WOOD_STAIRS");
+                case "jungle_stairs":
+                    return Material.valueOf("JUNGLE_WOOD_STAIRS");
+                case "command_block":
+                    return Material.valueOf("COMMAND");
+                case "beacon":
+                    return Material.valueOf("BEACON");
+                case "cobblestone_wall":
+                    return Material.valueOf("COBBLE_WALL");
+                case "flower_pot":
+                    return Material.valueOf("FLOWER_POT");
+                case "carrots":
+                    return Material.valueOf("CARROT");
+                case "potatoes":
+                    return Material.valueOf("POTATO");
+                case "wooden_button":
+                    return Material.valueOf("WOOD_BUTTON");
+                case "skull":
+                    return Material.valueOf("SKULL");
+                case "anvil":
+                    return Material.valueOf("ANVIL");
+                case "trapped_chest":
+                    return Material.valueOf("TRAPPED_CHEST");
+                case "light_weighted_pressure_plate":
+                    return Material.valueOf("GOLD_PLATE");
+                case "heavy_weighted_pressure_plate":
+                    return Material.valueOf("IRON_PLATE");
+                case "unpowered_comparator":
+                    return Material.valueOf("REDSTONE_COMPARATOR_OFF");
+                case "powered_comparator":
+                    return Material.valueOf("REDSTONE_COMPARATOR_ON");
+                case "daylight_detector":
+                    return Material.valueOf("DAYLIGHT_DETECTOR");
+                case "redstone_block":
+                    return Material.valueOf("REDSTONE_BLOCK");
+                case "quartz_ore":
+                    return Material.valueOf("QUARTZ_ORE");
+                case "hopper":
+                    return Material.valueOf("HOPPER");
+                case "quartz_block":
+                    return Material.valueOf("QUARTZ_BLOCK");
+                case "quartz_stairs":
+                    return Material.valueOf("QUARTZ_STAIRS");
+                case "activator_rail":
+                    return Material.valueOf("ACTIVATOR_RAIL");
+                case "dropper":
+                    return Material.valueOf("DROPPER");
+                case "stained_hardened_clay":
+                    return Material.valueOf("STAINED_CLAY");
+                case "stained_glass_pane":
+                    return Material.valueOf("STAINED_GLASS_PANE");
+                case "leaves2":
+                    return Material.valueOf("LEAVES_2");
+                case "log2":
+                    return Material.valueOf("LOG_2");
+                case "acacia_stairs":
+                    return Material.valueOf("ACACIA_STAIRS");
+                case "dark_oak_stairs":
+                    return Material.valueOf("DARK_OAK_STAIRS");
+                case "slime":
+                    return Material.valueOf("SLIME_BLOCK");
+                case "barrier":
+                    return Material.valueOf("BARRIER");
+                case "iron_trapdoor":
+                    return Material.valueOf("IRON_TRAPDOOR");
+                case "prismarine":
+                    return Material.valueOf("PRISMARINE");
+                case "sea_lantern":
+                    return Material.valueOf("SEA_LANTERN");
+                case "hay_block":
+                    return Material.valueOf("HAY_BLOCK");
+                case "carpet":
+                    return Material.valueOf("CARPET");
+                case "hardened_clay":
+                    return Material.valueOf("HARD_CLAY");
+                case "coal_block":
+                    return Material.valueOf("COAL_BLOCK");
+                case "packed_ice":
+                    return Material.valueOf("PACKED_ICE");
+                case "double_plant":
+                    return Material.valueOf("DOUBLE_PLANT");
+                case "standing_banner":
+                    return Material.valueOf("STANDING_BANNER");
+                case "wall_banner":
+                    return Material.valueOf("WALL_BANNER");
+                case "daylight_detector_inverted":
+                    return Material.valueOf("DAYLIGHT_DETECTOR_INVERTED");
+                case "red_sandstone":
+                    return Material.valueOf("RED_SANDSTONE");
+                case "red_sandstone_stairs":
+                    return Material.valueOf("RED_SANDSTONE_STAIRS");
+                case "double_stone_slab2":
+                    return Material.valueOf("DOUBLE_STONE_SLAB2");
+                case "stone_slab2":
+                    return Material.valueOf("STONE_SLAB2");
+                case "spruce_fence_gate":
+                    return Material.valueOf("SPRUCE_FENCE_GATE");
+                case "birch_fence_gate":
+                    return Material.valueOf("BIRCH_FENCE_GATE");
+                case "jungle_fence_gate":
+                    return Material.valueOf("JUNGLE_FENCE_GATE");
+                case "dark_oak_fence_gate":
+                    return Material.valueOf("DARK_OAK_FENCE_GATE");
+                case "acacia_fence_gate":
+                    return Material.valueOf("ACACIA_FENCE_GATE");
+                case "spruce_fence":
+                    return Material.valueOf("SPRUCE_FENCE");
+                case "birch_fence":
+                    return Material.valueOf("BIRCH_FENCE");
+                case "jungle_fence":
+                    return Material.valueOf("JUNGLE_FENCE");
+                case "dark_oak_fence":
+                    return Material.valueOf("DARK_OAK_FENCE");
+                case "acacia_fence":
+                    return Material.valueOf("ACACIA_FENCE");
+                case "spruce_door":
+                    return Material.valueOf("SPRUCE_DOOR");
+                case "birch_door":
+                    return Material.valueOf("BIRCH_DOOR");
+                case "jungle_door":
+                    return Material.valueOf("JUNGLE_DOOR");
+                case "acacia_door":
+                    return Material.valueOf("ACACIA_DOOR");
+                case "dark_oak_door":
+                    return Material.valueOf("DARK_OAK_DOOR");
+                default:
+                    return null;
+            }
+        }  catch (IllegalArgumentException ex) {
+            // ARMOR_STAND not supported (<1.8), ignoring
+        }
+
+        return null;
     }
 
     public static Material getItemMaterial(String IDName) {
-        if (IDName.startsWith("minecraft:")) IDName = IDName.substring(10);
-        switch (IDName) {
-            case "air":
-                return Material.AIR;
-            case "stone":
-                return Material.STONE;
-            case "grass":
-                return Material.GRASS;
-            case "dirt":
-                return Material.DIRT;
-            case "cobblestone":
-                return Material.COBBLESTONE;
-            case "planks":
-                return Material.WOOD;
-            case "sapling":
-                return Material.SAPLING;
-            case "bedrock":
-                return Material.BEDROCK;
-            case "flowing_water":
-                return Material.WATER;
-            case "water":
-                return Material.STATIONARY_WATER;
-            case "flowing_lava":
-                return Material.LAVA;
-            case "lava":
-                return Material.STATIONARY_LAVA;
-            case "sand":
-                return Material.SAND;
-            case "gravel":
-                return Material.GRAVEL;
-            case "gold_ore":
-                return Material.GOLD_ORE;
-            case "iron_ore":
-                return Material.IRON_ORE;
-            case "coal_ore":
-                return Material.COAL_ORE;
-            case "log":
-                return Material.LOG;
-            case "leaves":
-                return Material.LEAVES;
-            case "sponge":
-                return Material.SPONGE;
-            case "glass":
-                return Material.GLASS;
-            case "lapis_ore":
-                return Material.LAPIS_ORE;
-            case "lapis_block":
-                return Material.LAPIS_BLOCK;
-            case "dispenser":
-                return Material.DISPENSER;
-            case "sandstone":
-                return Material.SANDSTONE;
-            case "noteblock":
-                return Material.NOTE_BLOCK;
-            case "golden_rail":
-                return Material.POWERED_RAIL;
-            case "detector_rail":
-                return Material.DETECTOR_RAIL;
-            case "sticky_piston":
-                return Material.PISTON_STICKY_BASE;
-            case "web":
-                return Material.WEB;
-            case "tallgrass":
-                return Material.LONG_GRASS;
-            case "deadbush":
-                return Material.DEAD_BUSH;
-            case "piston":
-                return Material.PISTON_BASE;
-            case "piston_head":
-                return Material.PISTON_EXTENSION;
-            case "wool":
-                return Material.WOOL;
-            case "piston_extension":
-                return Material.PISTON_MOVING_PIECE;
-            case "yellow_flower":
-                return Material.YELLOW_FLOWER;
-            case "red_flower":
-                return Material.RED_ROSE;
-            case "brown_mushroom":
-                return Material.BROWN_MUSHROOM;
-            case "red_mushroom":
-                return Material.RED_MUSHROOM;
-            case "gold_block":
-                return Material.GOLD_BLOCK;
-            case "iron_block":
-                return Material.IRON_BLOCK;
-            case "double_stone_slab":
-                return Material.DOUBLE_STEP;
-            case "stone_slab":
-                return Material.STEP;
-            case "brick_block":
-                return Material.BRICK;
-            case "tnt":
-                return Material.TNT;
-            case "bookshelf":
-                return Material.BOOKSHELF;
-            case "mossy_cobblestone":
-                return Material.MOSSY_COBBLESTONE;
-            case "obsidian":
-                return Material.OBSIDIAN;
-            case "torch":
-                return Material.TORCH;
-            case "fire":
-                return Material.FIRE;
-            case "mob_spawner":
-                return Material.MOB_SPAWNER;
-            case "oak_stairs":
-                return Material.WOOD_STAIRS;
-            case "chest":
-                return Material.CHEST;
-            case "redstone_wire":
-                return Material.REDSTONE_WIRE;
-            case "diamond_ore":
-                return Material.DIAMOND_ORE;
-            case "diamond_block":
-                return Material.DIAMOND_BLOCK;
-            case "crafting_table":
-                return Material.WORKBENCH;
-            case "farmland":
-                return Material.SOIL;
-            case "furnace":
-                return Material.FURNACE;
-            case "lit_furnace":
-                return Material.BURNING_FURNACE;
-            case "standing_sign":
-                return Material.SIGN_POST;
-            case "ladder":
-                return Material.LADDER;
-            case "rail":
-                return Material.RAILS;
-            case "stone_stairs":
-                return Material.COBBLESTONE_STAIRS;
-            case "wall_sign":
-                return Material.WALL_SIGN;
-            case "lever":
-                return Material.LEVER;
-            case "stone_pressure_plate":
-                return Material.STONE_PLATE;
-            case "wooden_pressure_plate":
-                return Material.WOOD_PLATE;
-            case "redstone_ore":
-                return Material.REDSTONE_ORE;
-            case "lit_redstone_ore":
-                return Material.GLOWING_REDSTONE_ORE;
-            case "unlit_redstone_torch":
-                return Material.REDSTONE_TORCH_OFF;
-            case "redstone_torch":
-                return Material.REDSTONE_TORCH_ON;
-            case "stone_button":
-                return Material.STONE_BUTTON;
-            case "snow_layer":
-                return Material.SNOW;
-            case "ice":
-                return Material.ICE;
-            case "snow":
-                return Material.SNOW_BLOCK;
-            case "cactus":
-                return Material.CACTUS;
-            case "clay":
-                return Material.CLAY;
-            case "jukebox":
-                return Material.JUKEBOX;
-            case "fence":
-                return Material.FENCE;
-            case "pumpkin":
-                return Material.PUMPKIN;
-            case "netherrack":
-                return Material.NETHERRACK;
-            case "soul_sand":
-                return Material.SOUL_SAND;
-            case "glowstone":
-                return Material.GLOWSTONE;
-            case "portal":
-                return Material.PORTAL;
-            case "lit_pumpkin":
-                return Material.JACK_O_LANTERN;
-            case "unpowered_repeater":
-                return Material.DIODE_BLOCK_OFF;
-            case "powered_repeater":
-                return Material.DIODE_BLOCK_ON;
-            case "stained_glass":
-                return Material.STAINED_GLASS;
-            case "trapdoor":
-                return Material.TRAP_DOOR;
-            case "monster_egg":
-                return Material.MONSTER_EGGS;
-            case "stonebrick":
-                return Material.SMOOTH_BRICK;
-            case "brown_mushroom_block":
-                return Material.HUGE_MUSHROOM_1;
-            case "red_mushroom_block":
-                return Material.HUGE_MUSHROOM_2;
-            case "iron_bars":
-                return Material.IRON_FENCE;
-            case "glass_pane":
-                return Material.THIN_GLASS;
-            case "melon_block":
-                return Material.MELON_BLOCK;
-            case "pumpkin_stem":
-                return Material.PUMPKIN_STEM;
-            case "melon_stem":
-                return Material.MELON_STEM;
-            case "vine":
-                return Material.VINE;
-            case "fence_gate":
-                return Material.FENCE_GATE;
-            case "brick_stairs":
-                return Material.BRICK_STAIRS;
-            case "stone_brick_stairs":
-                return Material.SMOOTH_STAIRS;
-            case "mycelium":
-                return Material.MYCEL;
-            case "waterlily":
-                return Material.WATER_LILY;
-            case "nether_brick":
-                return Material.NETHER_BRICK;
-            case "nether_brick_fence":
-                return Material.NETHER_FENCE;
-            case "nether_brick_stairs":
-                return Material.NETHER_BRICK_STAIRS;
-            case "enchanting_table":
-                return Material.ENCHANTMENT_TABLE;
-            case "end_portal":
-                return Material.ENDER_PORTAL;
-            case "end_portal_frame":
-                return Material.ENDER_PORTAL_FRAME;
-            case "end_stone":
-                return Material.ENDER_STONE;
-            case "dragon_egg":
-                return Material.DRAGON_EGG;
-            case "redstone_lamp":
-                return Material.REDSTONE_LAMP_OFF;
-            case "lit_redstone_lamp":
-                return Material.REDSTONE_LAMP_ON;
-            case "double_wooden_slab":
-                return Material.WOOD_DOUBLE_STEP;
-            case "wooden_slab":
-                return Material.WOOD_STEP;
-            case "cocoa":
-                return Material.COCOA;
-            case "sandstone_stairs":
-                return Material.SANDSTONE_STAIRS;
-            case "emerald_ore":
-                return Material.EMERALD_ORE;
-            case "ender_chest":
-                return Material.ENDER_CHEST;
-            case "tripwire_hook":
-                return Material.TRIPWIRE_HOOK;
-            case "tripwire":
-                return Material.TRIPWIRE;
-            case "emerald_block":
-                return Material.EMERALD_BLOCK;
-            case "spruce_stairs":
-                return Material.SPRUCE_WOOD_STAIRS;
-            case "birch_stairs":
-                return Material.BIRCH_WOOD_STAIRS;
-            case "jungle_stairs":
-                return Material.JUNGLE_WOOD_STAIRS;
-            case "command_block":
-                return Material.COMMAND;
-            case "beacon":
-                return Material.BEACON;
-            case "cobblestone_wall":
-                return Material.COBBLE_WALL;
-            case "carrots":
-                return Material.CARROT;
-            case "potatoes":
-                return Material.POTATO;
-            case "wooden_button":
-                return Material.WOOD_BUTTON;
-            case "anvil":
-                return Material.ANVIL;
-            case "trapped_chest":
-                return Material.TRAPPED_CHEST;
-            case "light_weighted_pressure_plate":
-                return Material.GOLD_PLATE;
-            case "heavy_weighted_pressure_plate":
-                return Material.IRON_PLATE;
-            case "unpowered_comparator":
-                return Material.REDSTONE_COMPARATOR_OFF;
-            case "powered_comparator":
-                return Material.REDSTONE_COMPARATOR_ON;
-            case "daylight_detector":
-                return Material.DAYLIGHT_DETECTOR;
-            case "redstone_block":
-                return Material.REDSTONE_BLOCK;
-            case "quartz_ore":
-                return Material.QUARTZ_ORE;
-            case "hopper":
-                return Material.HOPPER;
-            case "quartz_block":
-                return Material.QUARTZ_BLOCK;
-            case "quartz_stairs":
-                return Material.QUARTZ_STAIRS;
-            case "activator_rail":
-                return Material.ACTIVATOR_RAIL;
-            case "dropper":
-                return Material.DROPPER;
-            case "stained_hardened_clay":
-                return Material.STAINED_CLAY;
-            case "stained_glass_pane":
-                return Material.STAINED_GLASS_PANE;
-            case "leaves2":
-                return Material.LEAVES_2;
-            case "log2":
-                return Material.LOG_2;
-            case "acacia_stairs":
-                return Material.ACACIA_STAIRS;
-            case "dark_oak_stairs":
-                return Material.DARK_OAK_STAIRS;
-            case "slime":
-                return Material.SLIME_BLOCK;
-            case "barrier":
-                return Material.BARRIER;
-            case "iron_trapdoor":
-                return Material.IRON_TRAPDOOR;
-            case "prismarine":
-                return Material.PRISMARINE;
-            case "sea_lantern":
-                return Material.SEA_LANTERN;
-            case "hay_block":
-                return Material.HAY_BLOCK;
-            case "carpet":
-                return Material.CARPET;
-            case "hardened_clay":
-                return Material.HARD_CLAY;
-            case "coal_block":
-                return Material.COAL_BLOCK;
-            case "packed_ice":
-                return Material.PACKED_ICE;
-            case "double_plant":
-                return Material.DOUBLE_PLANT;
-            case "standing_banner":
-                return Material.STANDING_BANNER;
-            case "wall_banner":
-                return Material.WALL_BANNER;
-            case "daylight_detector_inverted":
-                return Material.DAYLIGHT_DETECTOR_INVERTED;
-            case "red_sandstone":
-                return Material.RED_SANDSTONE;
-            case "red_sandstone_stairs":
-                return Material.RED_SANDSTONE_STAIRS;
-            case "double_stone_slab2":
-                return Material.DOUBLE_STONE_SLAB2;
-            case "stone_slab2":
-                return Material.STONE_SLAB2;
-            case "spruce_fence_gate":
-                return Material.SPRUCE_FENCE_GATE;
-            case "birch_fence_gate":
-                return Material.BIRCH_FENCE_GATE;
-            case "jungle_fence_gate":
-                return Material.JUNGLE_FENCE_GATE;
-            case "dark_oak_fence_gate":
-                return Material.DARK_OAK_FENCE_GATE;
-            case "acacia_fence_gate":
-                return Material.ACACIA_FENCE_GATE;
-            case "spruce_fence":
-                return Material.SPRUCE_FENCE;
-            case "birch_fence":
-                return Material.BIRCH_FENCE;
-            case "jungle_fence":
-                return Material.JUNGLE_FENCE;
-            case "dark_oak_fence":
-                return Material.DARK_OAK_FENCE;
-            case "acacia_fence":
-                return Material.ACACIA_FENCE;
-            case "iron_shovel":
-                return Material.IRON_SPADE;
-            case "iron_pickaxe":
-                return Material.IRON_PICKAXE;
-            case "iron_axe":
-                return Material.IRON_AXE;
-            case "flint_and_steel":
-                return Material.FLINT_AND_STEEL;
-            case "apple":
-                return Material.APPLE;
-            case "bow":
-                return Material.BOW;
-            case "arrow":
-                return Material.ARROW;
-            case "coal":
-                return Material.COAL;
-            case "diamond":
-                return Material.DIAMOND;
-            case "iron_ingot":
-                return Material.IRON_INGOT;
-            case "gold_ingot":
-                return Material.GOLD_INGOT;
-            case "iron_sword":
-                return Material.IRON_SWORD;
-            case "wooden_sword":
-                return Material.WOOD_SWORD;
-            case "wooden_shovel":
-                return Material.WOOD_SPADE;
-            case "wooden_pickaxe":
-                return Material.WOOD_PICKAXE;
-            case "wooden_axe":
-                return Material.WOOD_AXE;
-            case "stone_sword":
-                return Material.STONE_SWORD;
-            case "stone_shovel":
-                return Material.STONE_SPADE;
-            case "stone_pickaxe":
-                return Material.STONE_PICKAXE;
-            case "stone_axe":
-                return Material.STONE_AXE;
-            case "diamond_sword":
-                return Material.DIAMOND_SWORD;
-            case "diamond_shovel":
-                return Material.DIAMOND_SPADE;
-            case "diamond_pickaxe":
-                return Material.DIAMOND_PICKAXE;
-            case "diamond_axe":
-                return Material.DIAMOND_AXE;
-            case "stick":
-                return Material.STICK;
-            case "bowl":
-                return Material.BOWL;
-            case "mushroom_stew":
-                return Material.MUSHROOM_SOUP;
-            case "golden_sword":
-                return Material.GOLD_SWORD;
-            case "golden_shovel":
-                return Material.GOLD_SPADE;
-            case "golden_pickaxe":
-                return Material.GOLD_PICKAXE;
-            case "golden_axe":
-                return Material.GOLD_AXE;
-            case "string":
-                return Material.STRING;
-            case "feather":
-                return Material.FEATHER;
-            case "gunpowder":
-                return Material.SULPHUR;
-            case "wooden_hoe":
-                return Material.WOOD_HOE;
-            case "stone_hoe":
-                return Material.STONE_HOE;
-            case "iron_hoe":
-                return Material.IRON_HOE;
-            case "diamond_hoe":
-                return Material.DIAMOND_HOE;
-            case "golden_hoe":
-                return Material.GOLD_HOE;
-            case "wheat_seeds":
-                return Material.SEEDS;
-            case "wheat":
-                return Material.WHEAT;
-            case "bread":
-                return Material.BREAD;
-            case "leather_helmet":
-                return Material.LEATHER_HELMET;
-            case "leather_chestplate":
-                return Material.LEATHER_CHESTPLATE;
-            case "leather_leggings":
-                return Material.LEATHER_LEGGINGS;
-            case "leather_boots":
-                return Material.LEATHER_BOOTS;
-            case "chainmail_helmet":
-                return Material.CHAINMAIL_HELMET;
-            case "chainmail_chestplate":
-                return Material.CHAINMAIL_CHESTPLATE;
-            case "chainmail_leggings":
-                return Material.CHAINMAIL_LEGGINGS;
-            case "chainmail_boots":
-                return Material.CHAINMAIL_BOOTS;
-            case "iron_helmet":
-                return Material.IRON_HELMET;
-            case "iron_chestplate":
-                return Material.IRON_CHESTPLATE;
-            case "iron_leggings":
-                return Material.IRON_LEGGINGS;
-            case "iron_boots":
-                return Material.IRON_BOOTS;
-            case "diamond_helmet":
-                return Material.DIAMOND_HELMET;
-            case "diamond_chestplate":
-                return Material.DIAMOND_CHESTPLATE;
-            case "diamond_leggings":
-                return Material.DIAMOND_LEGGINGS;
-            case "diamond_boots":
-                return Material.DIAMOND_BOOTS;
-            case "golden_helmet":
-                return Material.GOLD_HELMET;
-            case "golden_chestplate":
-                return Material.GOLD_CHESTPLATE;
-            case "golden_leggings":
-                return Material.GOLD_LEGGINGS;
-            case "golden_boots":
-                return Material.GOLD_BOOTS;
-            case "flint":
-                return Material.FLINT;
-            case "porkchop":
-                return Material.PORK;
-            case "cooked_porkchop":
-                return Material.GRILLED_PORK;
-            case "painting":
-                return Material.PAINTING;
-            case "golden_apple":
-                return Material.GOLDEN_APPLE;
-            case "sign":
-                return Material.SIGN;
-            case "wooden_door":
-                return Material.WOOD_DOOR;
-            case "bucket":
-                return Material.BUCKET;
-            case "water_bucket":
-                return Material.WATER_BUCKET;
-            case "lava_bucket":
-                return Material.LAVA_BUCKET;
-            case "minecart":
-                return Material.MINECART;
-            case "saddle":
-                return Material.SADDLE;
-            case "iron_door":
-                return Material.IRON_DOOR;
-            case "redstone":
-                return Material.REDSTONE;
-            case "snowball":
-                return Material.SNOW_BALL;
-            case "boat":
-                return Material.BOAT;
-            case "leather":
-                return Material.LEATHER;
-            case "milk_bucket":
-                return Material.MILK_BUCKET;
-            case "brick":
-                return Material.CLAY_BRICK;
-            case "clay_ball":
-                return Material.CLAY_BALL;
-            case "reeds":
-                return Material.SUGAR_CANE;
-            case "paper":
-                return Material.PAPER;
-            case "book":
-                return Material.BOOK;
-            case "slime_ball":
-                return Material.SLIME_BALL;
-            case "chest_minecart":
-                return Material.STORAGE_MINECART;
-            case "furnace_minecart":
-                return Material.POWERED_MINECART;
-            case "egg":
-                return Material.EGG;
-            case "compass":
-                return Material.COMPASS;
-            case "fishing_rod":
-                return Material.FISHING_ROD;
-            case "clock":
-                return Material.WATCH;
-            case "glowstone_dust":
-                return Material.GLOWSTONE_DUST;
-            case "fish":
-                return Material.RAW_FISH;
-            case "cooked_fish":
-                return Material.COOKED_FISH;
-            case "dye":
-                return Material.INK_SACK;
-            case "bone":
-                return Material.BONE;
-            case "sugar":
-                return Material.SUGAR;
-            case "cake":
-                return Material.CAKE;
-            case "bed":
-                return Material.BED;
-            case "repeater":
-                return Material.DIODE;
-            case "cookie":
-                return Material.COOKIE;
-            case "filled_map":
-                return Material.MAP;
-            case "shears":
-                return Material.SHEARS;
-            case "melon":
-                return Material.MELON;
-            case "pumpkin_seeds":
-                return Material.PUMPKIN_SEEDS;
-            case "melon_seeds":
-                return Material.MELON_SEEDS;
-            case "beef":
-                return Material.RAW_BEEF;
-            case "cooked_beef":
-                return Material.COOKED_BEEF;
-            case "chicken":
-                return Material.RAW_CHICKEN;
-            case "cooked_chicken":
-                return Material.COOKED_CHICKEN;
-            case "rotten_flesh":
-                return Material.ROTTEN_FLESH;
-            case "ender_pearl":
-                return Material.ENDER_PEARL;
-            case "blaze_rod":
-                return Material.BLAZE_ROD;
-            case "ghast_tear":
-                return Material.GHAST_TEAR;
-            case "gold_nugget":
-                return Material.GOLD_NUGGET;
-            case "nether_wart":
-                return Material.NETHER_STALK;
-            case "potion":
-                return Material.POTION;
-            case "glass_bottle":
-                return Material.GLASS_BOTTLE;
-            case "spider_eye":
-                return Material.SPIDER_EYE;
-            case "fermented_spider_eye":
-                return Material.FERMENTED_SPIDER_EYE;
-            case "blaze_powder":
-                return Material.BLAZE_POWDER;
-            case "magma_cream":
-                return Material.MAGMA_CREAM;
-            case "brewing_stand":
-                return Material.BREWING_STAND_ITEM;
-            case "cauldron":
-                return Material.CAULDRON_ITEM;
-            case "ender_eye":
-                return Material.EYE_OF_ENDER;
-            case "speckled_melon":
-                return Material.SPECKLED_MELON;
-            case "spawn_egg":
-                return Material.MONSTER_EGG;
-            case "experience_bottle":
-                return Material.EXP_BOTTLE;
-            case "fire_charge":
-                return Material.FIREBALL;
-            case "writable_book":
-                return Material.BOOK_AND_QUILL;
-            case "written_book":
-                return Material.WRITTEN_BOOK;
-            case "emerald":
-                return Material.EMERALD;
-            case "item_frame":
-                return Material.ITEM_FRAME;
-            case "flower_pot":
-                return Material.FLOWER_POT_ITEM;
-            case "carrot":
-                return Material.CARROT_ITEM;
-            case "potato":
-                return Material.POTATO_ITEM;
-            case "baked_potato":
-                return Material.BAKED_POTATO;
-            case "poisonous_potato":
-                return Material.POISONOUS_POTATO;
-            case "map":
-                return Material.EMPTY_MAP;
-            case "golden_carrot":
-                return Material.GOLDEN_CARROT;
-            case "skull":
-                return Material.SKULL_ITEM;
-            case "carrot_on_a_stick":
-                return Material.CARROT_STICK;
-            case "nether_star":
-                return Material.NETHER_STAR;
-            case "pumpkin_pie":
-                return Material.PUMPKIN_PIE;
-            case "fireworks":
-                return Material.FIREWORK;
-            case "firework_charge":
-                return Material.FIREWORK_CHARGE;
-            case "enchanted_book":
-                return Material.ENCHANTED_BOOK;
-            case "comparator":
-                return Material.REDSTONE_COMPARATOR;
-            case "netherbrick":
-                return Material.NETHER_BRICK_ITEM;
-            case "quartz":
-                return Material.QUARTZ;
-            case "tnt_minecart":
-                return Material.EXPLOSIVE_MINECART;
-            case "hopper_minecart":
-                return Material.HOPPER_MINECART;
-            case "prismarine_shard":
-                return Material.PRISMARINE_SHARD;
-            case "prismarine_crystals":
-                return Material.PRISMARINE_CRYSTALS;
-            case "rabbit":
-                return Material.RABBIT;
-            case "cooked_rabbit":
-                return Material.COOKED_RABBIT;
-            case "rabbit_stew":
-                return Material.RABBIT_STEW;
-            case "rabbit_foot":
-                return Material.RABBIT_FOOT;
-            case "rabbit_hide":
-                return Material.RABBIT_HIDE;
-            case "armor_stand":
-                return Material.ARMOR_STAND;
-            case "iron_horse_armor":
-                return Material.IRON_BARDING;
-            case "golden_horse_armor":
-                return Material.GOLD_BARDING;
-            case "diamond_horse_armor":
-                return Material.DIAMOND_BARDING;
-            case "lead":
-                return Material.LEASH;
-            case "name_tag":
-                return Material.NAME_TAG;
-            case "command_block_minecart":
-                return Material.COMMAND_MINECART;
-            case "mutton":
-                return Material.MUTTON;
-            case "cooked_mutton":
-                return Material.COOKED_MUTTON;
-            case "banner":
-                return Material.BANNER;
-            case "spruce_door":
-                return Material.SPRUCE_DOOR_ITEM;
-            case "birch_door":
-                return Material.BIRCH_DOOR_ITEM;
-            case "jungle_door":
-                return Material.JUNGLE_DOOR_ITEM;
-            case "acacia_door":
-                return Material.ACACIA_DOOR_ITEM;
-            case "dark_oak_door":
-                return Material.DARK_OAK_DOOR_ITEM;
-            case "record_13":
-                return Material.GOLD_RECORD;
-            case "record_cat":
-                return Material.GREEN_RECORD;
-            case "record_blocks":
-                return Material.RECORD_3;
-            case "record_chirp":
-                return Material.RECORD_4;
-            case "record_far":
-                return Material.RECORD_5;
-            case "record_mall":
-                return Material.RECORD_6;
-            case "record_mellohi":
-                return Material.RECORD_7;
-            case "record_stal":
-                return Material.RECORD_8;
-            case "record_strad":
-                return Material.RECORD_9;
-            case "record_ward":
-                return Material.RECORD_10;
-            case "record_11":
-                return Material.RECORD_11;
-            case "record_wait":
-                return Material.RECORD_12;
-            default:
-                return null;
+        if (IDName.startsWith("minecraft:")) {
+            IDName = IDName.substring(10);
         }
+        try {
+            switch (IDName) {
+                case "air":
+                    return Material.valueOf("AIR");
+                case "stone":
+                    return Material.valueOf("STONE");
+                case "grass":
+                    return Material.valueOf("GRASS");
+                case "dirt":
+                    return Material.valueOf("DIRT");
+                case "cobblestone":
+                    return Material.valueOf("COBBLESTONE");
+                case "planks":
+                    return Material.valueOf("WOOD");
+                case "sapling":
+                    return Material.valueOf("SAPLING");
+                case "bedrock":
+                    return Material.valueOf("BEDROCK");
+                case "flowing_water":
+                    return Material.valueOf("WATER");
+                case "water":
+                    return Material.valueOf("STATIONARY_WATER");
+                case "flowing_lava":
+                    return Material.valueOf("LAVA");
+                case "lava":
+                    return Material.valueOf("STATIONARY_LAVA");
+                case "sand":
+                    return Material.valueOf("SAND");
+                case "gravel":
+                    return Material.valueOf("GRAVEL");
+                case "gold_ore":
+                    return Material.valueOf("GOLD_ORE");
+                case "iron_ore":
+                    return Material.valueOf("IRON_ORE");
+                case "coal_ore":
+                    return Material.valueOf("COAL_ORE");
+                case "log":
+                    return Material.valueOf("LOG");
+                case "leaves":
+                    return Material.valueOf("LEAVES");
+                case "sponge":
+                    return Material.valueOf("SPONGE");
+                case "glass":
+                    return Material.valueOf("GLASS");
+                case "lapis_ore":
+                    return Material.valueOf("LAPIS_ORE");
+                case "lapis_block":
+                    return Material.valueOf("LAPIS_BLOCK");
+                case "dispenser":
+                    return Material.valueOf("DISPENSER");
+                case "sandstone":
+                    return Material.valueOf("SANDSTONE");
+                case "noteblock":
+                    return Material.valueOf("NOTE_BLOCK");
+                case "golden_rail":
+                    return Material.valueOf("POWERED_RAIL");
+                case "detector_rail":
+                    return Material.valueOf("DETECTOR_RAIL");
+                case "sticky_piston":
+                    return Material.valueOf("PISTON_STICKY_BASE");
+                case "web":
+                    return Material.valueOf("WEB");
+                case "tallgrass":
+                    return Material.valueOf("LONG_GRASS");
+                case "deadbush":
+                    return Material.valueOf("DEAD_BUSH");
+                case "piston":
+                    return Material.valueOf("PISTON_BASE");
+                case "piston_head":
+                    return Material.valueOf("PISTON_EXTENSION");
+                case "wool":
+                    return Material.valueOf("WOOL");
+                case "piston_extension":
+                    return Material.valueOf("PISTON_MOVING_PIECE");
+                case "yellow_flower":
+                    return Material.valueOf("YELLOW_FLOWER");
+                case "red_flower":
+                    return Material.valueOf("RED_ROSE");
+                case "brown_mushroom":
+                    return Material.valueOf("BROWN_MUSHROOM");
+                case "red_mushroom":
+                    return Material.valueOf("RED_MUSHROOM");
+                case "gold_block":
+                    return Material.valueOf("GOLD_BLOCK");
+                case "iron_block":
+                    return Material.valueOf("IRON_BLOCK");
+                case "double_stone_slab":
+                    return Material.valueOf("DOUBLE_STEP");
+                case "stone_slab":
+                    return Material.valueOf("STEP");
+                case "brick_block":
+                    return Material.valueOf("BRICK");
+                case "tnt":
+                    return Material.valueOf("TNT");
+                case "bookshelf":
+                    return Material.valueOf("BOOKSHELF");
+                case "mossy_cobblestone":
+                    return Material.valueOf("MOSSY_COBBLESTONE");
+                case "obsidian":
+                    return Material.valueOf("OBSIDIAN");
+                case "torch":
+                    return Material.valueOf("TORCH");
+                case "fire":
+                    return Material.valueOf("FIRE");
+                case "mob_spawner":
+                    return Material.valueOf("MOB_SPAWNER");
+                case "oak_stairs":
+                    return Material.valueOf("WOOD_STAIRS");
+                case "chest":
+                    return Material.valueOf("CHEST");
+                case "redstone_wire":
+                    return Material.valueOf("REDSTONE_WIRE");
+                case "diamond_ore":
+                    return Material.valueOf("DIAMOND_ORE");
+                case "diamond_block":
+                    return Material.valueOf("DIAMOND_BLOCK");
+                case "crafting_table":
+                    return Material.valueOf("WORKBENCH");
+                case "farmland":
+                    return Material.valueOf("SOIL");
+                case "furnace":
+                    return Material.valueOf("FURNACE");
+                case "lit_furnace":
+                    return Material.valueOf("BURNING_FURNACE");
+                case "standing_sign":
+                    return Material.valueOf("SIGN_POST");
+                case "ladder":
+                    return Material.valueOf("LADDER");
+                case "rail":
+                    return Material.valueOf("RAILS");
+                case "stone_stairs":
+                    return Material.valueOf("COBBLESTONE_STAIRS");
+                case "wall_sign":
+                    return Material.valueOf("WALL_SIGN");
+                case "lever":
+                    return Material.valueOf("LEVER");
+                case "stone_pressure_plate":
+                    return Material.valueOf("STONE_PLATE");
+                case "wooden_pressure_plate":
+                    return Material.valueOf("WOOD_PLATE");
+                case "redstone_ore":
+                    return Material.valueOf("REDSTONE_ORE");
+                case "lit_redstone_ore":
+                    return Material.valueOf("GLOWING_REDSTONE_ORE");
+                case "unlit_redstone_torch":
+                    return Material.valueOf("REDSTONE_TORCH_OFF");
+                case "redstone_torch":
+                    return Material.valueOf("REDSTONE_TORCH_ON");
+                case "stone_button":
+                    return Material.valueOf("STONE_BUTTON");
+                case "snow_layer":
+                    return Material.valueOf("SNOW");
+                case "ice":
+                    return Material.valueOf("ICE");
+                case "snow":
+                    return Material.valueOf("SNOW_BLOCK");
+                case "cactus":
+                    return Material.valueOf("CACTUS");
+                case "clay":
+                    return Material.valueOf("CLAY");
+                case "jukebox":
+                    return Material.valueOf("JUKEBOX");
+                case "fence":
+                    return Material.valueOf("FENCE");
+                case "pumpkin":
+                    return Material.valueOf("PUMPKIN");
+                case "netherrack":
+                    return Material.valueOf("NETHERRACK");
+                case "soul_sand":
+                    return Material.valueOf("SOUL_SAND");
+                case "glowstone":
+                    return Material.valueOf("GLOWSTONE");
+                case "portal":
+                    return Material.valueOf("PORTAL");
+                case "lit_pumpkin":
+                    return Material.valueOf("JACK_O_LANTERN");
+                case "unpowered_repeater":
+                    return Material.valueOf("DIODE_BLOCK_OFF");
+                case "powered_repeater":
+                    return Material.valueOf("DIODE_BLOCK_ON");
+                case "stained_glass":
+                    return Material.valueOf("STAINED_GLASS");
+                case "trapdoor":
+                    return Material.valueOf("TRAP_DOOR");
+                case "monster_egg":
+                    return Material.valueOf("MONSTER_EGGS");
+                case "stonebrick":
+                    return Material.valueOf("SMOOTH_BRICK");
+                case "brown_mushroom_block":
+                    return Material.valueOf("HUGE_MUSHROOM_1");
+                case "red_mushroom_block":
+                    return Material.valueOf("HUGE_MUSHROOM_2");
+                case "iron_bars":
+                    return Material.valueOf("IRON_FENCE");
+                case "glass_pane":
+                    return Material.valueOf("THIN_GLASS");
+                case "melon_block":
+                    return Material.valueOf("MELON_BLOCK");
+                case "pumpkin_stem":
+                    return Material.valueOf("PUMPKIN_STEM");
+                case "melon_stem":
+                    return Material.valueOf("MELON_STEM");
+                case "vine":
+                    return Material.valueOf("VINE");
+                case "fence_gate":
+                    return Material.valueOf("FENCE_GATE");
+                case "brick_stairs":
+                    return Material.valueOf("BRICK_STAIRS");
+                case "stone_brick_stairs":
+                    return Material.valueOf("SMOOTH_STAIRS");
+                case "mycelium":
+                    return Material.valueOf("MYCEL");
+                case "waterlily":
+                    return Material.valueOf("WATER_LILY");
+                case "nether_brick":
+                    return Material.valueOf("NETHER_BRICK");
+                case "nether_brick_fence":
+                    return Material.valueOf("NETHER_FENCE");
+                case "nether_brick_stairs":
+                    return Material.valueOf("NETHER_BRICK_STAIRS");
+                case "enchanting_table":
+                    return Material.valueOf("ENCHANTMENT_TABLE");
+                case "end_portal":
+                    return Material.valueOf("ENDER_PORTAL");
+                case "end_portal_frame":
+                    return Material.valueOf("ENDER_PORTAL_FRAME");
+                case "end_stone":
+                    return Material.valueOf("ENDER_STONE");
+                case "dragon_egg":
+                    return Material.valueOf("DRAGON_EGG");
+                case "redstone_lamp":
+                    return Material.valueOf("REDSTONE_LAMP_OFF");
+                case "lit_redstone_lamp":
+                    return Material.valueOf("REDSTONE_LAMP_ON");
+                case "double_wooden_slab":
+                    return Material.valueOf("WOOD_DOUBLE_STEP");
+                case "wooden_slab":
+                    return Material.valueOf("WOOD_STEP");
+                case "cocoa":
+                    return Material.valueOf("COCOA");
+                case "sandstone_stairs":
+                    return Material.valueOf("SANDSTONE_STAIRS");
+                case "emerald_ore":
+                    return Material.valueOf("EMERALD_ORE");
+                case "ender_chest":
+                    return Material.valueOf("ENDER_CHEST");
+                case "tripwire_hook":
+                    return Material.valueOf("TRIPWIRE_HOOK");
+                case "tripwire":
+                    return Material.valueOf("TRIPWIRE");
+                case "emerald_block":
+                    return Material.valueOf("EMERALD_BLOCK");
+                case "spruce_stairs":
+                    return Material.valueOf("SPRUCE_WOOD_STAIRS");
+                case "birch_stairs":
+                    return Material.valueOf("BIRCH_WOOD_STAIRS");
+                case "jungle_stairs":
+                    return Material.valueOf("JUNGLE_WOOD_STAIRS");
+                case "command_block":
+                    return Material.valueOf("COMMAND");
+                case "beacon":
+                    return Material.valueOf("BEACON");
+                case "cobblestone_wall":
+                    return Material.valueOf("COBBLE_WALL");
+                case "carrots":
+                    return Material.valueOf("CARROT");
+                case "potatoes":
+                    return Material.valueOf("POTATO");
+                case "wooden_button":
+                    return Material.valueOf("WOOD_BUTTON");
+                case "anvil":
+                    return Material.valueOf("ANVIL");
+                case "trapped_chest":
+                    return Material.valueOf("TRAPPED_CHEST");
+                case "light_weighted_pressure_plate":
+                    return Material.valueOf("GOLD_PLATE");
+                case "heavy_weighted_pressure_plate":
+                    return Material.valueOf("IRON_PLATE");
+                case "unpowered_comparator":
+                    return Material.valueOf("REDSTONE_COMPARATOR_OFF");
+                case "powered_comparator":
+                    return Material.valueOf("REDSTONE_COMPARATOR_ON");
+                case "daylight_detector":
+                    return Material.valueOf("DAYLIGHT_DETECTOR");
+                case "redstone_block":
+                    return Material.valueOf("REDSTONE_BLOCK");
+                case "quartz_ore":
+                    return Material.valueOf("QUARTZ_ORE");
+                case "hopper":
+                    return Material.valueOf("HOPPER");
+                case "quartz_block":
+                    return Material.valueOf("QUARTZ_BLOCK");
+                case "quartz_stairs":
+                    return Material.valueOf("QUARTZ_STAIRS");
+                case "activator_rail":
+                    return Material.valueOf("ACTIVATOR_RAIL");
+                case "dropper":
+                    return Material.valueOf("DROPPER");
+                case "stained_hardened_clay":
+                    return Material.valueOf("STAINED_CLAY");
+                case "stained_glass_pane":
+                    return Material.valueOf("STAINED_GLASS_PANE");
+                case "leaves2":
+                    return Material.valueOf("LEAVES_2");
+                case "log2":
+                    return Material.valueOf("LOG_2");
+                case "acacia_stairs":
+                    return Material.valueOf("ACACIA_STAIRS");
+                case "dark_oak_stairs":
+                    return Material.valueOf("DARK_OAK_STAIRS");
+                case "slime":
+                    return Material.valueOf("SLIME_BLOCK");
+                case "barrier":
+                    return Material.valueOf("BARRIER");
+                case "iron_trapdoor":
+                    return Material.valueOf("IRON_TRAPDOOR");
+                case "prismarine":
+                    return Material.valueOf("PRISMARINE");
+                case "sea_lantern":
+                    return Material.valueOf("SEA_LANTERN");
+                case "hay_block":
+                    return Material.valueOf("HAY_BLOCK");
+                case "carpet":
+                    return Material.valueOf("CARPET");
+                case "hardened_clay":
+                    return Material.valueOf("HARD_CLAY");
+                case "coal_block":
+                    return Material.valueOf("COAL_BLOCK");
+                case "packed_ice":
+                    return Material.valueOf("PACKED_ICE");
+                case "double_plant":
+                    return Material.valueOf("DOUBLE_PLANT");
+                case "standing_banner":
+                    return Material.valueOf("STANDING_BANNER");
+                case "wall_banner":
+                    return Material.valueOf("WALL_BANNER");
+                case "daylight_detector_inverted":
+                    return Material.valueOf("DAYLIGHT_DETECTOR_INVERTED");
+                case "red_sandstone":
+                    return Material.valueOf("RED_SANDSTONE");
+                case "red_sandstone_stairs":
+                    return Material.valueOf("RED_SANDSTONE_STAIRS");
+                case "double_stone_slab2":
+                    return Material.valueOf("DOUBLE_STONE_SLAB2");
+                case "stone_slab2":
+                    return Material.valueOf("STONE_SLAB2");
+                case "spruce_fence_gate":
+                    return Material.valueOf("SPRUCE_FENCE_GATE");
+                case "birch_fence_gate":
+                    return Material.valueOf("BIRCH_FENCE_GATE");
+                case "jungle_fence_gate":
+                    return Material.valueOf("JUNGLE_FENCE_GATE");
+                case "dark_oak_fence_gate":
+                    return Material.valueOf("DARK_OAK_FENCE_GATE");
+                case "acacia_fence_gate":
+                    return Material.valueOf("ACACIA_FENCE_GATE");
+                case "spruce_fence":
+                    return Material.valueOf("SPRUCE_FENCE");
+                case "birch_fence":
+                    return Material.valueOf("BIRCH_FENCE");
+                case "jungle_fence":
+                    return Material.valueOf("JUNGLE_FENCE");
+                case "dark_oak_fence":
+                    return Material.valueOf("DARK_OAK_FENCE");
+                case "acacia_fence":
+                    return Material.valueOf("ACACIA_FENCE");
+                case "iron_shovel":
+                    return Material.valueOf("IRON_SPADE");
+                case "iron_pickaxe":
+                    return Material.valueOf("IRON_PICKAXE");
+                case "iron_axe":
+                    return Material.valueOf("IRON_AXE");
+                case "flint_and_steel":
+                    return Material.valueOf("FLINT_AND_STEEL");
+                case "apple":
+                    return Material.valueOf("APPLE");
+                case "bow":
+                    return Material.valueOf("BOW");
+                case "arrow":
+                    return Material.valueOf("ARROW");
+                case "coal":
+                    return Material.valueOf("COAL");
+                case "diamond":
+                    return Material.valueOf("DIAMOND");
+                case "iron_ingot":
+                    return Material.valueOf("IRON_INGOT");
+                case "gold_ingot":
+                    return Material.valueOf("GOLD_INGOT");
+                case "iron_sword":
+                    return Material.valueOf("IRON_SWORD");
+                case "wooden_sword":
+                    return Material.valueOf("WOOD_SWORD");
+                case "wooden_shovel":
+                    return Material.valueOf("WOOD_SPADE");
+                case "wooden_pickaxe":
+                    return Material.valueOf("WOOD_PICKAXE");
+                case "wooden_axe":
+                    return Material.valueOf("WOOD_AXE");
+                case "stone_sword":
+                    return Material.valueOf("STONE_SWORD");
+                case "stone_shovel":
+                    return Material.valueOf("STONE_SPADE");
+                case "stone_pickaxe":
+                    return Material.valueOf("STONE_PICKAXE");
+                case "stone_axe":
+                    return Material.valueOf("STONE_AXE");
+                case "diamond_sword":
+                    return Material.valueOf("DIAMOND_SWORD");
+                case "diamond_shovel":
+                    return Material.valueOf("DIAMOND_SPADE");
+                case "diamond_pickaxe":
+                    return Material.valueOf("DIAMOND_PICKAXE");
+                case "diamond_axe":
+                    return Material.valueOf("DIAMOND_AXE");
+                case "stick":
+                    return Material.valueOf("STICK");
+                case "bowl":
+                    return Material.valueOf("BOWL");
+                case "mushroom_stew":
+                    return Material.valueOf("MUSHROOM_SOUP");
+                case "golden_sword":
+                    return Material.valueOf("GOLD_SWORD");
+                case "golden_shovel":
+                    return Material.valueOf("GOLD_SPADE");
+                case "golden_pickaxe":
+                    return Material.valueOf("GOLD_PICKAXE");
+                case "golden_axe":
+                    return Material.valueOf("GOLD_AXE");
+                case "string":
+                    return Material.valueOf("STRING");
+                case "feather":
+                    return Material.valueOf("FEATHER");
+                case "gunpowder":
+                    return Material.valueOf("SULPHUR");
+                case "wooden_hoe":
+                    return Material.valueOf("WOOD_HOE");
+                case "stone_hoe":
+                    return Material.valueOf("STONE_HOE");
+                case "iron_hoe":
+                    return Material.valueOf("IRON_HOE");
+                case "diamond_hoe":
+                    return Material.valueOf("DIAMOND_HOE");
+                case "golden_hoe":
+                    return Material.valueOf("GOLD_HOE");
+                case "wheat_seeds":
+                    return Material.valueOf("SEEDS");
+                case "wheat":
+                    return Material.valueOf("WHEAT");
+                case "bread":
+                    return Material.valueOf("BREAD");
+                case "leather_helmet":
+                    return Material.valueOf("LEATHER_HELMET");
+                case "leather_chestplate":
+                    return Material.valueOf("LEATHER_CHESTPLATE");
+                case "leather_leggings":
+                    return Material.valueOf("LEATHER_LEGGINGS");
+                case "leather_boots":
+                    return Material.valueOf("LEATHER_BOOTS");
+                case "chainmail_helmet":
+                    return Material.valueOf("CHAINMAIL_HELMET");
+                case "chainmail_chestplate":
+                    return Material.valueOf("CHAINMAIL_CHESTPLATE");
+                case "chainmail_leggings":
+                    return Material.valueOf("CHAINMAIL_LEGGINGS");
+                case "chainmail_boots":
+                    return Material.valueOf("CHAINMAIL_BOOTS");
+                case "iron_helmet":
+                    return Material.valueOf("IRON_HELMET");
+                case "iron_chestplate":
+                    return Material.valueOf("IRON_CHESTPLATE");
+                case "iron_leggings":
+                    return Material.valueOf("IRON_LEGGINGS");
+                case "iron_boots":
+                    return Material.valueOf("IRON_BOOTS");
+                case "diamond_helmet":
+                    return Material.valueOf("DIAMOND_HELMET");
+                case "diamond_chestplate":
+                    return Material.valueOf("DIAMOND_CHESTPLATE");
+                case "diamond_leggings":
+                    return Material.valueOf("DIAMOND_LEGGINGS");
+                case "diamond_boots":
+                    return Material.valueOf("DIAMOND_BOOTS");
+                case "golden_helmet":
+                    return Material.valueOf("GOLD_HELMET");
+                case "golden_chestplate":
+                    return Material.valueOf("GOLD_CHESTPLATE");
+                case "golden_leggings":
+                    return Material.valueOf("GOLD_LEGGINGS");
+                case "golden_boots":
+                    return Material.valueOf("GOLD_BOOTS");
+                case "flint":
+                    return Material.valueOf("FLINT");
+                case "porkchop":
+                    return Material.valueOf("PORK");
+                case "cooked_porkchop":
+                    return Material.valueOf("GRILLED_PORK");
+                case "painting":
+                    return Material.valueOf("PAINTING");
+                case "golden_apple":
+                    return Material.valueOf("GOLDEN_APPLE");
+                case "sign":
+                    return Material.valueOf("SIGN");
+                case "wooden_door":
+                    return Material.valueOf("WOOD_DOOR");
+                case "bucket":
+                    return Material.valueOf("BUCKET");
+                case "water_bucket":
+                    return Material.valueOf("WATER_BUCKET");
+                case "lava_bucket":
+                    return Material.valueOf("LAVA_BUCKET");
+                case "minecart":
+                    return Material.valueOf("MINECART");
+                case "saddle":
+                    return Material.valueOf("SADDLE");
+                case "iron_door":
+                    return Material.valueOf("IRON_DOOR");
+                case "redstone":
+                    return Material.valueOf("REDSTONE");
+                case "snowball":
+                    return Material.valueOf("SNOW_BALL");
+                case "boat":
+                    return Material.valueOf("BOAT");
+                case "leather":
+                    return Material.valueOf("LEATHER");
+                case "milk_bucket":
+                    return Material.valueOf("MILK_BUCKET");
+                case "brick":
+                    return Material.valueOf("CLAY_BRICK");
+                case "clay_ball":
+                    return Material.valueOf("CLAY_BALL");
+                case "reeds":
+                    return Material.valueOf("SUGAR_CANE");
+                case "paper":
+                    return Material.valueOf("PAPER");
+                case "book":
+                    return Material.valueOf("BOOK");
+                case "slime_ball":
+                    return Material.valueOf("SLIME_BALL");
+                case "chest_minecart":
+                    return Material.valueOf("STORAGE_MINECART");
+                case "furnace_minecart":
+                    return Material.valueOf("POWERED_MINECART");
+                case "egg":
+                    return Material.valueOf("EGG");
+                case "compass":
+                    return Material.valueOf("COMPASS");
+                case "fishing_rod":
+                    return Material.valueOf("FISHING_ROD");
+                case "clock":
+                    return Material.valueOf("WATCH");
+                case "glowstone_dust":
+                    return Material.valueOf("GLOWSTONE_DUST");
+                case "fish":
+                    return Material.valueOf("RAW_FISH");
+                case "cooked_fish":
+                    return Material.valueOf("COOKED_FISH");
+                case "dye":
+                    return Material.valueOf("INK_SACK");
+                case "bone":
+                    return Material.valueOf("BONE");
+                case "sugar":
+                    return Material.valueOf("SUGAR");
+                case "cake":
+                    return Material.valueOf("CAKE");
+                case "bed":
+                    return Material.valueOf("BED");
+                case "repeater":
+                    return Material.valueOf("DIODE");
+                case "cookie":
+                    return Material.valueOf("COOKIE");
+                case "filled_map":
+                    return Material.valueOf("MAP");
+                case "shears":
+                    return Material.valueOf("SHEARS");
+                case "melon":
+                    return Material.valueOf("MELON");
+                case "pumpkin_seeds":
+                    return Material.valueOf("PUMPKIN_SEEDS");
+                case "melon_seeds":
+                    return Material.valueOf("MELON_SEEDS");
+                case "beef":
+                    return Material.valueOf("RAW_BEEF");
+                case "cooked_beef":
+                    return Material.valueOf("COOKED_BEEF");
+                case "chicken":
+                    return Material.valueOf("RAW_CHICKEN");
+                case "cooked_chicken":
+                    return Material.valueOf("COOKED_CHICKEN");
+                case "rotten_flesh":
+                    return Material.valueOf("ROTTEN_FLESH");
+                case "ender_pearl":
+                    return Material.valueOf("ENDER_PEARL");
+                case "blaze_rod":
+                    return Material.valueOf("BLAZE_ROD");
+                case "ghast_tear":
+                    return Material.valueOf("GHAST_TEAR");
+                case "gold_nugget":
+                    return Material.valueOf("GOLD_NUGGET");
+                case "nether_wart":
+                    return Material.valueOf("NETHER_STALK");
+                case "potion":
+                    return Material.valueOf("POTION");
+                case "glass_bottle":
+                    return Material.valueOf("GLASS_BOTTLE");
+                case "spider_eye":
+                    return Material.valueOf("SPIDER_EYE");
+                case "fermented_spider_eye":
+                    return Material.valueOf("FERMENTED_SPIDER_EYE");
+                case "blaze_powder":
+                    return Material.valueOf("BLAZE_POWDER");
+                case "magma_cream":
+                    return Material.valueOf("MAGMA_CREAM");
+                case "brewing_stand":
+                    return Material.valueOf("BREWING_STAND_ITEM");
+                case "cauldron":
+                    return Material.valueOf("CAULDRON_ITEM");
+                case "ender_eye":
+                    return Material.valueOf("EYE_OF_ENDER");
+                case "speckled_melon":
+                    return Material.valueOf("SPECKLED_MELON");
+                case "spawn_egg":
+                    return Material.valueOf("MONSTER_EGG");
+                case "experience_bottle":
+                    return Material.valueOf("EXP_BOTTLE");
+                case "fire_charge":
+                    return Material.valueOf("FIREBALL");
+                case "writable_book":
+                    return Material.valueOf("BOOK_AND_QUILL");
+                case "written_book":
+                    return Material.valueOf("WRITTEN_BOOK");
+                case "emerald":
+                    return Material.valueOf("EMERALD");
+                case "item_frame":
+                    return Material.valueOf("ITEM_FRAME");
+                case "flower_pot":
+                    return Material.valueOf("FLOWER_POT_ITEM");
+                case "carrot":
+                    return Material.valueOf("CARROT_ITEM");
+                case "potato":
+                    return Material.valueOf("POTATO_ITEM");
+                case "baked_potato":
+                    return Material.valueOf("BAKED_POTATO");
+                case "poisonous_potato":
+                    return Material.valueOf("POISONOUS_POTATO");
+                case "map":
+                    return Material.valueOf("EMPTY_MAP");
+                case "golden_carrot":
+                    return Material.valueOf("GOLDEN_CARROT");
+                case "skull":
+                    return Material.valueOf("SKULL_ITEM");
+                case "carrot_on_a_stick":
+                    return Material.valueOf("CARROT_STICK");
+                case "nether_star":
+                    return Material.valueOf("NETHER_STAR");
+                case "pumpkin_pie":
+                    return Material.valueOf("PUMPKIN_PIE");
+                case "fireworks":
+                    return Material.valueOf("FIREWORK");
+                case "firework_charge":
+                    return Material.valueOf("FIREWORK_CHARGE");
+                case "enchanted_book":
+                    return Material.valueOf("ENCHANTED_BOOK");
+                case "comparator":
+                    return Material.valueOf("REDSTONE_COMPARATOR");
+                case "netherbrick":
+                    return Material.valueOf("NETHER_BRICK_ITEM");
+                case "quartz":
+                    return Material.valueOf("QUARTZ");
+                case "tnt_minecart":
+                    return Material.valueOf("EXPLOSIVE_MINECART");
+                case "hopper_minecart":
+                    return Material.valueOf("HOPPER_MINECART");
+                case "prismarine_shard":
+                    return Material.valueOf("PRISMARINE_SHARD");
+                case "prismarine_crystals":
+                    return Material.valueOf("PRISMARINE_CRYSTALS");
+                case "rabbit":
+                    return Material.valueOf("RABBIT");
+                case "cooked_rabbit":
+                    return Material.valueOf("COOKED_RABBIT");
+                case "rabbit_stew":
+                    return Material.valueOf("RABBIT_STEW");
+                case "rabbit_foot":
+                    return Material.valueOf("RABBIT_FOOT");
+                case "rabbit_hide":
+                    return Material.valueOf("RABBIT_HIDE");
+                case "armor_stand":
+                    return Material.valueOf("ARMOR_STAND");
+                case "iron_horse_armor":
+                    return Material.valueOf("IRON_BARDING");
+                case "golden_horse_armor":
+                    return Material.valueOf("GOLD_BARDING");
+                case "diamond_horse_armor":
+                    return Material.valueOf("DIAMOND_BARDING");
+                case "lead":
+                    return Material.valueOf("LEASH");
+                case "name_tag":
+                    return Material.valueOf("NAME_TAG");
+                case "command_block_minecart":
+                    return Material.valueOf("COMMAND_MINECART");
+                case "mutton":
+                    return Material.valueOf("MUTTON");
+                case "cooked_mutton":
+                    return Material.valueOf("COOKED_MUTTON");
+                case "banner":
+                    return Material.valueOf("BANNER");
+                case "spruce_door":
+                    return Material.valueOf("SPRUCE_DOOR_ITEM");
+                case "birch_door":
+                    return Material.valueOf("BIRCH_DOOR_ITEM");
+                case "jungle_door":
+                    return Material.valueOf("JUNGLE_DOOR_ITEM");
+                case "acacia_door":
+                    return Material.valueOf("ACACIA_DOOR_ITEM");
+                case "dark_oak_door":
+                    return Material.valueOf("DARK_OAK_DOOR_ITEM");
+                case "record_13":
+                    return Material.valueOf("GOLD_RECORD");
+                case "record_cat":
+                    return Material.valueOf("GREEN_RECORD");
+                case "record_blocks":
+                    return Material.valueOf("RECORD_3");
+                case "record_chirp":
+                    return Material.valueOf("RECORD_4");
+                case "record_far":
+                    return Material.valueOf("RECORD_5");
+                case "record_mall":
+                    return Material.valueOf("RECORD_6");
+                case "record_mellohi":
+                    return Material.valueOf("RECORD_7");
+                case "record_stal":
+                    return Material.valueOf("RECORD_8");
+                case "record_strad":
+                    return Material.valueOf("RECORD_9");
+                case "record_ward":
+                    return Material.valueOf("RECORD_10");
+                case "record_11":
+                    return Material.valueOf("RECORD_11");
+                case "record_wait":
+                    return Material.valueOf("RECORD_12");
+                default:
+                    return null;
+            }
+        } catch (IllegalArgumentException ex) {
+            // ARMOR_STAND not supported (<1.8), ignoring
+        }
+
+        return null;
     }
 }
