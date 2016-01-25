@@ -27,6 +27,7 @@ import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
@@ -512,20 +513,8 @@ public class PSEntityListener implements Listener {
 
             if (field != null) {
                 if (event instanceof EntityDamageByEntityEvent) {
-                    EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
 
-                    Player player = null;
-
-                    if (sub.getDamager() instanceof Player) {
-                        player = (Player) sub.getDamager();
-                    } else if (sub.getDamager() instanceof Arrow) {
-                        Arrow arrow = (Arrow) sub.getDamager();
-
-                        if (arrow.getShooter() instanceof Player) {
-                            player = (Player) arrow.getShooter();
-                        }
-                    }
-
+                    Player player = Helper.getDamagingPlayer(event);
                     if (player != null) {
                         if (FieldFlag.PROTECT_ANIMALS.applies(field, player)) {
                             event.setCancelled(true);
@@ -546,19 +535,7 @@ public class PSEntityListener implements Listener {
 
             if (field != null) {
                 if (event instanceof EntityDamageByEntityEvent) {
-                    EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
-
-                    Player player = null;
-
-                    if (sub.getDamager() instanceof Player) {
-                        player = (Player) sub.getDamager();
-                    } else if (sub.getDamager() instanceof Arrow) {
-                        Arrow arrow = (Arrow) sub.getDamager();
-
-                        if (arrow.getShooter() instanceof Player) {
-                            player = (Player) arrow.getShooter();
-                        }
-                    }
+                    Player player = Helper.getDamagingPlayer(event);
 
                     if (player != null) {
                         if (FieldFlag.PROTECT_VILLAGERS.applies(field, player)) {
@@ -580,19 +557,7 @@ public class PSEntityListener implements Listener {
 
             if (field != null) {
                 if (event instanceof EntityDamageByEntityEvent) {
-                    EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
-
-                    Player player = null;
-
-                    if (sub.getDamager() instanceof Player) {
-                        player = (Player) sub.getDamager();
-                    } else if (sub.getDamager() instanceof Arrow) {
-                        Arrow arrow = (Arrow) sub.getDamager();
-
-                        if (arrow.getShooter() instanceof Player) {
-                            player = (Player) arrow.getShooter();
-                        }
-                    }
+                    Player player = Helper.getDamagingPlayer(event);
 
                     if (player != null) {
                         if (FieldFlag.PROTECT_MOBS.applies(field, player)) {
@@ -971,6 +936,22 @@ public class PSEntityListener implements Listener {
     /**
      * @param event
      */
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onShearEntity(PlayerShearEntityEvent event) {
+        Player player = event.getPlayer();
+        if (player != null) {
+            Field field = plugin.getForceFieldManager().getEnabledSourceField(player.getLocation(), FieldFlag.PROTECT_ANIMALS);
+            if (field != null) {
+                if (FieldFlag.PROTECT_ANIMALS.applies(field, player)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param event
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
         ItemStack is = event.getInventory().getResult();
@@ -982,7 +963,7 @@ public class PSEntityListener implements Listener {
 
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                PlayerEntry playerEntry = plugin.getPlayerManager().getPlayerEntry(player.getName());
+                PlayerEntry playerEntry = plugin.getPlayerManager().getPlayerEntry(player);
                 if (playerEntry.isDisabled()) {
                     return;
                 }

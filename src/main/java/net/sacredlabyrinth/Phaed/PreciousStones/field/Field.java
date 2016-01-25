@@ -52,7 +52,7 @@ public class Field extends AbstractVec implements Comparable<Field> {
     private String name;
     private Field parent;
     private List<Field> children = new ArrayList<Field>();
-    private List<String> allowed = new ArrayList<String>();
+    private Set<String> allowed = new HashSet<String>();
     private Set<DirtyFieldReason> dirty = new HashSet<DirtyFieldReason>();
     private long lastUsed;
     private boolean progress;
@@ -605,6 +605,24 @@ public class Field extends AbstractVec implements Comparable<Field> {
     }
 
     /**
+     * Migrate a player in the allowed list to a new name
+     *
+     * @param oldPlayerName
+     * @param newPlayerName
+     * @return
+     */
+    public boolean migrateAllowed(String oldPlayerName, String newPlayerName) {
+        oldPlayerName = oldPlayerName.toLowerCase();
+        if (!allowed.remove(oldPlayerName)) {
+            return false;
+        }
+
+        allowed.add(newPlayerName);
+        dirty.add(DirtyFieldReason.ALLOWED);
+        return true;
+    }
+
+    /**
      * @return coordinates string format [x y z world]
      */
     public String getCoords() {
@@ -798,7 +816,7 @@ public class Field extends AbstractVec implements Comparable<Field> {
      * @return the allowed
      */
     public List<String> getAllowed() {
-        return Collections.unmodifiableList(allowed);
+        return new ArrayList<String>(allowed);
     }
 
     /**
@@ -833,7 +851,8 @@ public class Field extends AbstractVec implements Comparable<Field> {
      * @param packedAllowed the packedAllowed to set
      */
     public void setPackedAllowed(String packedAllowed) {
-        this.allowed = Helper.fromArray(packedAllowed.split("[|]"));
+        this.allowed.clear();
+        this.allowed.addAll(Helper.fromArray(packedAllowed.split("[|]")));
     }
 
     /**
